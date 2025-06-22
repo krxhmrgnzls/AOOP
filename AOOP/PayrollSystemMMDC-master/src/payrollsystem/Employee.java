@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package payrollsystem;
 
 import java.io.BufferedWriter;
@@ -22,6 +18,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import java.text.SimpleDateFormat;
 
 public class Employee extends AccountDetails {
     
@@ -44,13 +41,16 @@ public class Employee extends AccountDetails {
         super();
     }
     
-    
     void viewPersonalDetails(String employeeID){
-        accountDetails.getDataList().clear();
-        accountDetails.setFilePath("CSVFiles//EmployeeDatabase.csv");
-        accountDetails.retrivedDetails();
-        accountDetails.userDetails(employeeID);
-    }
+    // Set the employee ID
+    this.employeeID = employeeID;
+    
+    // Use the existing CSV-based approach that already works
+    this.accountDetails.setEmployeeID(employeeID);
+    this.accountDetails.setFilePath("CSVFiles//EmployeeDatabase.csv");
+    this.accountDetails.retrivedDetails();
+    this.accountDetails.userDetails(employeeID);
+}
     
     
     //To view all Personal Leave Ledger
@@ -67,15 +67,12 @@ public class Employee extends AccountDetails {
 
      
      void leaveBalancesInformation(){
-         accountDetails.getDataList().clear();
-         accountDetails.setFilePath("CSVFiles//LeaveBalances.csv");
-         accountDetails.retrivedDetails();
-         for(int i=1; i<accountDetails.getDataList().size(); i++){
-             if(accountDetails.getDataList().get(i).get(0).equals(accountDetails.getEmployeeID())){
-                 this.balanceVL = accountDetails.getDataList().get(i).get(1);
-                 this.balanceSL = accountDetails.getDataList().get(i).get(2);
-             }
-         }
+         LeaveDAO dao = new LeaveDAO();
+         LeaveBalance balance = dao.getLeaveBalance(Integer.parseInt(accountDetails.getEmployeeID()));
+         if (balance != null){
+            this.balanceVL = String.valueOf(balance.getVacationLeave());
+        this.balanceSL = String.valueOf(balance.getSickLeave());
+     }
      }
      
     // To format the Local Time and Date Now

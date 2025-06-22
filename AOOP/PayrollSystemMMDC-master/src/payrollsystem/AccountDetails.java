@@ -16,6 +16,8 @@ import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -111,6 +113,27 @@ public class AccountDetails {
            getNewData().clear();
         return model;
     }
+    public void setEmployeeDetails(ResultSet rs) throws SQLException {
+    this.employeeID = String.valueOf(rs.getInt("employee_id"));
+    this.lastName = rs.getString("last_name");
+    this.firstName = rs.getString("first_name");
+    this.birthday = rs.getString("birthday");
+    this.address = rs.getString("address");
+    this.phoneNumber = rs.getString("phone_number");
+    this.sssNumber = rs.getString("sss_number");
+    this.philHealthNumber = rs.getString("philhealth_number");
+    this.tinNumber = rs.getString("tin_number");
+    this.pagibigNumber = rs.getString("pagibig_number");
+    this.status = rs.getString("status");
+    this.position = rs.getString("position");
+    this.supervisor = rs.getString("immediate_supervisor");
+    this.basicSalary = rs.getDouble("basic_salary");
+    this.riceSubsidy = rs.getDouble("rice_subsidy");
+    this.phoneAllowance = rs.getDouble("phone_allowance");
+    this.clothingAllowance = rs.getDouble("clothing_allowance");
+    this.semiBasicSalary = rs.getDouble("gross_semi_monthly_rate");
+    this.hourlyRate = rs.getDouble("hourly_rate");
+}
     
     public ArrayList<ArrayList<String>> getDataList() {
         return dataList;
@@ -230,4 +253,5 @@ public class AccountDetails {
    void setTableSize(int tableSize){
        this.tableSize = tableSize;
    }
+   
 }

@@ -1,23 +1,24 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package payrollsystem;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Paul
- */
 abstract class Credentials extends AccountDetails {
-    private String userID, userPassword;
+    protected String userID, userPassword; // Changed from private to protected
     
     AccountDetails accountDetails = new AccountDetails();
     
     Credentials(String id, String password){
         this.userID = id;
         this.userPassword = password;
+    }
+    
+    // Add getter methods
+    public String getUserID() {
+        return userID;
+    }
+    
+    public String getUserPassword() {
+        return userPassword;
     }
     
     ArrayList<ArrayList<String>> checkCredentials(){
@@ -31,5 +32,4 @@ abstract class Credentials extends AccountDetails {
         }
         return tempData;
     }
-
 }

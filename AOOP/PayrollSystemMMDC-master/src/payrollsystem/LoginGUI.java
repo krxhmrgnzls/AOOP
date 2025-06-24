@@ -155,8 +155,8 @@ public class LoginGUI extends javax.swing.JFrame {
         String id = txtID.getText().toString();
         String password = jPassword.getText().toString();
         if(!id.isEmpty() && !password.isEmpty()){
-            Login login = new Login(id, password);
-            ArrayList<ArrayList<String>> userDetails = login.checkCredentials();
+            Login login = new Login();
+            ArrayList<ArrayList<String>> userDetails = login.getUserDetails(Integer.parseInt(id), password );
             if(userDetails.isEmpty()){
                 JOptionPane.showMessageDialog(null, "Credentials Not Found! ");
             }else{

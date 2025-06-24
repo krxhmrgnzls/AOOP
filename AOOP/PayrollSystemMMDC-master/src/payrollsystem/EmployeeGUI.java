@@ -28,12 +28,14 @@ public class EmployeeGUI extends javax.swing.JFrame {
         this.name = userDetails.get(0).get(1);
         this.role = userDetails.get(0).get(3);
         employee = new HumanResource(lblIDSidebar.getText().toString());
-        employee.viewPersonalDetails(lblIDSidebar.getText());
+        employee. viewPersonalDetails(lblIDSidebar.getText());
     }
 
     private EmployeeGUI() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1996,13 +1998,22 @@ public class EmployeeGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSupervisorActionPerformed
 
+    private void setDateTextField(javax.swing.JTextField textField, java.util.Date date) {
+       if (date != null) {
+           java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM/dd/yyyy");
+           textField.setText(sdf.format(date));
+       } else {
+           textField.setText("");
+       }
+   }   
+    
     private void btnPersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonalDetailsActionPerformed
         // TODO add your handling code here:
         mainTabbed.setSelectedIndex(1);
         txtID.setText(String.valueOf(employee.accountDetails.getEmployeeID()));
         txtFName.setText(employee.accountDetails.getFirstName());
         txtLName.setText(employee.accountDetails.getLastName());
-        txtBDay.setText(employee.accountDetails.getBirthday());
+        setDateTextField(txtBDay, employee.accountDetails.getBirthday());
         txtPhoneNum.setText(employee.accountDetails.getPhoneNumber());
         textAreaAddress.setText(employee.accountDetails.getAddress());
         txtBasicSalary.setText(String.valueOf(employee.accountDetails.getBasicSalary()));
@@ -2140,7 +2151,8 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void btnSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit1ActionPerformed
         // TODO add your handling code here:
         if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null && !txtReasonOvertime.getText().trim().isEmpty()){
-            if(employee.countNumberOfDays(dateFromOvertime.getDate(), dateToOvertime.getDate())){
+            if(employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
+                
                 data.add(String.valueOf(employee.accountDetails.getEmployeeID()));
                 data.add(employee.accountDetails.getEmployeeCompleteName());
                 data.add(dateFormat.format(dateFromOvertime.getDate()));
@@ -2166,7 +2178,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void dateToOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToOvertimePropertyChange
         // TODO add your handling code here:
         if(dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null){
-            if(employee.countNumberOfDays(dateFromOvertime.getDate(), dateToOvertime.getDate())){
+            if(employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
                 txtDaysNumber1.setText(String.valueOf(employee.getNumberOfDaysLeave()));
                 employee.setNumberOfDaysLeave();
             }else{
@@ -2179,7 +2191,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void dateFromOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromOvertimePropertyChange
         // TODO add your handling code here:
         if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null){
-            if(employee.countNumberOfDays(dateFromOvertime.getDate(), dateToOvertime.getDate())){
+            if(employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
                 txtDaysNumber1.setText(String.valueOf(employee.getNumberOfDaysLeave()));
                 employee.setNumberOfDaysLeave();
             }else{
@@ -2227,7 +2239,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void dateFromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromPropertyChange
         // TODO add your handling code here:
         if(dateTo.getDate() != null && dateFrom.getDate() != null){
-            if(employee.countNumberOfDays(dateFrom.getDate(), dateTo.getDate())){
+            if(employee.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
                 txtDaysNumber.setText(String.valueOf(employee.getNumberOfDaysLeave()));
                 employee.setNumberOfDaysLeave();
             }else{
@@ -2240,7 +2252,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void dateToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToPropertyChange
         // TODO add your handling code here:
         if(dateFrom.getDate() != null && dateTo.getDate() != null){
-            if(employee.countNumberOfDays(dateFrom.getDate(), dateTo.getDate())){
+            if(employee.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
                 txtDaysNumber.setText(String.valueOf(employee.getNumberOfDaysLeave()));
                 employee.setNumberOfDaysLeave();
             }else{

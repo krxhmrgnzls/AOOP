@@ -24,7 +24,7 @@ abstract class Credentials extends AccountDetails {
     ArrayList<ArrayList<String>> checkCredentials(){
         ArrayList<ArrayList<String>> tempData = new ArrayList<>();
         accountDetails.setFilePath("CSVFiles//CredentialsDatabase.csv");
-        accountDetails.retrivedDetails();
+        accountDetails.retrievedDetails();
         for(ArrayList<String> data : accountDetails.getDataList()){
             if(data.get(0).equals(userID) && data.get(2).equals(userPassword)){
                 tempData.add(data);

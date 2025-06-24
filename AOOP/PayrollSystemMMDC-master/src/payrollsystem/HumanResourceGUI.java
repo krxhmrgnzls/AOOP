@@ -22,18 +22,24 @@ import javax.swing.table.DefaultTableModel;
 public class HumanResourceGUI extends javax.swing.JFrame {
     String id, name, role;
     HumanResource humanResource;
-    ArrayList<String> data = new ArrayList<>(); //To hold as storage
-    SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy");
+    ArrayList<String> data = new ArrayList<>();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+
     public HumanResourceGUI(ArrayList<ArrayList<String>> userDetails) {
         initComponents();
+        
+        // FIXED: Proper initialization
         this.id = userDetails.get(0).get(0);
         this.name = userDetails.get(0).get(1);
-        this.role = userDetails.get(0).get(3);
+        this.role = userDetails.get(0).get(3);  // ADDED THIS LINE
+        
+        humanResource = new HumanResource(userDetails);
         
         lblNameSidebar.setText(name);
         lblIDSidebar.setText(id);
-        humanResource = new HumanResource(lblIDSidebar.getText().toString());
-        humanResource.viewPersonalDetails(lblIDSidebar.getText());
+        
+        // FIXED: Method call without parameters
+        humanResource.viewPersonalDetails();
     }
 
     private HumanResourceGUI() {
@@ -67,6 +73,16 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Invalid key!");
         }
     }
+    
+    private void setDateTextField(javax.swing.JTextField textField, java.util.Date date) {
+    if (date != null) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM/dd/yyyy");
+        textField.setText(sdf.format(date));
+    } else {
+        textField.setText("");
+    }
+}
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -2911,7 +2927,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         txtID.setText(String.valueOf(humanResource.accountDetails.getEmployeeID()));
         txtFName.setText(humanResource.accountDetails.getFirstName());
         txtLName.setText(humanResource.accountDetails.getLastName());
-        txtBDay.setText(humanResource.accountDetails.getBirthday());
+        setDateTextField(txtBDay, humanResource.accountDetails.getBirthday());
         txtPhoneNum.setText(humanResource.accountDetails.getPhoneNumber());
         textAreaAddress.setText(humanResource.accountDetails.getAddress());
         txtBasicSalary.setText(String.valueOf(humanResource.accountDetails.getBasicSalary()));
@@ -3061,7 +3077,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private void dateToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToPropertyChange
         // TODO add your handling code here:
         if(dateFrom.getDate() != null && dateTo.getDate() != null){
-            if(humanResource.countNumberOfDays(dateFrom.getDate(), dateTo.getDate())){
+            if(humanResource.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
                 txtDaysNumber.setText(String.valueOf(humanResource.getNumberOfDaysLeave()));
                 humanResource.setNumberOfDaysLeave();
             }else{
@@ -3074,7 +3090,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private void dateFromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromPropertyChange
         // TODO add your handling code here:
         if(dateTo.getDate() != null && dateFrom.getDate() != null){
-            if(humanResource.countNumberOfDays(dateFrom.getDate(), dateTo.getDate())){
+            if(humanResource.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
                 txtDaysNumber.setText(String.valueOf(humanResource.getNumberOfDaysLeave()));
                 humanResource.setNumberOfDaysLeave();
             }else{
@@ -3121,7 +3137,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private void dateFromOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromOvertimePropertyChange
         // TODO add your handling code here:
         if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null){
-            if(humanResource.countNumberOfDays(dateFromOvertime.getDate(), dateToOvertime.getDate())){
+            if(humanResource.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
                 txtDaysNumber1.setText(String.valueOf(humanResource.getNumberOfDaysLeave()));
                 humanResource.setNumberOfDaysLeave();
             }else{
@@ -3134,7 +3150,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private void dateToOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToOvertimePropertyChange
         // TODO add your handling code here:
         if(dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null){
-            if(humanResource.countNumberOfDays(dateFromOvertime.getDate(), dateToOvertime.getDate())){
+            if(humanResource.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
                 txtDaysNumber1.setText(String.valueOf(humanResource.getNumberOfDaysLeave()));
                 humanResource.setNumberOfDaysLeave();
             }else{
@@ -3147,7 +3163,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private void btnSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit1ActionPerformed
         // TODO add your handling code here:
         if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null && !txtReasonOvertime.getText().trim().isEmpty()){
-            if(humanResource.countNumberOfDays(dateFromOvertime.getDate(), dateToOvertime.getDate())){
+            if(humanResource.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
                 data.add(String.valueOf(humanResource.accountDetails.getEmployeeID()));
                 data.add(humanResource.accountDetails.getEmployeeCompleteName());
                 data.add(dateFormat.format(dateFromOvertime.getDate()));

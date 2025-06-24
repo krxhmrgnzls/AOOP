@@ -1,6 +1,9 @@
 package payrollsystem;
 
 import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.sql.SQLException;
 
 public class LeaveDAO {
     private Connection connection;
@@ -21,10 +24,10 @@ public class LeaveDAO {
         
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, leave.getEmployeeId());
-            pstmt.setDate(2, Date.valueOf(leave.getDateFiled()));
+            pstmt.setDate(2, new java.sql.Date(leave.getDateFiled().getTime()));
             pstmt.setString(3, leave.getLeaveType());
-            pstmt.setDate(4, Date.valueOf(leave.getFromDate()));
-            pstmt.setDate(5, Date.valueOf(leave.getToDate()));
+            pstmt.setDate(4, new java.sql.Date(leave.getFromDate().getTime()));
+            pstmt.setDate(5, new java.sql.Date(leave.getToDate().getTime()));
             pstmt.setDouble(6, leave.getNumberOfDays());
             pstmt.setString(7, leave.getReason());
             pstmt.setString(8, "Pending");
@@ -89,5 +92,35 @@ public class LeaveDAO {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public List<LeaveRequest> getPendingLeaveRequests() {
+        List<LeaveRequest> leaveRequests = new ArrayList<>();
+        String sql = "SELECT lr.*, e.first_name, e.last_name FROM leave_requests lr " +
+                    "JOIN employees e ON lr.employee_id = e.employee_id " +
+                    "WHERE lr.status = 'Pending' ORDER BY lr.date_filed ASC";
+
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                LeaveRequest leave = new LeaveRequest();
+                leave.setLeaveId(rs.getInt("leave_id"));
+                leave.setEmployeeId(rs.getInt("employee_id"));
+                leave.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
+                leave.setDateFiled(rs.getDate("date_filed"));
+                leave.setLeaveType(rs.getString("leave_type"));
+                leave.setFromDate(rs.getDate("from_date"));
+                leave.setToDate(rs.getDate("to_date"));
+                leave.setNumberOfDays(rs.getDouble("number_of_days"));
+                leave.setReason(rs.getString("reason"));
+                leave.setStatus(rs.getString("status"));
+                leaveRequests.add(leave);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return leaveRequests;
     }
 }

@@ -1,11 +1,9 @@
 package payrollsystem;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class PayrollRecord {
     private int payrollId;
     private int employeeId;
+    private String employeeName;
     private String payrollPeriod;
     private String position;
     private double grossIncome;
@@ -19,16 +17,38 @@ public class PayrollRecord {
     private double netPay;
     private String status;
     
-    // Constructor
-    public PayrollRecord() {
+    // Default constructor
+    public PayrollRecord() {}
+    
+    // Constructor with all fields
+    public PayrollRecord(int employeeId, String payrollPeriod, String position, 
+                        double grossIncome, double benefits, double overtime, double undertime,
+                        double sss, double philhealth, double pagibig, double tax, 
+                        double netPay, String status) {
+        this.employeeId = employeeId;
+        this.payrollPeriod = payrollPeriod;
+        this.position = position;
+        this.grossIncome = grossIncome;
+        this.benefits = benefits;
+        this.overtime = overtime;
+        this.undertime = undertime;
+        this.sss = sss;
+        this.philhealth = philhealth;
+        this.pagibig = pagibig;
+        this.tax = tax;
+        this.netPay = netPay;
+        this.status = status;
     }
     
-    // Getters and setters
+    // Getters and Setters
     public int getPayrollId() { return payrollId; }
     public void setPayrollId(int payrollId) { this.payrollId = payrollId; }
     
     public int getEmployeeId() { return employeeId; }
     public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
+    
+    public String getEmployeeName() { return employeeName; }
+    public void setEmployeeName(String employeeName) { this.employeeName = employeeName; }
     
     public String getPayrollPeriod() { return payrollPeriod; }
     public void setPayrollPeriod(String payrollPeriod) { this.payrollPeriod = payrollPeriod; }
@@ -66,21 +86,14 @@ public class PayrollRecord {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     
-    // Helper method to populate from ResultSet
-    public void setPayrollDetails(ResultSet rs) throws SQLException {
-        this.payrollId = rs.getInt("payroll_id");
-        this.employeeId = rs.getInt("employee_id");
-        this.payrollPeriod = rs.getString("payroll_period");
-        this.position = rs.getString("position");
-        this.grossIncome = rs.getDouble("gross_income");
-        this.benefits = rs.getDouble("benefits");
-        this.overtime = rs.getDouble("overtime");
-        this.undertime = rs.getDouble("undertime");
-        this.sss = rs.getDouble("sss");
-        this.philhealth = rs.getDouble("philhealth");
-        this.pagibig = rs.getDouble("pagibig");
-        this.tax = rs.getDouble("tax");
-        this.netPay = rs.getDouble("net_pay");
-        this.status = rs.getString("status");
+    // Calculate total deductions
+    public double getTotalDeductions() {
+        return sss + philhealth + pagibig + tax + undertime;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("PayrollRecord{ID=%d, Employee=%s, Period=%s, NetPay=%.2f, Status=%s}",
+                payrollId, employeeName, payrollPeriod, netPay, status);
     }
 }

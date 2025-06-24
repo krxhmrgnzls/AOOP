@@ -2557,8 +2557,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
         // TODO add your handling code here:
         ArrayList<ArrayList<String>> tempData = payrollStaff.viewPersonalPayslip(dateFrom3.getDate(), dateTo3.getDate(), lblIDSidebar.getText());
+    
         if(tempData.isEmpty()){
             JOptionPane.showMessageDialog(null, "No Payroll Found!");
+            // Reset labels
             lblID4.setText("N/A");
             lblMyName6.setText("N/A");
             lblPayrollPeriod.setText("N/A");
@@ -2572,20 +2574,34 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             lblPagIbig.setText("0.00");
             lblTax.setText("0.00");
             lblNetPay.setText("0.00");
-        }else{
-            lblID4.setText(tempData.get(0).get(0));
-            lblMyName6.setText(tempData.get(0).get(1));
-            lblPayrollPeriod.setText(tempData.get(0).get(2));
-            lblPositon.setText(tempData.get(0).get(3));
-            lblGross.setText(tempData.get(0).get(4));
-            lblBenefits.setText(tempData.get(0).get(5));
-            lblOvertime.setText(tempData.get(0).get(6));
-            lblUndertime.setText(tempData.get(0).get(7));
-            lblSSS.setText(tempData.get(0).get(8));
-            lblPhilHealth.setText(tempData.get(0).get(9));
-            lblPagIbig.setText(tempData.get(0).get(10));
-            lblTax.setText(tempData.get(0).get(11));
-            lblNetPay.setText(tempData.get(0).get(12));
+        } else {
+
+            lblID4.setText(tempData.get(0).get(0));              // Employee ID
+            lblMyName6.setText(tempData.get(0).get(1));          // Employee Name
+            lblPayrollPeriod.setText(tempData.get(0).get(2));    // Payroll Period
+            lblPositon.setText(tempData.get(0).get(3));          // Position
+            lblGross.setText(tempData.get(0).get(4));            // Gross Income
+            lblBenefits.setText(tempData.get(0).get(5));         // Benefits
+            lblOvertime.setText(tempData.get(0).get(6));         // Overtime
+            lblUndertime.setText(tempData.get(0).get(7));        // Undertime
+            lblSSS.setText(tempData.get(0).get(8));              // SSS
+            lblPhilHealth.setText(tempData.get(0).get(9));       // PhilHealth
+            lblPagIbig.setText(tempData.get(0).get(10));         // Pag-IBIG
+            lblTax.setText(tempData.get(0).get(11));             // Tax
+            lblNetPay.setText(tempData.get(0).get(12));          // Net Pay
+
+            // Ask if user wants to generate PDF
+            int choice = JOptionPane.showConfirmDialog(null, 
+                "Would you like to save this payslip as a file?", 
+                "Save Payslip", 
+                JOptionPane.YES_NO_OPTION);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                ReportGenerator generator = new ReportGenerator();
+                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                String period = sdf.format(dateFrom3.getDate()) + " to " + sdf.format(dateTo3.getDate());
+                generator.generatePayslipPDF(Integer.parseInt(lblIDSidebar.getText()), period);
+            }
         }
         tempData.clear();
     }//GEN-LAST:event_btnReportActionPerformed

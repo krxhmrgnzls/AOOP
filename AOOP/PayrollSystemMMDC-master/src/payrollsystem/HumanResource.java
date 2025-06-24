@@ -71,7 +71,7 @@ public class HumanResource extends Employee{
     }
     
     // Database version of nextID (commented out until EmployeeDAO is implemented)
-    /*
+    
     String nextIDFromDatabase() {
         EmployeeDAO dao = new EmployeeDAO();
         List<Employee> employees = dao.findAll();
@@ -86,10 +86,10 @@ public class HumanResource extends Employee{
 
         return String.valueOf(maxId + 1);
     }
-    */
+   
     
     // Database version of addDetails (commented out until EmployeeDAO is implemented)
-    /*
+    
     boolean addDetailsToDatabase(ArrayList<String> tempData) {
         boolean isComplete = true;
         for (String info : tempData) {
@@ -118,7 +118,7 @@ public class HumanResource extends Employee{
         }
         return false;
     }
-    */
+    
     
     void updateDetails(){
         

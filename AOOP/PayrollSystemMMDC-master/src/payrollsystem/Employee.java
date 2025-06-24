@@ -1,6 +1,5 @@
 package payrollsystem;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,6 +18,10 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import java.text.SimpleDateFormat;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Employee extends AccountDetails {
     
@@ -313,31 +316,53 @@ public class Employee extends AccountDetails {
         lblVL.setText(getBalanceVL());
         lblSL.setText(getBalanceSL());
 }
-    ArrayList<ArrayList<String>> viewPersonalPayslip(Date dateFrom, Date dateTo, String id){
-        accountDetails.getDataList().clear();
-        ArrayList<ArrayList<String>> tempData = new ArrayList<>();
-        if(dateFrom == null || dateTo == null){
-            JOptionPane.showMessageDialog(null, "Please Provide Payroll Period!");
-        }else{
-            String fromFormatted = new SimpleDateFormat("MM/dd/yyyy").format(dateFrom);
-            String toFormatted = new SimpleDateFormat("MM/dd/yyyy").format(dateTo);
-            String datePeriod = fromFormatted + " to " + toFormatted;
-            int date = dateFrom.compareTo(dateTo);
-            if(date > 0){
-                JOptionPane.showMessageDialog(null, "Invalid Payroll Period");
-            }else{
-                accountDetails.setFilePath("CSVFiles//Payroll.csv");
-                accountDetails.retrivedDetails();
-                for(int i=0; i<accountDetails.getDataList().size(); i++){
-                    if(accountDetails.getDataList().get(i).get(0).equals(id) && accountDetails.getDataList().get(i).get(2).equals(datePeriod) && accountDetails.getDataList().get(i).get(13).equals("Approved")){
-                        tempData.add(accountDetails.getDataList().get(i));
-                        break;
-                    }
-                }
-            }
-        }
+    ArrayList<ArrayList<String>> viewPersonalPayslip(Date dateFrom, Date dateTo, String id) {
+    ArrayList<ArrayList<String>> tempData = new ArrayList<>();
+    
+    if (dateFrom == null || dateTo == null) {
+        JOptionPane.showMessageDialog(null, "Please Provide Payroll Period!");
         return tempData;
-    }    
+    }
+    
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+    String period = sdf.format(dateFrom) + " to " + sdf.format(dateTo);
+    
+    try {
+        String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
+                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "WHERE p.employee_id = ? AND p.payroll_period = ?";
+        
+        Connection conn = DatabaseConnection.getInstance().getConnection();
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setInt(1, Integer.parseInt(id));
+        pstmt.setString(2, period);
+        
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            ArrayList<String> row = new ArrayList<>();
+            row.add(String.valueOf(rs.getInt("employee_id")));
+            row.add(rs.getString("first_name") + " " + rs.getString("last_name"));
+            row.add(rs.getString("payroll_period"));
+            row.add(rs.getString("position"));
+            row.add(String.format("%.2f", rs.getDouble("gross_income")));
+            row.add(String.format("%.2f", rs.getDouble("benefits")));
+            row.add(String.format("%.2f", rs.getDouble("overtime")));
+            row.add(String.format("%.2f", rs.getDouble("undertime")));
+            row.add(String.format("%.2f", rs.getDouble("sss")));
+            row.add(String.format("%.2f", rs.getDouble("philhealth")));
+            row.add(String.format("%.2f", rs.getDouble("pagibig")));
+            row.add(String.format("%.2f", rs.getDouble("tax")));
+            row.add(String.format("%.2f", rs.getDouble("net_pay")));
+            row.add(rs.getString("status"));
+            tempData.add(row);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    return tempData;
+}
     
         void forwardDTRToSupervisor(ArrayList<ArrayList <String>> tempData){
         accountDetails.getDataList().clear();

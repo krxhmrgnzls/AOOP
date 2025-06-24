@@ -4,17 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Singleton class for database connection management
- */
 public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection connection;
     
     // Database configuration
-    private static final String URL = "jdbc:mysql://localhost:3306/aoop_db";
+    private static final String URL = "jdbc:mysql://localhost:3307/aoop";
     private static final String USERNAME = "root"; // Change as needed
-    private static final String PASSWORD = ""; // Change as needed
+    private static final String PASSWORD = "0914kmg@gnzls"; // Change as needed
     
     // Private constructor for Singleton pattern
     private DatabaseConnection() throws SQLException {

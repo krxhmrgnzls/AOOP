@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package payrollsystem;
 //main
 import java.io.BufferedReader;
@@ -19,10 +16,6 @@ import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- *
- * @author Paul
- */
 public class AccountDetails {
     private ArrayList<ArrayList<String>> tableData = new ArrayList<>();
     private ArrayList<ArrayList<String>> dataList = new ArrayList<>();
@@ -146,7 +139,83 @@ public class AccountDetails {
    
     ArrayList<ArrayList<String>> getNewData(){
        return this.newData;
-   }   
+   }
+    
+    public void setEmployeeID(String employeeID) {
+        this.employeeID = employeeID;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setSssNumber(String sssNumber) {
+        this.sssNumber = sssNumber;
+    }
+
+    public void setPhilHealthNumber(String philHealthNumber) {
+        this.philHealthNumber = philHealthNumber;
+    }
+
+    public void setTinNumber(String tinNumber) {
+        this.tinNumber = tinNumber;
+    }
+
+    public void setPagibigNumber(String pagibigNumber) {
+        this.pagibigNumber = pagibigNumber;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public void setBasicSalary(double basicSalary) {
+        this.basicSalary = basicSalary;
+    }
+
+    public void setRiceSubsidy(double riceSubsidy) {
+        this.riceSubsidy = riceSubsidy;
+    }
+
+    public void setPhoneAllowance(double phoneAllowance) {
+        this.phoneAllowance = phoneAllowance;
+    }
+
+    public void setClothingAllowance(double clothingAllowance) {
+        this.clothingAllowance = clothingAllowance;
+    }
+
+    public void setSemiBasicSalary(double semiBasicSalary) {
+        this.semiBasicSalary = semiBasicSalary;
+    }
+
+    public void setHourlyRate(double hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
     String getEmployeeCompleteName(){
         return getLastName()+" "+getFirstName();
     }
@@ -238,9 +307,6 @@ public class AccountDetails {
     public void setFilePath(String path){
         this.filePath = path;
     }
-   void setEmployeeID(String employeeID){
-       this.employeeID = employeeID;
-   }
    void setEmptyDataList(){
        getDataList().clear();
    }

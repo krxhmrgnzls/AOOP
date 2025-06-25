@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class LeaveRequest {
     private int leaveId;
-    private int employeeId;  // Use employeeId instead of employeeID
+    private int employeeId;
     private String employeeName;
     private Date dateFiled;
     private String leaveType;
@@ -14,13 +14,11 @@ public class LeaveRequest {
     private String reason;
     private String status;
     
-    // Default constructor
     public LeaveRequest() {
         this.dateFiled = new Date();
         this.status = "Pending";
     }
-    
-    // Constructor with basic fields
+ 
     public LeaveRequest(int employeeId, String leaveType, Date fromDate, Date toDate, 
                        double numberOfDays, String reason) {
         this();
@@ -39,7 +37,6 @@ public class LeaveRequest {
     public int getEmployeeId() { return employeeId; }
     public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
     
-    // FIX: Add the method that HumanResource is calling
     public void setEmployeeID(int employeeID) { 
         this.employeeId = employeeID; 
     }

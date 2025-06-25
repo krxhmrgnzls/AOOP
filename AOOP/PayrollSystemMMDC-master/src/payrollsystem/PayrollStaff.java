@@ -28,19 +28,18 @@ public class PayrollStaff extends Employee implements Payroll {
         this.tableData = new ArrayList<>();
     }
     
-    // **FIXED: Process payroll using database instead of CSV**
     public String processPayrollDB() {
         try {
             String payrollPeriod = getCurrentPayrollPeriod();
-            System.out.println("🔄 Processing payroll for period: " + payrollPeriod);
+            System.out.println("Processing payroll for period: " + payrollPeriod);
             
             boolean success = payrollDAO.processPayrollForAllEmployees(payrollPeriod);
             
             if (success) {
-                System.out.println("✅ Payroll processing completed successfully!");
+                System.out.println("Payroll processing completed successfully!");
                 return payrollPeriod;
             } else {
-                System.out.println("❌ Payroll processing failed!");
+                System.out.println("Payroll processing failed!");
                 return null;
             }
         } catch (Exception e) {
@@ -48,8 +47,7 @@ public class PayrollStaff extends Employee implements Payroll {
             return null;
         }
     }
-    
-    // **FIXED: Get payroll data from database for table display**
+
     public ArrayList<ArrayList<String>> getDataForPayrollTable() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
         
@@ -79,7 +77,7 @@ public class PayrollStaff extends Employee implements Payroll {
                 data.add(row);
             }
             
-            System.out.println("📊 Retrieved " + data.size() + " payroll records from database");
+            System.out.println("Retrieved " + data.size() + " payroll records from database");
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,7 +86,6 @@ public class PayrollStaff extends Employee implements Payroll {
         return data;
     }
     
-    // **FIXED: Release payroll using database**
     public void releasedPayroll(ArrayList<ArrayList<String>> selectedPayrolls) {
         try {
             for (ArrayList<String> payrollData : selectedPayrolls) {
@@ -110,8 +107,7 @@ public class PayrollStaff extends Employee implements Payroll {
             e.printStackTrace();
         }
     }
-    
-    // **FIXED: Get employee names from database**
+
     public void getEmployeeNames() {
         if (newData == null) {
             newData = new ArrayList<>();
@@ -128,8 +124,7 @@ public class PayrollStaff extends Employee implements Payroll {
             e.printStackTrace();
         }
     }
-    
-    // Helper method to get current payroll period
+
     private String getCurrentPayrollPeriod() {
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
         Calendar cal = Calendar.getInstance();
@@ -183,10 +178,9 @@ public class PayrollStaff extends Employee implements Payroll {
         }
         
         table.setModel(model);
-        System.out.println("📋 Updated table with " + tableData.size() + " records");
+        System.out.println("Updated table with " + tableData.size() + " records");
     }
     
-    // **Implement Payroll interface methods**
     @Override
     public double taxCalculation(double totalDeductions) {
         // Simplified tax calculation
@@ -239,16 +233,16 @@ public class PayrollStaff extends Employee implements Payroll {
     @Override
     public double overtimeCalculations(ArrayList<ArrayList<String>> perEmployeeAttendance) {
         // Calculate overtime based on attendance data
-        return 0.0; // Implement based on your overtime logic
+        return 0.0; 
     }
     
     @Override
     public double undertimeCalculations(ArrayList<ArrayList<String>> perEmployeeAttendance) {
         // Calculate undertime based on attendance data
-        return 0.0; // Implement based on your undertime logic
+        return 0.0;
     }
     
-    // **Method to generate PDF payslips**
+    // Method to generate PDF payslips
     public void generatePDFPayslips() {
         try {
             ReportGenerator reportGen = new ReportGenerator();
@@ -270,8 +264,6 @@ public class PayrollStaff extends Employee implements Payroll {
         }
     }
     
-    // **ADD: Missing methods for PayrollStaff GUI**
-    
     public String computePayroll() {
         try {
             return processPayrollDB();
@@ -280,8 +272,7 @@ public class PayrollStaff extends Employee implements Payroll {
             return getCurrentPayrollPeriod();
         }
     }
-    
-    // Overloaded setTableData method (no parameters)
+
     public void setTableData() {
         // Load default payroll data
         try {

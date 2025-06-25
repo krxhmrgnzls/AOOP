@@ -6,8 +6,6 @@ public class Employee {
     protected int databaseID;
     protected int employeeID;
     protected AccountDetails accountDetails;
-    
-    // Add these properties that PayrollStaff needs
     protected ArrayList<ArrayList<String>> newData;
     
     public Employee() {
@@ -15,7 +13,6 @@ public class Employee {
         this.newData = new ArrayList<>();
     }
     
-    // ADD: Constructor that GUI classes expect
     public Employee(String employeeId) {
         this.accountDetails = new AccountDetails();
         this.newData = new ArrayList<>();
@@ -39,16 +36,13 @@ public class Employee {
     
     public ArrayList<ArrayList<String>> getNewData() { return newData; }
     public void setNewData(ArrayList<ArrayList<String>> newData) { this.newData = newData; }
-    
-    // ADD: All missing methods that GUI classes expect
-    
-    // Table management methods
+
     public void setTableData(ArrayList<ArrayList<String>> data) {
         this.newData = data;
     }
     
     public void setTableSize(int size) {
-        // Set table size - placeholder
+        
     }
     
     public void displayDataTable(javax.swing.JTable table) {
@@ -63,14 +57,13 @@ public class Employee {
             table.setModel(model);
         }
     }
-    
-    // Data retrieval methods
+
     public ArrayList<ArrayList<String>> getDataAllRequests() {
-        return new ArrayList<>(); // Return empty for now
+        return new ArrayList<>(); 
     }
     
     public ArrayList<ArrayList<String>> getDataAllDTR(java.util.Date startDate, java.util.Date endDate) {
-        return new ArrayList<>(); // Return empty for now
+        return new ArrayList<>();
     }
     
     // Leave balance methods
@@ -101,11 +94,10 @@ public class Employee {
     }
     
     public int getNumberOfDaysLeave() {
-        return 0; // Default implementation
+        return 0; 
     }
     
     public void setNumberOfDaysLeave() {
-        // Default implementation
     }
     
     // Overtime request method
@@ -137,7 +129,6 @@ public class Employee {
         return "24.0";
     }
     
-    // Override fileLeaveRequest to accept ArrayList parameter
     public boolean fileLeaveRequest(ArrayList<String> leaveData) {
         try {
             System.out.println("Leave request filed for employee: " + leaveData.get(0));
@@ -149,36 +140,31 @@ public class Employee {
     }
     
     public void viewPayslip() {
-        // Implementation
     }
     
     public void viewPersonalDetails(String employeeId) {
-    // Method that takes employee ID parameter (called by GUI)
 }
 
     public void viewPersonalDetails() {
-        // Method without parameters (for inheritance)
+        
     }
     public void downloadPayslipPDF() {
-        // Implementation
+        
     }
     
     public boolean fileLeaveRequest() {
-        // Implementation
         return true;
     }
     
     public void viewDTR() {
-        // Implementation
+
     }
     
     public void userLogin() {
-        // Implementation
+
     }
     
     public void userLogout() {
-        // Implementation
+
     }
-    
-    
 }

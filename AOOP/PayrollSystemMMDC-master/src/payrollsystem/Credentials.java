@@ -12,7 +12,6 @@ abstract class Credentials extends AccountDetails {
         this.userPassword = password;
     }
     
-    // Add getter methods
     public String getUserID() {
         return userID;
     }

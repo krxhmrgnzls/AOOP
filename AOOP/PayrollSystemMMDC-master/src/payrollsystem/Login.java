@@ -70,7 +70,7 @@ public class Login {
                 
                 userDetails.add(details);
                 
-                System.out.println("✅ Login successful for: " + rs.getString("name") + " (" + rs.getString("role") + ")");
+                System.out.println("Login successful for: " + rs.getString("name") + " (" + rs.getString("role") + ")");
             }
             
         } catch (SQLException e) {

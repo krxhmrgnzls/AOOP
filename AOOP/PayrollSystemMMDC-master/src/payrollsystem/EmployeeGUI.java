@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package payrollsystem;
 
 import java.awt.BorderLayout;
@@ -11,10 +7,6 @@ import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Paul
- */
 public class EmployeeGUI extends javax.swing.JFrame {
     String id, name, role;
     Employee employee;
@@ -2123,11 +2115,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
     
         if(tempData.isEmpty()){
             JOptionPane.showMessageDialog(null, "No Payroll Found!");
-            // Reset labels...
+
         } else {
             // Display data in labels (existing code)
             lblID4.setText(tempData.get(0).get(0));
-            // ... rest of label updates
+  
 
             // Ask if user wants to generate PDF
             int choice = JOptionPane.showConfirmDialog(null, 

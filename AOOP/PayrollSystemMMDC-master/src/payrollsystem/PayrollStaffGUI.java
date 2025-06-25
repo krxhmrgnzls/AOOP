@@ -1,19 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package payrollsystem;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Paul
- */
 public class PayrollStaffGUI extends javax.swing.JFrame {
     String id, name, role;
     PayrollStaff payrollStaff;
@@ -33,7 +26,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     }
 
     private PayrollStaffGUI() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
    private void setDateTextField(javax.swing.JTextField textField, java.util.Date date) {
@@ -234,7 +227,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblTo = new javax.swing.JLabel();
         jDateFrom = new com.toedter.calendar.JDateChooser();
         jDateTo = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
+        btnGeneratePayrollReport = new javax.swing.JButton();
         tabbedEmployeeDTR = new javax.swing.JPanel();
         panelTypeRequest2 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
@@ -327,7 +320,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         tabbedPersonalDetails.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
 
-        panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblEmpID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmpID.setText("Employee ID:");
@@ -444,7 +437,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblBasicSalary.setText("Basic Salary :");
@@ -583,7 +576,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPhilNum.setText("PhilHealth No.");
@@ -618,7 +611,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, Short.MAX_VALUE)
+                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                             .addComponent(lblTINNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(23, 23, 23)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -673,7 +666,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPosition.setText("Position: ");
@@ -868,11 +861,11 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         txtReason.setColumns(20);
         txtReason.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtReason.setRows(5);
-        txtReason.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        txtReason.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane2.setViewportView(txtReason);
 
         dateTo.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         dateTo.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateToPropertyChange(evt);
@@ -880,7 +873,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         dateFrom.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
         dateFrom.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateFromPropertyChange(evt);
@@ -892,7 +885,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         txtDaysNumber.setEditable(false);
         txtDaysNumber.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 102))); // NOI18N
+        txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDaysNumberActionPerformed(evt);
@@ -943,7 +936,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         comboLeaveType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         comboLeaveType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Vacation Leave", "Sick Leave" }));
-        comboLeaveType.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Type of Leave", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        comboLeaveType.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Type of Leave", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         javax.swing.GroupLayout panelLeaveRequestDetailsLayout = new javax.swing.GroupLayout(panelLeaveRequestDetails);
         panelLeaveRequestDetails.setLayout(panelLeaveRequestDetailsLayout);
@@ -1066,7 +1059,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblMyName2.setText("John Paul Arquita");
 
         dateFromOvertime.setBackground(new java.awt.Color(255, 255, 255));
-        dateFromOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFromOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
         dateFromOvertime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateFromOvertimePropertyChange(evt);
@@ -1074,7 +1067,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         dateToOvertime.setBackground(new java.awt.Color(255, 255, 255));
-        dateToOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateToOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         dateToOvertime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateToOvertimePropertyChange(evt);
@@ -1087,7 +1080,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         txtReasonOvertime.setColumns(20);
         txtReasonOvertime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtReasonOvertime.setRows(5);
-        txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane3.setViewportView(txtReasonOvertime);
 
         btnSubmit1.setText("SUBMIT");
@@ -1110,7 +1103,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         txtDaysNumber1.setEditable(false);
         txtDaysNumber1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 102))); // NOI18N
+        txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDaysNumber1ActionPerformed(evt);
@@ -1207,7 +1200,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(panelTypeRequestLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTypeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 997, Short.MAX_VALUE)
+                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1266,10 +1259,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         tableDTR.setViewportView(jTableAllDTR);
 
         dateFrom2.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
 
         dateTo2.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblPeriod.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblPeriod.setText("Period :");
@@ -1562,10 +1555,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblID4.setText("N/A");
 
         dateFrom3.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
 
         dateTo3.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         btnReport.setText("Generate");
         btnReport.addActionListener(new java.awt.event.ActionListener() {
@@ -1881,10 +1874,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblTo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblTo.setText("To :");
 
-        jButton1.setText("Generate Report");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnGeneratePayrollReport.setText("Generate Report");
+        btnGeneratePayrollReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnGeneratePayrollReportActionPerformed(evt);
             }
         });
 
@@ -1906,7 +1899,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1)
+                                .addComponent(btnGeneratePayrollReport)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblAllRequest3)
                                 .addGap(0, 889, Short.MAX_VALUE))
@@ -1936,7 +1929,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                             .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(lblFrom)
-                                .addComponent(jButton1)))))
+                                .addComponent(btnGeneratePayrollReport)))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addComponent(lblPayrollPeriod)
                 .addGap(18, 18, 18)
@@ -2387,17 +2380,82 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         payrollStaff.setTableData();
     }//GEN-LAST:event_comboEmployeeNameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnGeneratePayrollReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneratePayrollReportActionPerformed
         // TODO add your handling code here:
-        btnReleased.setEnabled(false);
-        payrollStaff.setTableData(payrollStaff.getApprovedDataForPayrollTable(jDateFrom.getDate(), jDateTo.getDate()));
-        payrollStaff.setTableSize(14);
-        payrollStaff.displayDataTable(jTablePayroll);
-        String startFormatted = new SimpleDateFormat("MMM d").format(jDateFrom.getDate());
-        String endFormatted = new SimpleDateFormat("d").format(jDateTo.getDate());
-        String dateRange = startFormatted + "-" + endFormatted + ", 2025";
-        lblPayrollPeriod.setText("Payroll from "+dateRange);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        try {
+            String[] reportTypes = {
+                "Monthly Payroll Summary",
+                "Employee Payslips (All)",
+                "Employee Payslips (Individual)",
+                "Payroll Tax Report",
+                "Benefits Summary Report"
+            };
+
+            String selectedReport = (String) JOptionPane.showInputDialog(
+                this, "Select Report Type:", "Generate Payroll Report",
+                JOptionPane.QUESTION_MESSAGE, null, reportTypes, reportTypes[0]);
+
+            if (selectedReport != null) {
+                ReportGenerator reportGen = new ReportGenerator();
+                File report = null;
+
+                switch (selectedReport) {
+                    case "Monthly Payroll Summary":
+                        String month = JOptionPane.showInputDialog("Enter month (MM):");
+                        String year = JOptionPane.showInputDialog("Enter year (YYYY):");
+                        if (month != null && year != null) {
+                            report = reportGen.generateMonthlyReport(month, Integer.parseInt(year));
+                        }
+                        break;
+
+                    case "Employee Payslips (All)":
+                        report = reportGen.generateAllPayslips();
+                        break;
+
+                    case "Employee Payslips (Individual)":
+                        String empId = JOptionPane.showInputDialog("Enter Employee ID:");
+                        String period = JOptionPane.showInputDialog("Enter Payroll Period (MM/DD/YYYY to MM/DD/YYYY):");
+                        if (empId != null && period != null) {
+                            report = reportGen.generatePayslipPDF(Integer.parseInt(empId), period);
+                        }
+                        break;
+
+                    case "Payroll Tax Report":
+                        report = reportGen.generateTaxReport();
+                        break;
+
+                    case "Benefits Summary Report":
+                        report = reportGen.generateBenefitsReport();
+                        break;
+                }
+
+                if (report != null) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Report generated successfully!\nSaved to: " + report.getAbsolutePath(),
+                        "Report Generated", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Option to open the file
+                    int choice = JOptionPane.showConfirmDialog(this, 
+                        "Would you like to open the report now?", 
+                        "Open Report", JOptionPane.YES_NO_OPTION);
+
+                    if (choice == JOptionPane.YES_OPTION) {
+                        try {
+                            java.awt.Desktop.getDesktop().open(report);
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(this, 
+                                "Report saved but couldn't open automatically.\nPlease open: " + report.getAbsolutePath());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error generating report: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnGeneratePayrollReportActionPerformed
 
     private void btnPersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonalDetailsActionPerformed
         // TODO add your handling code here:
@@ -2620,23 +2678,23 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             payrollStaff.setTableSize(7);
             payrollStaff.displayDataTable(jTableAllRequest);
 
-        } else if(selectedItem.equals("Leave Application")) {
-            tabbedInsideRequest.setSelectedIndex(1);
+            } else if(selectedItem.equals("Leave Application")) {
+                tabbedInsideRequest.setSelectedIndex(1);
 
-            payrollStaff.leaveBalancesInformation();
-            lblID.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
-            lblMyName.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
-            lblVLBalance.setText(payrollStaff.getBalanceVL());
-            lblSLBalance.setText(payrollStaff.getBalanceSL());
+                payrollStaff.leaveBalancesInformation();
+                lblID.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
+                lblMyName.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
+                lblVLBalance.setText(payrollStaff.getBalanceVL());
+                lblSLBalance.setText(payrollStaff.getBalanceSL());
 
-        } else {
-            tabbedInsideRequest.setSelectedIndex(2);
-            lblID1.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
-            lblMyName2.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
-            // Display all requests in the table
-            payrollStaff.setTableData(payrollStaff.getDataAllRequests());
-            payrollStaff.setTableSize(7);
-            payrollStaff.displayDataTable(jTableAllRequest);
+            } else {
+                tabbedInsideRequest.setSelectedIndex(2);
+                lblID1.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
+                lblMyName2.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
+                // Display all requests in the table
+                payrollStaff.setTableData(payrollStaff.getDataAllRequests());
+                payrollStaff.setTableSize(7);
+                payrollStaff.displayDataTable(jTableAllRequest);
         }
     }//GEN-LAST:event_comboTypeRequestActionPerformed
 
@@ -2767,34 +2825,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel8MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PayrollStaffGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PayrollStaffGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PayrollStaffGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PayrollStaffGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PayrollStaffGUI().setVisible(true);
@@ -2805,6 +2836,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDTR;
+    private javax.swing.JButton btnGeneratePayrollReport;
     private javax.swing.JButton btnLeaveLedger;
     private javax.swing.JButton btnLeaveLedger1;
     private javax.swing.JButton btnLeaveLedger2;
@@ -2829,7 +2861,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dateTo2;
     private com.toedter.calendar.JDateChooser dateTo3;
     private com.toedter.calendar.JDateChooser dateToOvertime;
-    private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateFrom;
     private com.toedter.calendar.JDateChooser jDateTo;
     private javax.swing.JLabel jLabel1;

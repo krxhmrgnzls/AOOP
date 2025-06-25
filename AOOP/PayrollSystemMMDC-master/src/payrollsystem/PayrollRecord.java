@@ -17,10 +17,8 @@ public class PayrollRecord {
     private double netPay;
     private String status;
     
-    // Default constructor
     public PayrollRecord() {}
     
-    // Constructor with all fields
     public PayrollRecord(int employeeId, String payrollPeriod, String position, 
                         double grossIncome, double benefits, double overtime, double undertime,
                         double sss, double philhealth, double pagibig, double tax, 

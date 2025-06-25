@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package payrollsystem;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +8,6 @@ import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Paul
- */
 public class SupervisorGUI extends javax.swing.JFrame {
     String id, name, role;
     Supervisor supervisor;
@@ -33,7 +26,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
     }
 
     private SupervisorGUI() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
     private void setDateTextField(javax.swing.JTextField textField, java.util.Date date) {
@@ -44,6 +37,19 @@ public class SupervisorGUI extends javax.swing.JFrame {
         textField.setText("");
     }
 }
+    private java.util.Date showDatePicker(String message) {
+        String dateStr = JOptionPane.showInputDialog(message + " (MM/DD/YYYY)");
+        if (dateStr != null) {
+            try {
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM/dd/yyyy");
+                return sdf.parse(dateStr);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Invalid date format. Please use MM/DD/YYYY");
+                return null;
+            }
+        }
+        return null;
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -2348,7 +2354,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
        
           supervisor.getNewData().forEach(row -> {
               for (String item : row) {
-                  comboEmployeeName.addItem(item);  // Add each element of the 2D ArrayList
+                  comboEmployeeName.addItem(item); 
               }
         });
           supervisor.accountDetails.getNewData().clear();
@@ -2740,53 +2746,74 @@ public class SupervisorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
-        // TODO add your handling code here:
-        ArrayList<ArrayList<String>> tempData =supervisor.viewPersonalPayslip(dateFrom3.getDate(), dateTo3.getDate(), lblIDSidebar.getText());
-    
-        if(tempData.isEmpty()){
-            JOptionPane.showMessageDialog(null, "No Payroll Found!");
-            lblID4.setText("N/A");
-            lblMyName6.setText("N/A");
-            lblPayrollPeriod.setText("N/A");
-            lblPositon.setText("N/A");
-            lblGross.setText("0.00");
-            lblBenefits.setText("0.00");
-            lblOvertime.setText("0.00");
-            lblUndertime.setText("0.00");
-            lblSSS.setText("0.00");
-            lblPhilHealth.setText("0.00");
-            lblPagIbig.setText("0.00");
-            lblTax.setText("0.00");
-            lblNetPay.setText("0.00");
-        } else {
-            lblID4.setText(tempData.get(0).get(0));              // Employee ID
-            lblMyName6.setText(tempData.get(0).get(1));          // Employee Name
-            lblPayrollPeriod.setText(tempData.get(0).get(2));    // Payroll Period
-            lblPositon.setText(tempData.get(0).get(3));          // Position
-            lblGross.setText(tempData.get(0).get(4));            // Gross Income
-            lblBenefits.setText(tempData.get(0).get(5));         // Benefits
-            lblOvertime.setText(tempData.get(0).get(6));         // Overtime
-            lblUndertime.setText(tempData.get(0).get(7));        // Undertime
-            lblSSS.setText(tempData.get(0).get(8));              // SSS
-            lblPhilHealth.setText(tempData.get(0).get(9));       // PhilHealth
-            lblPagIbig.setText(tempData.get(0).get(10));         // Pag-IBIG
-            lblTax.setText(tempData.get(0).get(11));             // Tax
-            lblNetPay.setText(tempData.get(0).get(12));          // Net Pay
+        try {
+                String[] reportTypes = {
+                    "Daily Attendance Summary",
+                    "Weekly Attendance Report", 
+                    "Monthly Attendance Report",
+                    "Employee Attendance History",
+                    "Late/Absent Employees Report"
+                };
 
-            // Ask if user wants to generate PDF
-            int choice = JOptionPane.showConfirmDialog(null, 
-                "Would you like to save this payslip as a file?", 
-                "Save Payslip", 
-                JOptionPane.YES_NO_OPTION);
+                String selectedReport = (String) JOptionPane.showInputDialog(
+                    this, "Select Attendance Report:", "Generate Report",
+                    JOptionPane.QUESTION_MESSAGE, null, reportTypes, reportTypes[0]);
 
-            if (choice == JOptionPane.YES_OPTION) {
-                ReportGenerator generator = new ReportGenerator();
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                String period = sdf.format(dateFrom3.getDate()) + " to " + sdf.format(dateTo3.getDate());
-                generator.generatePayslipPDF(Integer.parseInt(lblIDSidebar.getText()), period);
+                if (selectedReport != null) {
+                    AttendanceReportGenerator attReportGen = new AttendanceReportGenerator();
+                    File report = null;
+
+                    switch (selectedReport) {
+                        case "Daily Attendance Summary":
+                            java.util.Date selectedDate = showDatePicker("Select Date:");
+                            if (selectedDate != null) {
+                                report = attReportGen.generateDailyReport(selectedDate);
+                            }
+                            break;
+
+                        case "Weekly Attendance Report":
+                            java.util.Date weekStart = showDatePicker("Select Week Start Date:");
+                            if (weekStart != null) {
+                                report = attReportGen.generateWeeklyReport(weekStart);
+                            }
+                            break;
+
+                        case "Monthly Attendance Report":
+                            String month = JOptionPane.showInputDialog("Enter month (MM):");
+                            String year = JOptionPane.showInputDialog("Enter year (YYYY):");
+                            if (month != null && year != null) {
+                                report = attReportGen.generateMonthlyAttendanceReport(month, Integer.parseInt(year));
+                            }
+                            break;
+
+                        case "Employee Attendance History":
+                            String empId = JOptionPane.showInputDialog("Enter Employee ID:");
+                            java.util.Date startDate = showDatePicker("Select Start Date:");
+                            java.util.Date endDate = showDatePicker("Select End Date:");
+                            if (empId != null && startDate != null && endDate != null) {
+                                report = attReportGen.generateEmployeeAttendanceHistory(
+                                    Integer.parseInt(empId), startDate, endDate);
+                            }
+                            break;
+
+                        case "Late/Absent Employees Report":
+                            java.util.Date reportDate = showDatePicker("Select Report Date:");
+                            if (reportDate != null) {
+                                report = attReportGen.generateLateAbsentReport(reportDate);
+                            }
+                            break;
+                    }
+
+                    if (report != null) {
+                        JOptionPane.showMessageDialog(this, 
+                            "Attendance report generated!\nSaved to: " + report.getAbsolutePath());
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, 
+                    "Error generating attendance report: " + e.getMessage());
+                e.printStackTrace();
             }
-        }
-        tempData.clear();
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked

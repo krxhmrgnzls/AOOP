@@ -1,9 +1,9 @@
 package payrollsystem;
 
 import java.sql.*;
-import java.util.List;
 import java.util.ArrayList;
-import java.sql.SQLException;
+import java.util.List;
+import java.time.LocalDate;
 
 public class LeaveDAO {
     private Connection connection;
@@ -16,111 +16,217 @@ public class LeaveDAO {
         }
     }
     
-    // Create leave request
-    public boolean createLeaveRequest(LeaveRequest leave) {
-        String sql = "INSERT INTO leave_requests (employee_id, date_filed, leave_type, " +
-                    "from_date, to_date, number_of_days, reason, status) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    // CREATE - Submit new leave request
+    public boolean submitLeaveRequest(int employeeId, String leaveType, LocalDate fromDate, 
+                                    LocalDate toDate, double numberOfDays, String reason) {
+        String sql = "INSERT INTO leave_requests (employee_id, date_filed, leave_type, from_date, " +
+                    "to_date, number_of_days, reason, status) VALUES (?, CURDATE(), ?, ?, ?, ?, ?, 'Pending')";
         
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, leave.getEmployeeId());
-            pstmt.setDate(2, new java.sql.Date(leave.getDateFiled().getTime()));
-            pstmt.setString(3, leave.getLeaveType());
-            pstmt.setDate(4, new java.sql.Date(leave.getFromDate().getTime()));
-            pstmt.setDate(5, new java.sql.Date(leave.getToDate().getTime()));
-            pstmt.setDouble(6, leave.getNumberOfDays());
-            pstmt.setString(7, leave.getReason());
-            pstmt.setString(8, "Pending");
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, employeeId);
+            pstmt.setString(2, leaveType);
+            pstmt.setDate(3, Date.valueOf(fromDate));
+            pstmt.setDate(4, Date.valueOf(toDate));
+            pstmt.setDouble(5, numberOfDays);
+            pstmt.setString(6, reason);
             
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
+            int result = pstmt.executeUpdate();
+            return result > 0;
+            
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
     
-    // Get leave balance
-    public LeaveBalance getLeaveBalance(int employeeId) {
-        String sql = "SELECT * FROM leave_balances WHERE employee_id = ?";
+    // READ - Get leave requests by employee
+    public List<ArrayList<String>> getLeaveRequestsByEmployee(int employeeId) {
+        List<ArrayList<String>> requests = new ArrayList<>();
+        String sql = "SELECT lr.*, e.first_name, e.last_name FROM leave_requests lr " +
+                    "JOIN employees e ON lr.employee_id = e.employee_id " +
+                    "WHERE lr.employee_id = ? ORDER BY lr.date_filed DESC";
         
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, employeeId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                ArrayList<String> row = new ArrayList<>();
+                row.add(String.valueOf(rs.getInt("leave_id")));
+                row.add(String.valueOf(rs.getInt("employee_id")));
+                row.add(rs.getString("first_name") + " " + rs.getString("last_name"));
+                row.add(rs.getDate("date_filed").toString());
+                row.add(rs.getString("leave_type"));
+                row.add(rs.getDate("from_date").toString());
+                row.add(rs.getDate("to_date").toString());
+                row.add(String.valueOf(rs.getDouble("number_of_days")));
+                row.add(rs.getString("reason"));
+                row.add(rs.getString("status"));
+                requests.add(row);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return requests;
+    }
+    
+    // READ - Get all pending leave requests (for supervisors)
+    public List<ArrayList<String>> getPendingLeaveRequests() {
+        List<ArrayList<String>> requests = new ArrayList<>();
+        String sql = "SELECT lr.*, e.first_name, e.last_name FROM leave_requests lr " +
+                    "JOIN employees e ON lr.employee_id = e.employee_id " +
+                    "WHERE lr.status = 'Pending' ORDER BY lr.date_filed ASC";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                ArrayList<String> row = new ArrayList<>();
+                row.add(String.valueOf(rs.getInt("leave_id")));
+                row.add(String.valueOf(rs.getInt("employee_id")));
+                row.add(rs.getString("first_name") + " " + rs.getString("last_name"));
+                row.add(rs.getDate("date_filed").toString());
+                row.add(rs.getString("leave_type"));
+                row.add(rs.getDate("from_date").toString());
+                row.add(rs.getDate("to_date").toString());
+                row.add(String.valueOf(rs.getDouble("number_of_days")));
+                row.add(rs.getString("reason"));
+                row.add(rs.getString("status"));
+                requests.add(row);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return requests;
+    }
+    
+    // UPDATE - Approve or deny leave request
+    public boolean updateLeaveRequestStatus(int leaveId, String status) {
+        String sql = "UPDATE leave_requests SET status = ? WHERE leave_id = ?";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, status);
+            pstmt.setInt(2, leaveId);
+            
+            int result = pstmt.executeUpdate();
+            
+            // If approved, update leave balance
+            if (result > 0 && status.equals("Approved")) {
+                updateLeaveBalance(leaveId);
+            }
+            
+            return result > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    // UPDATE - Deduct from leave balance when request is approved
+    private void updateLeaveBalance(int leaveId) {
+        String sql = "UPDATE leave_balances lb " +
+                    "JOIN leave_requests lr ON lb.employee_id = lr.employee_id " +
+                    "SET lb.vacation_leave = CASE " +
+                    "    WHEN lr.leave_type = 'Vacation Leave' THEN lb.vacation_leave - lr.number_of_days " +
+                    "    ELSE lb.vacation_leave END, " +
+                    "lb.sick_leave = CASE " +
+                    "    WHEN lr.leave_type = 'Sick Leave' THEN lb.sick_leave - lr.number_of_days " +
+                    "    ELSE lb.sick_leave END " +
+                    "WHERE lr.leave_id = ?";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, leaveId);
+            pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // READ - Get leave balance by employee
+    public ArrayList<String> getLeaveBalance(int employeeId) {
+        ArrayList<String> balance = new ArrayList<>();
+        String sql = "SELECT lb.*, e.first_name, e.last_name FROM leave_balances lb " +
+                    "JOIN employees e ON lb.employee_id = e.employee_id " +
+                    "WHERE lb.employee_id = ?";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, employeeId);
             ResultSet rs = pstmt.executeQuery();
             
             if (rs.next()) {
-                LeaveBalance balance = new LeaveBalance();
-                balance.setEmployeeId(rs.getInt("employee_id"));
-                balance.setVacationLeave(rs.getDouble("vacation_leave"));
-                balance.setSickLeave(rs.getDouble("sick_leave"));
-                return balance;
+                balance.add(String.valueOf(rs.getInt("employee_id")));
+                balance.add(rs.getString("first_name") + " " + rs.getString("last_name"));
+                balance.add(String.valueOf(rs.getDouble("vacation_leave")));
+                balance.add(String.valueOf(rs.getDouble("sick_leave")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    // Update leave balance
-    public boolean updateLeaveBalance(int employeeId, double vacationLeave, double sickLeave) {
-        String sql = "UPDATE leave_balances SET vacation_leave = ?, sick_leave = ? WHERE employee_id = ?";
-        
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setDouble(1, vacationLeave);
-            pstmt.setDouble(2, sickLeave);
-            pstmt.setInt(3, employeeId);
             
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
-    }
-    
-    // Update leave request status
-    public boolean updateLeaveStatus(int leaveId, String status) {
-        String sql = "UPDATE leave_requests SET status = ? WHERE leave_id = ?";
         
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, status);
-            pstmt.setInt(2, leaveId);
-            
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return balance;
     }
     
-    public List<LeaveRequest> getPendingLeaveRequests() {
-        List<LeaveRequest> leaveRequests = new ArrayList<>();
-        String sql = "SELECT lr.*, e.first_name, e.last_name FROM leave_requests lr " +
-                    "JOIN employees e ON lr.employee_id = e.employee_id " +
-                    "WHERE lr.status = 'Pending' ORDER BY lr.date_filed ASC";
-
+    // READ - Get all leave balances (for reports)
+    public List<ArrayList<String>> getAllLeaveBalances() {
+        List<ArrayList<String>> balances = new ArrayList<>();
+        String sql = "SELECT lb.*, e.first_name, e.last_name FROM leave_balances lb " +
+                    "JOIN employees e ON lb.employee_id = e.employee_id " +
+                    "ORDER BY e.last_name, e.first_name";
+        
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            
             while (rs.next()) {
-                LeaveRequest leave = new LeaveRequest();
-                leave.setLeaveId(rs.getInt("leave_id"));
-                leave.setEmployeeId(rs.getInt("employee_id"));
-                leave.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
-                leave.setDateFiled(rs.getDate("date_filed"));
-                leave.setLeaveType(rs.getString("leave_type"));
-                leave.setFromDate(rs.getDate("from_date"));
-                leave.setToDate(rs.getDate("to_date"));
-                leave.setNumberOfDays(rs.getDouble("number_of_days"));
-                leave.setReason(rs.getString("reason"));
-                leave.setStatus(rs.getString("status"));
-                leaveRequests.add(leave);
+                ArrayList<String> row = new ArrayList<>();
+                row.add(String.valueOf(rs.getInt("employee_id")));
+                row.add(rs.getString("first_name") + " " + rs.getString("last_name"));
+                row.add(String.valueOf(rs.getDouble("vacation_leave")));
+                row.add(String.valueOf(rs.getDouble("sick_leave")));
+                balances.add(row);
             }
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return leaveRequests;
+        
+        return balances;
+    }
+    
+    // UTILITY - Check if employee has sufficient leave balance
+    public boolean hasSufficientBalance(int employeeId, String leaveType, double requestedDays) {
+        String sql = "SELECT vacation_leave, sick_leave FROM leave_balances WHERE employee_id = ?";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, employeeId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                if (leaveType.equals("Vacation Leave")) {
+                    return rs.getDouble("vacation_leave") >= requestedDays;
+                } else if (leaveType.equals("Sick Leave")) {
+                    return rs.getDouble("sick_leave") >= requestedDays;
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
     }
 }

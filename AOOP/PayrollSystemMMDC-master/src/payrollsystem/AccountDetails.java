@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class AccountDetails {
-    // Private fields
+
     private int databaseID;
-    private int employeeID;  // Make sure this exists
+    private int employeeID;  
     private String firstName;
     private String lastName;
     private Date birthday;
@@ -23,7 +23,7 @@ public class AccountDetails {
     private double riceSubsidy;
     private double phoneAllowance;
     private double clothingAllowance;
-    private double semiMonthlyRate;  // Fixed name
+    private double semiMonthlyRate;  
     private double hourlyRate;
     private String filePath;
     private ArrayList<ArrayList<String>> dataList = new ArrayList<>();
@@ -31,11 +31,10 @@ public class AccountDetails {
     // Default constructor
     public AccountDetails() {}
     
-    // Getters and Setters - FIXED NAMES
+    // Getters and Setters - Fixed Names
     public int getDatabaseID() { return databaseID; }
     public void setDatabaseID(int databaseID) { this.databaseID = databaseID; }
     
-    // FIX: Make sure these methods exist with EXACT names
     public int getEmployeeID() { return employeeID; }
     public void setEmployeeID(int employeeID) { this.employeeID = employeeID; }
     
@@ -87,30 +86,24 @@ public class AccountDetails {
     public double getClothingAllowance() { return clothingAllowance; }
     public void setClothingAllowance(double clothingAllowance) { this.clothingAllowance = clothingAllowance; }
     
-    // FIX: Use consistent naming
     public double getSemiMonthlyRate() { return semiMonthlyRate; }
     public void setSemiMonthlyRate(double semiMonthlyRate) { this.semiMonthlyRate = semiMonthlyRate; }
     
     public double getHourlyRate() { return hourlyRate; }
     public void setHourlyRate(double hourlyRate) { this.hourlyRate = hourlyRate; }
     
-    // Additional methods that might be called
     public void retrieveFromDB() {
-        // Implementation for retrieving from database
     }
     
-    public boolean saveToDB() {
-        // Implementation for saving to database
+    public boolean saveToDB() {    
         return true;
     }
     
     public boolean updateInDB() {
-        // Implementation for updating in database
         return true;
     }
     
     public boolean validateData() {
-        // Implementation for data validation
         return true;
     }
     public String getEmployeeCompleteName() {
@@ -125,7 +118,6 @@ public class AccountDetails {
         return this.tinNumber;
     }
 
-    // 3. Method to get birthday as string for text fields
     public String getBirthdayAsString() {
         if (birthday != null) {
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM/dd/yyyy");
@@ -153,10 +145,8 @@ public class AccountDetails {
     }
     
     public void retrievedDetails() {
-        // Basic implementation to read CSV file
         try {
             dataList.clear();
-            // You can implement actual CSV reading here
             System.out.println("Reading from: " + filePath);
         } catch (Exception e) {
             e.printStackTrace();

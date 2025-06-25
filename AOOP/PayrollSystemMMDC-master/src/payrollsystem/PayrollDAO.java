@@ -175,7 +175,7 @@ public class PayrollDAO {
                 PayrollRecord payroll = calculatePayrollForEmployee(emp, payrollPeriod);
                 if (payroll != null) {
                     savePayroll(payroll);
-                    System.out.println("✅ Processed payroll for: " + emp.getFirstName() + " " + emp.getLastName());
+                    System.out.println("Processed payroll for: " + emp.getFirstName() + " " + emp.getLastName());
                 }
             }
             return true;
@@ -185,7 +185,6 @@ public class PayrollDAO {
         }
     }
     
-    // Helper method to calculate payroll for individual employee
     private PayrollRecord calculatePayrollForEmployee(AccountDetails employee, String payrollPeriod) {
         try {
             PayrollRecord payroll = new PayrollRecord();
@@ -230,7 +229,6 @@ public class PayrollDAO {
         }
     }
     
-    // Helper methods for calculations
     private double getOvertimeHours(int employeeId, String period) {
         // Query overtime_requests table for approved overtime
         String sql = "SELECT COALESCE(SUM(number_of_days * 8), 0) FROM overtime_requests " +

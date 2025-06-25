@@ -14,10 +14,10 @@ public class AttendanceRecord {
     private boolean submittedToPayroll;
     private String remarks;
     
-    // Default constructor
+
     public AttendanceRecord() {}
     
-    // Constructor with essential fields
+
     public AttendanceRecord(int employeeId, Date logDate, Time loginTime, Time logoutTime) {
         this.employeeId = employeeId;
         this.logDate = logDate;
@@ -92,7 +92,6 @@ public class AttendanceRecord {
     }
 }
 
-// Additional class for attendance summary
 class AttendanceSummary {
     private int totalDays;
     private int onTimeDays;

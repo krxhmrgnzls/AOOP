@@ -1,10 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package payrollsystem;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,7 +13,107 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ *private void btnGenerateEmployeeReportActionPerformed(java.awt.event.ActionEvent evt) {
+    try {
+        String[] reportTypes = {
+            "Employee Directory",
+            "Employee Benefits Summary", 
+            "Leave Balance Report",
+            "Salary Analysis Report",
+            "Department Statistics"
+        };
+        
+        String selectedReport = (String) JOptionPane.showInputDialog(
+            this, "Select Employee Report:", "Generate Report",
+            JOptionPane.QUESTION_MESSAGE, null, reportTypes, reportTypes[0]);
+        
+        if (selectedReport != null) {
+            EmployeeReportGenerator empReportGen = new EmployeeReportGenerator();
+            File report = null;
+            
+            switch (selectedReport) {
+                case "Employee Directory":
+                    report = empReportGen.generateEmployeeDirectory();
+                    break;
+                    
+                case "Employee Benefits Summary":
+                    report = empReportGen.generateBenefitsSummary();
+                    break;
+                    
+                case "Leave Balance Report":
+                    report = empReportGen.generateLeaveBalanceReport();
+                    break;
+                    
+                case "Salary Analysis Report":
+                    report = empReportGen.generateSalaryAnalysis();
+                    break;
+                    
+                case "Department Statistics":
+                    report = empReportGen.generateDepartmentStats();
+                    break;
+            }
+            
+            if (report != null) {
+                JOptionPane.showMessageDialog(this, 
+                    "✅ Employee report generated!\nSaved to: " + report.getAbsolutePath());
+            }
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "❌ Error generating employee report: " + e.getMessage());
+        e.printStackTrace();
+    }
+}private void btnGenerateEmployeeReportActionPerformed(java.awt.event.ActionEvent evt) {
+    try {
+        String[] reportTypes = {
+            "Employee Directory",
+            "Employee Benefits Summary", 
+            "Leave Balance Report",
+            "Salary Analysis Report",
+            "Department Statistics"
+        };
+        
+        String selectedReport = (String) JOptionPane.showInputDialog(
+            this, "Select Employee Report:", "Generate Report",
+            JOptionPane.QUESTION_MESSAGE, null, reportTypes, reportTypes[0]);
+        
+        if (selectedReport != null) {
+            EmployeeReportGenerator empReportGen = new EmployeeReportGenerator();
+            File report = null;
+            
+            switch (selectedReport) {
+                case "Employee Directory":
+                    report = empReportGen.generateEmployeeDirectory();
+                    break;
+                    
+                case "Employee Benefits Summary":
+                    report = empReportGen.generateBenefitsSummary();
+                    break;
+                    
+                case "Leave Balance Report":
+                    report = empReportGen.generateLeaveBalanceReport();
+                    break;
+                    
+                case "Salary Analysis Report":
+                    report = empReportGen.generateSalaryAnalysis();
+                    break;
+                    
+                case "Department Statistics":
+                    report = empReportGen.generateDepartmentStats();
+                    break;
+            }
+            
+            if (report != null) {
+                JOptionPane.showMessageDialog(this, 
+                    "✅ Employee report generated!\nSaved to: " + report.getAbsolutePath());
+            }
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, 
+            "❌ Error generating employee report: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
  * @author Paul
  */
 public class HumanResourceGUI extends javax.swing.JFrame {
@@ -310,6 +407,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jSeparator18 = new javax.swing.JSeparator();
         jBDay2 = new com.toedter.calendar.JDateChooser();
         txtStatus1 = new javax.swing.JComboBox<>();
+        btnGenerateEmployeeReport = new javax.swing.JButton();
         tabbedAllCredentials = new javax.swing.JPanel();
         panelTypeRequest2 = new javax.swing.JPanel();
         tabbedInsideRequest2 = new javax.swing.JTabbedPane();
@@ -409,7 +507,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         tabbedPersonalDetails.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
 
-        panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblEmpID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmpID.setText("Employee ID:");
@@ -526,7 +624,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblBasicSalary.setText("Basic Salary :");
@@ -665,7 +763,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPhilNum.setText("PhilHealth No.");
@@ -700,7 +798,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, Short.MAX_VALUE)
+                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
                             .addComponent(lblTINNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(23, 23, 23)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -755,7 +853,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblPosition.setText("Position: ");
@@ -950,11 +1048,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         txtReason.setColumns(20);
         txtReason.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtReason.setRows(5);
-        txtReason.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        txtReason.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane2.setViewportView(txtReason);
 
         dateTo.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         dateTo.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateToPropertyChange(evt);
@@ -962,7 +1060,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         });
 
         dateFrom.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
         dateFrom.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateFromPropertyChange(evt);
@@ -974,7 +1072,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         txtDaysNumber.setEditable(false);
         txtDaysNumber.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 102))); // NOI18N
+        txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDaysNumberActionPerformed(evt);
@@ -1025,7 +1123,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         comboLeaveType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         comboLeaveType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Vacation Leave", "Sick Leave" }));
-        comboLeaveType.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Type of Leave", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        comboLeaveType.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Type of Leave", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         javax.swing.GroupLayout panelLeaveRequestDetailsLayout = new javax.swing.GroupLayout(panelLeaveRequestDetails);
         panelLeaveRequestDetails.setLayout(panelLeaveRequestDetailsLayout);
@@ -1148,7 +1246,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblMyName2.setText("John Paul Arquita");
 
         dateFromOvertime.setBackground(new java.awt.Color(255, 255, 255));
-        dateFromOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFromOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
         dateFromOvertime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateFromOvertimePropertyChange(evt);
@@ -1156,7 +1254,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         });
 
         dateToOvertime.setBackground(new java.awt.Color(255, 255, 255));
-        dateToOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateToOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         dateToOvertime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateToOvertimePropertyChange(evt);
@@ -1169,7 +1267,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         txtReasonOvertime.setColumns(20);
         txtReasonOvertime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtReasonOvertime.setRows(5);
-        txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane3.setViewportView(txtReasonOvertime);
 
         btnSubmit1.setText("SUBMIT");
@@ -1192,7 +1290,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         txtDaysNumber1.setEditable(false);
         txtDaysNumber1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 102))); // NOI18N
+        txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDaysNumber1ActionPerformed(evt);
@@ -1348,10 +1446,10 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         tableDTR.setViewportView(jTableAllDTR);
 
         dateFrom2.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
 
         dateTo2.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblPeriod.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblPeriod.setText("Period :");
@@ -1644,10 +1742,10 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblID4.setText("N/A");
 
         dateFrom3.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
 
         dateTo3.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         btnReport.setText("Generate");
         btnReport.addActionListener(new java.awt.event.ActionListener() {
@@ -1945,7 +2043,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         jSeparator16.setBackground(new java.awt.Color(255, 204, 153));
 
-        btnAdd.setText("ADD NEW EMPLOYEE");
+        btnAdd.setText("Add New Employee");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -2184,6 +2282,13 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         txtStatus1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular", "Probationary" }));
 
+        btnGenerateEmployeeReport.setText("Generate Employee Reports");
+        btnGenerateEmployeeReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerateEmployeeReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelAllRequest1Layout = new javax.swing.GroupLayout(panelAllRequest1);
         panelAllRequest1.setLayout(panelAllRequest1Layout);
         panelAllRequest1Layout.setHorizontalGroup(
@@ -2194,6 +2299,8 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                     .addGroup(panelAllRequest1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGenerateEmployeeReport, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelAllRequest1Layout.createSequentialGroup()
                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2225,7 +2332,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                                 .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtBasicSalary1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                                     .addComponent(txtBiMonthlyRate1))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
                                 .addComponent(lblClothingAllowanes1)
@@ -2393,7 +2500,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jSeparator16, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGenerateEmployeeReport, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
             .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
@@ -2846,7 +2955,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-       
         ArrayList<String> tempData = new ArrayList<>();
         if(jBDay2.getDate() == null){
             JOptionPane.showMessageDialog(null, "Please Provide BirthDate!");
@@ -2998,7 +3106,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
     private void btnLeaveLedgerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedgerActionPerformed
         // TODO add your handling code here:
-        // Switch to the Leave Ledger tab
+
         mainTabbed.setSelectedIndex(4);
 
         // Set employee details in the Leave Ledger panel
@@ -3231,7 +3339,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     
         if(tempData.isEmpty()){
             JOptionPane.showMessageDialog(null, "No Payroll Found!");
-            // Reset labels
             lblID4.setText("N/A");
             lblMyName6.setText("N/A");
             lblPayrollPeriod.setText("N/A");
@@ -3437,6 +3544,58 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_jBDay2PropertyChange
 
+    private void btnGenerateEmployeeReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateEmployeeReportActionPerformed
+        try {
+                String[] reportTypes = {
+                    "Employee Directory",
+                    "Employee Benefits Summary", 
+                    "Leave Balance Report",
+                    "Salary Analysis Report",
+                    "Department Statistics"
+                };
+
+                String selectedReport = (String) JOptionPane.showInputDialog(
+                    this, "Select Employee Report:", "Generate Report",
+                    JOptionPane.QUESTION_MESSAGE, null, reportTypes, reportTypes[0]);
+
+                if (selectedReport != null) {
+                    EmployeeReportGenerator empReportGen = new EmployeeReportGenerator();
+                    File report = null;
+
+                    switch (selectedReport) {
+                        case "Employee Directory":
+                            report = empReportGen.generateEmployeeDirectory();
+                            break;
+
+                        case "Employee Benefits Summary":
+                            report = empReportGen.generateBenefitsSummary();
+                            break;
+
+                        case "Leave Balance Report":
+                            report = empReportGen.generateLeaveBalanceReport();
+                            break;
+
+                        case "Salary Analysis Report":
+                            report = empReportGen.generateSalaryAnalysis();
+                            break;
+
+                        case "Department Statistics":
+                            report = empReportGen.generateDepartmentStats();
+                            break;
+                    }
+
+                    if (report != null) {
+                        JOptionPane.showMessageDialog(this, 
+                            "✅ Employee report generated!\nSaved to: " + report.getAbsolutePath());
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, 
+                    "❌ Error generating employee report: " + e.getMessage());
+                e.printStackTrace();
+            }
+    }//GEN-LAST:event_btnGenerateEmployeeReportActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -3478,6 +3637,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnAllEmployees;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDTR;
+    private javax.swing.JButton btnGenerateEmployeeReport;
     private javax.swing.JButton btnLeaveLedger;
     private javax.swing.JButton btnLeaveLedger1;
     private javax.swing.JButton btnLogin;

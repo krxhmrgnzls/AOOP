@@ -32,7 +32,6 @@ public class ReportGenerator {
             ResultSet rs = pstmt.executeQuery();
             
             if (rs.next()) {
-                // Create directory if it doesn't exist
                 File reportDir = new File("reports/payslips");
                 reportDir.mkdirs();
                 
@@ -267,5 +266,220 @@ public class ReportGenerator {
     
     private void generatePagIbigReport(PrintWriter writer, String period) throws SQLException {
         // Similar implementation for Pag-IBIG
+    }
+
+    public File generateAllPayslips() {
+        try {
+            PayrollDAO payrollDAO = new PayrollDAO();
+            java.time.LocalDate now = java.time.LocalDate.now();
+            String month = String.format("%02d", now.getMonthValue());
+            int year = now.getYear();
+
+            List<PayrollRecord> payrolls = payrollDAO.getPayrollByMonth(month, year);
+
+            File reportDir = new File("reports/payslips/batch");
+            reportDir.mkdirs();
+
+            String batchFilename = "All_Payslips_" + month + "_" + year + ".txt";
+            File batchFile = new File(reportDir, batchFilename);
+            PrintWriter batchWriter = new PrintWriter(batchFile);
+
+            batchWriter.println("===========================================");
+            batchWriter.println("    MOTORPH - ALL EMPLOYEE PAYSLIPS       ");
+            batchWriter.println("    Period: " + month + "/" + year);
+            batchWriter.println("===========================================");
+            batchWriter.println("");
+
+            for (PayrollRecord payroll : payrolls) {
+                // Generate individual payslip content
+                generatePayslipContent(batchWriter, payroll);
+                batchWriter.println("\n" + "=".repeat(50) + "\n");
+            }
+
+            batchWriter.println("END OF BATCH PAYSLIPS");
+            batchWriter.println("Total Employees: " + payrolls.size());
+            batchWriter.println("Generated on: " + java.time.LocalDate.now());
+            batchWriter.close();
+
+            System.out.println("Generated payslips for " + payrolls.size() + " employees");
+            return batchFile;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+// Generate Tax Report
+    public File generateTaxReport() {
+        try {
+            File reportDir = new File("reports/tax");
+            reportDir.mkdirs();
+
+            java.time.LocalDate now = java.time.LocalDate.now();
+            String filename = "Tax_Report_" + now.getMonthValue() + "_" + now.getYear() + ".csv";
+            File file = new File(reportDir, filename);
+            PrintWriter writer = new PrintWriter(file);
+
+            // Header
+            writer.println("MOTORPH TAX WITHHOLDING REPORT");
+            writer.println("Period: " + now.getMonthValue() + "/" + now.getYear());
+            writer.println("");
+            writer.println("Employee ID,Employee Name,TIN,Gross Income,Tax Withheld,Net Pay");
+
+            String sql = "SELECT p.employee_id, e.first_name, e.last_name, e.tin_number, " +
+                        "p.gross_income, p.tax, p.net_pay " +
+                        "FROM payroll p JOIN employees e ON p.employee_id = e.employee_id " +
+                        "ORDER BY p.employee_id";
+
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            double totalGross = 0, totalTax = 0, totalNet = 0;
+            int employeeCount = 0;
+
+            while (rs.next()) {
+                writer.println(String.format("%d,\"%s %s\",%s,%.2f,%.2f,%.2f",
+                    rs.getInt("employee_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("tin_number"),
+                    rs.getDouble("gross_income"),
+                    rs.getDouble("tax"),
+                    rs.getDouble("net_pay")
+                ));
+
+                totalGross += rs.getDouble("gross_income");
+                totalTax += rs.getDouble("tax");
+                totalNet += rs.getDouble("net_pay");
+                employeeCount++;
+            }
+
+            writer.println("");
+            writer.println("SUMMARY:");
+            writer.println(String.format("Total Employees:,%d", employeeCount));
+            writer.println(String.format("Total Gross Income:,%.2f", totalGross));
+            writer.println(String.format("Total Tax Withheld:,%.2f", totalTax));
+            writer.println(String.format("Total Net Pay:,%.2f", totalNet));
+
+            writer.close();
+            System.out.println("Tax report generated for " + employeeCount + " employees");
+            return file;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public File generateBenefitsReport() {
+        try {
+            File reportDir = new File("reports/benefits");
+            reportDir.mkdirs();
+
+            java.time.LocalDate now = java.time.LocalDate.now();
+            String filename = "Benefits_Report_" + now.getMonthValue() + "_" + now.getYear() + ".csv";
+            File file = new File(reportDir, filename);
+            PrintWriter writer = new PrintWriter(file);
+
+            // Header
+            writer.println("MOTORPH EMPLOYEE BENEFITS REPORT");
+            writer.println("Period: " + now.getMonthValue() + "/" + now.getYear());
+            writer.println("");
+            writer.println("Employee ID,Employee Name,Basic Salary,Rice Subsidy,Phone Allowance,Clothing Allowance,Total Benefits,SSS,PhilHealth,Pag-IBIG,Total Contributions");
+
+            String sql = "SELECT p.employee_id, e.first_name, e.last_name, e.basic_salary, " +
+                        "e.rice_subsidy, e.phone_allowance, e.clothing_allowance, " +
+                        "p.benefits, p.sss, p.philhealth, p.pagibig " +
+                        "FROM payroll p JOIN employees e ON p.employee_id = e.employee_id " +
+                        "ORDER BY e.last_name, e.first_name";
+
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            double totalBenefits = 0, totalContributions = 0;
+            int employeeCount = 0;
+
+            while (rs.next()) {
+                double benefits = rs.getDouble("rice_subsidy") + rs.getDouble("phone_allowance") + rs.getDouble("clothing_allowance");
+                double contributions = rs.getDouble("sss") + rs.getDouble("philhealth") + rs.getDouble("pagibig");
+
+                writer.println(String.format("%d,\"%s %s\",%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",
+                    rs.getInt("employee_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getDouble("basic_salary"),
+                    rs.getDouble("rice_subsidy"),
+                    rs.getDouble("phone_allowance"),
+                    rs.getDouble("clothing_allowance"),
+                    benefits,
+                    rs.getDouble("sss"),
+                    rs.getDouble("philhealth"),
+                    rs.getDouble("pagibig"),
+                    contributions
+                ));
+
+                totalBenefits += benefits;
+                totalContributions += contributions;
+                employeeCount++;
+            }
+
+            writer.println("");
+            writer.println("SUMMARY:");
+            writer.println(String.format("Total Employees:,%d", employeeCount));
+            writer.println(String.format("Total Benefits Paid:,%.2f", totalBenefits));
+            writer.println(String.format("Total Contributions:,%.2f", totalContributions));
+            writer.println(String.format("Average Benefits per Employee:,%.2f", totalBenefits / employeeCount));
+
+            writer.close();
+            System.out.println("Benefits report generated for " + employeeCount + " employees");
+            return file;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // Helper method to generate payslip content
+    private void generatePayslipContent(PrintWriter writer, PayrollRecord payroll) throws SQLException {
+        String empSql = "SELECT * FROM employees WHERE employee_id = ?";
+        PreparedStatement empStmt = connection.prepareStatement(empSql);
+        empStmt.setInt(1, payroll.getEmployeeId());
+        ResultSet empRs = empStmt.executeQuery();
+
+        if (empRs.next()) {
+            writer.println("=========================================");
+            writer.println("           MOTORPH PAYSLIP               ");
+            writer.println("=========================================");
+            writer.println("Employee ID    : " + payroll.getEmployeeId());
+            writer.println("Name          : " + empRs.getString("first_name") + " " + empRs.getString("last_name"));
+            writer.println("Position      : " + payroll.getPosition());
+            writer.println("Payroll Period: " + payroll.getPayrollPeriod());
+            writer.println("-----------------------------------------");
+            writer.println("EARNINGS:");
+            writer.println("  Basic Salary    : ₱ " + String.format("%,10.2f", empRs.getDouble("basic_salary")));
+            writer.println("  Rice Subsidy    : ₱ " + String.format("%,10.2f", empRs.getDouble("rice_subsidy")));
+            writer.println("  Phone Allowance : ₱ " + String.format("%,10.2f", empRs.getDouble("phone_allowance")));
+            writer.println("  Clothing Allow. : ₱ " + String.format("%,10.2f", empRs.getDouble("clothing_allowance")));
+            writer.println("  Overtime        : ₱ " + String.format("%,10.2f", payroll.getOvertime()));
+            writer.println("                      ---------------");
+            writer.println("  Gross Income    : ₱ " + String.format("%,10.2f", payroll.getGrossIncome()));
+            writer.println("-----------------------------------------");
+            writer.println("DEDUCTIONS:");
+            writer.println("  SSS             : ₱ " + String.format("%,10.2f", payroll.getSss()));
+            writer.println("  PhilHealth      : ₱ " + String.format("%,10.2f", payroll.getPhilhealth()));
+            writer.println("  Pag-IBIG        : ₱ " + String.format("%,10.2f", payroll.getPagibig()));
+            writer.println("  Withholding Tax : ₱ " + String.format("%,10.2f", payroll.getTax()));
+            writer.println("  Undertime       : ₱ " + String.format("%,10.2f", payroll.getUndertime()));
+
+            double totalDeductions = payroll.getSss() + payroll.getPhilhealth() + 
+                                   payroll.getPagibig() + payroll.getTax() + payroll.getUndertime();
+
+            writer.println("                      ---------------");
+            writer.println("  Total Deductions: ₱ " + String.format("%,10.2f", totalDeductions));
+            writer.println("=========================================");
+            writer.println("NET PAY           : ₱ " + String.format("%,10.2f", payroll.getNetPay()));
+            writer.println("=========================================");
+        }
     }
 }

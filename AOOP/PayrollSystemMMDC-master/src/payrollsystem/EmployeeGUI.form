@@ -509,7 +509,7 @@
                                               </Group>
                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="txtPhoneAllowance" alignment="1" pref="89" max="32767" attributes="0"/>
+                                                  <Component id="txtPhoneAllowance" alignment="1" pref="94" max="32767" attributes="0"/>
                                                   <Component id="txtClothingAllowance" alignment="1" max="32767" attributes="0"/>
                                                   <Component id="txtRiceSubsidy" alignment="1" max="32767" attributes="0"/>
                                               </Group>

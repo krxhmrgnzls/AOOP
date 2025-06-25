@@ -8,7 +8,7 @@ public class DatabaseConnection {
     private static DatabaseConnection instance;
     private Connection connection;
     
-    // CHANGE THESE TO MATCH YOUR DATABASE!
+
     private static final String URL = "jdbc:mysql://localhost:3307/aoop"; 
     private static final String USERNAME = "root"; 
     private static final String PASSWORD = "0914kmg@gnzls";
@@ -17,7 +17,7 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             this.connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("Database connection established successfully!");
+            System.out.println("Database connection established successfully to aoop_db!");
         } catch (ClassNotFoundException ex) {
             System.err.println("MySQL Driver not found: " + ex.getMessage());
             throw new SQLException("Failed to load MySQL driver", ex);
@@ -48,6 +48,18 @@ public class DatabaseConnection {
             }
         } catch (SQLException e) {
             System.err.println("Error closing connection: " + e.getMessage());
+        }
+    }
+    
+    // Test connection method
+    public static boolean testConnection() {
+        try {
+            DatabaseConnection db = DatabaseConnection.getInstance();
+            System.out.println("Database connection test successful!");
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Database connection test failed: " + e.getMessage());
+            return false;
         }
     }
 }

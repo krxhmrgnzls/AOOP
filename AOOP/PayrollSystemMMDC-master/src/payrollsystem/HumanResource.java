@@ -161,19 +161,31 @@ public class HumanResource extends Employee {
         // Set table size - not critical for functionality
     }
 
-    public void displayDataTable(javax.swing.JTable table) {
-        // Display data in JTable
-        if (newData != null && !newData.isEmpty()) {
-            String[] columnNames = {"ID", "Name", "Position", "Department", "Status"};
-            javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(columnNames, 0);
-
-            for (ArrayList<String> row : newData) {
-                Object[] rowData = row.toArray();
-                model.addRow(rowData);
-            }
-            table.setModel(model);
+    public void displayRequestsTable(javax.swing.JTable table) {
+    String[] columnNames = {"DATE FILED", "TYPE OF REQUEST", "PERIOD FROM", "PERIOD TO", "NUMBER OF DAYS", "REASON", "STATUS"};
+    
+    javax.swing.table.DefaultTableModel model = new javax.swing.table.DefaultTableModel(columnNames, 0) {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
         }
+    };
+
+    if (newData != null && !newData.isEmpty()) {
+        for (ArrayList<String> row : newData) {
+            Object[] rowData = new Object[7];
+            for (int i = 0; i < 7; i++) {
+                rowData[i] = (i < row.size()) ? row.get(i) : "";
+            }
+            model.addRow(rowData);
+        }
+        System.out.println("Requests table updated with " + newData.size() + " rows");
+    } else {
+        System.out.println("No requests data to display");
     }
+    
+    table.setModel(model);
+}
 
     public ArrayList<ArrayList<String>> getAllCredentials() {
         ArrayList<ArrayList<String>> credentials = new ArrayList<>();

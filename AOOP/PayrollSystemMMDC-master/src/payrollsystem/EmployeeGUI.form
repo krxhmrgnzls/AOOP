@@ -834,6 +834,9 @@
                                   <Font name="Segoe UI" size="14" style="0"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtIDActionPerformed"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JTextField" name="txtFName">
                               <Properties>
@@ -1363,8 +1366,8 @@
                                           <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                                           <Component id="lblAllRequest" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Component id="jScrollPane4" min="-2" pref="380" max="-2" attributes="0"/>
-                                          <EmptySpace pref="43" max="32767" attributes="0"/>
+                                          <Component id="jScrollPane4" min="-2" pref="374" max="-2" attributes="0"/>
+                                          <EmptySpace pref="49" max="32767" attributes="0"/>
                                           <Component id="jSeparator6" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
                                       </Group>

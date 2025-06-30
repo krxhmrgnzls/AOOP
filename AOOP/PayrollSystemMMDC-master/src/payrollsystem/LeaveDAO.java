@@ -1,6 +1,7 @@
 package payrollsystem;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
@@ -42,37 +43,58 @@ public class LeaveDAO {
     
     // READ - Get leave requests by employee
     public List<ArrayList<String>> getLeaveRequestsByEmployee(int employeeId) {
-        List<ArrayList<String>> requests = new ArrayList<>();
-        String sql = "SELECT lr.*, e.first_name, e.last_name FROM leave_requests lr " +
-                    "JOIN employees e ON lr.employee_id = e.employee_id " +
-                    "WHERE lr.employee_id = ? ORDER BY lr.date_filed DESC";
+    List<ArrayList<String>> leaveRequests = new ArrayList<>();
+    
+    // Check connection first
+    if (connection == null) {
+        System.err.println("ERROR: Database connection is null in LeaveDAO!");
+        return leaveRequests;
+    }
+    
+    String query = "SELECT l.*, e.first_name, e.last_name " +
+                   "FROM leaves l " +
+                   "JOIN employees e ON l.employee_id = e.employee_id " +
+                   "WHERE l.employee_id = ? " +
+                   "ORDER BY l.date_filed DESC";
+    
+    System.out.println("DEBUG LeaveDAO: Executing query for employee " + employeeId);
+    
+    try (PreparedStatement stmt = connection.prepareStatement(query)) {
+        stmt.setInt(1, employeeId);
+        ResultSet rs = stmt.executeQuery();
         
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, employeeId);
-            ResultSet rs = pstmt.executeQuery();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy");
+        
+        while (rs.next()) {
+            ArrayList<String> row = new ArrayList<>();
             
-            while (rs.next()) {
-                ArrayList<String> row = new ArrayList<>();
-                row.add(String.valueOf(rs.getInt("leave_id")));
-                row.add(String.valueOf(rs.getInt("employee_id")));
-                row.add(rs.getString("first_name") + " " + rs.getString("last_name"));
-                row.add(rs.getDate("date_filed").toString());
-                row.add(rs.getString("leave_type"));
-                row.add(rs.getDate("from_date").toString());
-                row.add(rs.getDate("to_date").toString());
-                row.add(String.valueOf(rs.getDouble("number_of_days")));
-                row.add(rs.getString("reason"));
-                row.add(rs.getString("status"));
-                requests.add(row);
-            }
+            Date dateFiled = rs.getDate("date_filed");
+            Date fromDate = rs.getDate("from_date");
+            Date toDate = rs.getDate("to_date");
             
-        } catch (SQLException e) {
-            e.printStackTrace();
+            row.add(displayFormat.format(dateFiled)); // DATE FILED
+            row.add(rs.getString("leave_type")); // TYPE OF REQUEST  
+            row.add(displayFormat.format(fromDate)); // PERIOD FROM
+            row.add(displayFormat.format(toDate)); // PERIOD TO
+            row.add(String.valueOf(rs.getDouble("number_of_days"))); // NUMBER OF DAYS
+            row.add(rs.getString("reason")); // REASON
+            row.add(rs.getString("status")); // STATUS
+            
+            leaveRequests.add(row);
+            System.out.println("DEBUG: Added leave request: " + row);
         }
         
-        return requests;
+        rs.close();
+        
+    } catch (SQLException e) {
+        System.err.println("ERROR in LeaveDAO.getLeaveRequestsByEmployee: " + e.getMessage());
+        e.printStackTrace();
     }
+    
+    System.out.println("DEBUG LeaveDAO: Returning " + leaveRequests.size() + " leave requests");
+    return leaveRequests;
+}
     
     // READ - Get all pending leave requests (for supervisors)
     public List<ArrayList<String>> getPendingLeaveRequests() {

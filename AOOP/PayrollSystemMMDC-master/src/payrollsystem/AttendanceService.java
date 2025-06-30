@@ -3,10 +3,6 @@ package payrollsystem;
 import java.util.List;
 import java.util.Date;
 
-/**
- * Service class to handle attendance business logic
- * Separates business logic from GUI presentation
- */
 public class AttendanceService {
     private AttendanceDAO attendanceDAO;
     

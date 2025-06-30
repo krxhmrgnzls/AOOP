@@ -10,26 +10,88 @@ import java.util.List;
 import java.util.Date;
 
 
+
 public class EmployeeGUI extends javax.swing.JFrame {
     String id, name, role;
     Employee employee;
     ArrayList<String> data = new ArrayList<>(); //To hold as storage
     SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy");
     
+    private AttendanceService attendanceService;
+    
     public EmployeeGUI(ArrayList<ArrayList<String>> userDetails) {             
-        initComponents();
         
         this.id = userDetails.get(0).get(0);
         this.name = userDetails.get(0).get(1);
         this.role = userDetails.get(0).get(3);
-        employee = new HumanResource(lblIDSidebar.getText().toString());
-        employee. viewPersonalDetails(lblIDSidebar.getText());
-    }
+        
+        this.employee = new HumanResource();
+        
+        initComponents();
+        
+        lblNameSidebar.setText(name);
+        lblIDSidebar.setText(id);
+        
+        try {
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        employee.accountDetails = employeeDAO.read(Integer.parseInt(id));
+        employee.viewPersonalDetails(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Initialize services
+            this.attendanceService = new AttendanceService();
+
+            // Update attendance button states after everything is loaded
+            updateAttendanceButtonStates();
+        }
 
     private EmployeeGUI() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
     
+    private String fixNumber(String number) {
+    if (number == null || number.isEmpty()) {
+        return "";
+    }
+    
+    try {
+
+        if (number.toUpperCase().contains("E")) {
+            double scientificNumber = Double.parseDouble(number);
+            return String.format("%.0f", scientificNumber);
+        } else {
+            return number;
+        }
+    } catch (NumberFormatException e) {
+        return number;
+    }
+}
+    
+    private void updateDaysCalculation() {
+    if (dateFrom.getDate() != null && dateTo.getDate() != null) {
+        // Employee handles all the business logic
+        int days = employee.calculateDaysFromGUI(dateFrom.getDate(), dateTo.getDate());
+        txtDaysNumber.setText(String.valueOf(days));
+    } else {
+        txtDaysNumber.setText("0");
+    }
+}
+    private void clearLeaveForm() {
+    comboLeaveType.setSelectedIndex(0);
+    dateFrom.setDate(null);
+    dateTo.setDate(null);
+    txtDaysNumber.setText("0");
+    txtReason.setText("");
+}
+
+    private void clearOvertimeForm() {
+    dateFromOvertime.setDate(null);
+    dateToOvertime.setDate(null);
+    txtDaysNumber1.setText("0");
+    txtReasonOvertime.setText("");
+}
     
     
     @SuppressWarnings("unchecked")
@@ -583,6 +645,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
         txtID.setEditable(false);
         txtID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIDActionPerformed(evt);
+            }
+        });
 
         txtFName.setEditable(false);
         txtFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -973,8 +1040,8 @@ public class EmployeeGUI extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(lblAllRequest)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(76, 76, 76))
         );
@@ -2040,10 +2107,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
         txtRiceSubsidy.setText(String.valueOf(employee.accountDetails.getRiceSubsidy()));
         txtPhoneAllowance.setText(String.valueOf(employee.accountDetails.getRiceSubsidy()));
         txtClothingAllowance.setText(String.valueOf(employee.accountDetails.getClothingAllowance()));
-        txtPhilNum.setText(employee.accountDetails.getPhilHealthNumber());
-        txtSSSNum.setText(employee.accountDetails.getPhilHealthNumber());
-        txtTINNum.setText(employee.accountDetails.getTinNumber());
-        txtPagIbigNum.setText(employee.accountDetails.getPagibigNumber());
+         txtPhilNum.setText(fixNumber(employee.accountDetails.getPhilHealthNumber()));
+        txtSSSNum.setText(fixNumber(employee.accountDetails.getSSSNumber()));
+        txtTINNum.setText(fixNumber(employee.accountDetails.getTinNumber()));
+        txtPagIbigNum.setText(fixNumber(employee.accountDetails.getPagibigNumber()));
+
         txtPosition.setText(employee.accountDetails.getPosition());
         txtStatus.setText(employee.accountDetails.getStatus());
         txtSupervisor.setText(employee.accountDetails.getSupervisor());
@@ -2052,231 +2120,85 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void btnTimeInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimeInActionPerformed
         // TODO add your handling code here:
         try {
-        // Step 1: Validate employee ID input
-        String employeeIdText = lblEmployeeId.getText().trim();
-        if (employeeIdText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, 
-                "❌ Employee ID is required!", 
-                "Validation Error", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        int employeeId;
-        try {
-            employeeId = Integer.parseInt(employeeIdText);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, 
-                "❌ Invalid Employee ID format!", 
-                "Validation Error", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        System.out.println("🔍 Processing Time In for Employee ID: " + employeeId);
-        
-        // Step 2: Check if employee exists in database
-        EmployeeDAO employeeDAO = new EmployeeDAO();
-        AccountDetails employee = employeeDAO.read(employeeId);
-        if (employee == null) {
-            JOptionPane.showMessageDialog(this, 
-                "❌ Employee ID " + employeeId + " not found in database!", 
-                "Employee Not Found", 
-                JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        System.out.println("✅ Employee found: " + employee.getFirstName() + " " + employee.getLastName());
-        
-        // Step 3: Check if already timed in today
-        AttendanceDAO attendanceDAO = new AttendanceDAO();
-        Date today = new Date();
-        java.util.Calendar cal = java.util.Calendar.getInstance();
-        cal.setTime(today);
-        cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
-        cal.set(java.util.Calendar.MINUTE, 0);
-        cal.set(java.util.Calendar.SECOND, 0);
-        cal.set(java.util.Calendar.MILLISECOND, 0);
-        Date startOfDay = cal.getTime();
-        
-        cal.add(java.util.Calendar.DAY_OF_MONTH, 1);
-        Date endOfDay = cal.getTime();
-        
-        // Get today's attendance for this employee
-        java.util.List<AttendanceRecord> todayAttendance = attendanceDAO.getAttendanceByEmployee(
-            employeeId, startOfDay, endOfDay);
-        
-        if (!todayAttendance.isEmpty()) {
-            // Check if any record has login time but no logout time (already timed in)
-            for (AttendanceRecord record : todayAttendance) {
-                if (record.getLoginTime() != null && record.getLogoutTime() == null) {
-                    JOptionPane.showMessageDialog(this, 
-                        "❌ Employee " + employeeId + " has already timed in today!\n" +
-                        "Time In: " + new java.text.SimpleDateFormat("h:mm a").format(record.getLoginTime()), 
-                        "Already Timed In", 
-                        JOptionPane.WARNING_MESSAGE);
-                    return;
-                }
-            }
-        }
-        
-        // Step 4: Create attendance record
-        AttendanceRecord attendance = new AttendanceRecord(
-            employeeId,                                    // employeeId
-            new java.util.Date(),                         // logDate  
-            new java.sql.Time(System.currentTimeMillis()), // loginTime
-            null                                          // logoutTime
-        );
-        
-        // Set additional properties
-        attendance.setSubmittedToSupervisor(false);
-        attendance.setSubmittedToPayroll(false);
-        attendance.setRemarks("Regular login");
-        
-        System.out.println("🔄 Attempting to save attendance record...");
-        
-        // Step 5: Save to database with enhanced error handling
-        boolean success = attendanceDAO.addAttendance(attendance);
-        
-        if (success) {
-            java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("h:mm a");
-            String currentTime = timeFormat.format(new java.util.Date());
-            
-            JOptionPane.showMessageDialog(this, 
-                "✅ Time In recorded successfully!\n" +
-                "Employee: " + employee.getFirstName() + " " + employee.getLastName() + "\n" +
-                "Time: " + currentTime, 
-                "Time In Success", 
-                JOptionPane.INFORMATION_MESSAGE);
-            
-            // Update button states
-            btnTimeIn.setEnabled(false);
-            btnTimeOut.setEnabled(true);
-            
-            System.out.println("✅ Time In recorded for Employee " + employeeId + " at " + currentTime);
-            
-            // Optionally refresh any attendance display tables
-            // refreshAttendanceTable(); // Uncomment if you have this method
-            
-        } else {
-            JOptionPane.showMessageDialog(this, 
-                "❌ Failed to record Time In. Please check:\n" +
-                "• Database connection\n" +
-                "• Employee ID exists\n" +
-                "• No duplicate time-in today", 
-                "Database Error", 
-                JOptionPane.ERROR_MESSAGE);
-            System.err.println("❌ Database operation failed for employee " + employeeId);
-        }
-        
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, 
-            "❌ Invalid Employee ID format: " + e.getMessage(), 
-            "Input Error", 
-            JOptionPane.ERROR_MESSAGE);
-        System.err.println("NumberFormatException: " + e.getMessage());
-        
-    } catch (java.sql.SQLException e) {
-        JOptionPane.showMessageDialog(this, 
-            "❌ Database connection error: " + e.getMessage(), 
-            "Database Error", 
-            JOptionPane.ERROR_MESSAGE);
-        System.err.println("SQLException: " + e.getMessage());
-        e.printStackTrace();
-        
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, 
-            "❌ Unexpected error: " + e.getClass().getSimpleName() + "\n" + e.getMessage(), 
-            "System Error", 
-            JOptionPane.ERROR_MESSAGE);
-        System.err.println("Unexpected Exception: " + e.getClass().getSimpleName());
-        e.printStackTrace();
-    }
+           int employeeId = Integer.parseInt(lblIDSidebar.getText());
+
+           AttendanceResult result = attendanceService.processTimeIn(employeeId);
+
+           if (result.isSuccess()) {
+               JOptionPane.showMessageDialog(this, result.getMessage(), 
+                   "Time In Success", JOptionPane.INFORMATION_MESSAGE);
+               updateAttendanceButtonStates();
+           } else {
+               JOptionPane.showMessageDialog(this, result.getMessage(), 
+                   "Time In Failed", JOptionPane.WARNING_MESSAGE);
+           }
+
+       } catch (NumberFormatException e) {
+           JOptionPane.showMessageDialog(this, "Invalid Employee ID!", 
+               "Error", JOptionPane.ERROR_MESSAGE);
+       } catch (Exception e) {
+           JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+               "System Error", JOptionPane.ERROR_MESSAGE);
+       }
     }//GEN-LAST:event_btnTimeInActionPerformed
 
     private void btnTimeOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimeOutActionPerformed
         // TODO add your handling code here:
         try {
-            int employeeId = Integer.parseInt(lblEmployeeId.getText());
+            int employeeId = Integer.parseInt(lblIDSidebar.getText());
 
-            AttendanceDAO attendanceDAO = new AttendanceDAO();
+            AttendanceResult result = attendanceService.processTimeOut(employeeId);
 
-            // Find today's attendance record
-            java.util.Date today = new java.util.Date();
-            AttendanceRecord todayAttendance = getTodayAttendanceRecord(employeeId, today);
-
-            if (todayAttendance == null) {
-                JOptionPane.showMessageDialog(this, 
-                    "No Time In record found for today!\nPlease Time In first.", 
-                    "No Time In Record", 
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            if (todayAttendance.getLogoutTime() != null) {
-                JOptionPane.showMessageDialog(this, 
-                    "You have already logged out today!", 
-                    "Already Logged Out", 
-                    JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Update with logout time
-            todayAttendance.setLogoutTime(new java.sql.Time(System.currentTimeMillis()));
-
-            // Calculate total hours worked
-            double hoursWorked = todayAttendance.getWorkingHours();
-
-            // Update in database
-            boolean success = attendanceDAO.updateAttendance(todayAttendance);
-
-            if (success) {
-                // Update display
-                java.text.SimpleDateFormat timeFormat = new java.text.SimpleDateFormat("h:mm a");
-                String currentTime = timeFormat.format(new java.util.Date());
-
-                // Show success message with hours worked
-                JOptionPane.showMessageDialog(this, 
-                    String.format("Time Out recorded successfully!\nTime: %s\nHours Worked: %.2f", 
-                        currentTime, hoursWorked), 
-                    "Time Out Success", 
-                    JOptionPane.INFORMATION_MESSAGE);
-
-                // Disable Time Out button
-                btnTimeOut.setEnabled(false);
-
-                System.out.println("Time Out recorded for Employee " + employeeId + " at " + currentTime + 
-                                 ". Hours worked: " + String.format("%.2f", hoursWorked));
-
+            if (result.isSuccess()) {
+                JOptionPane.showMessageDialog(this, result.getMessage(), 
+                    "Time Out Success", JOptionPane.INFORMATION_MESSAGE);
+                updateAttendanceButtonStates();
             } else {
-                JOptionPane.showMessageDialog(this, 
-                    "Failed to record Time Out. Please try again.", 
-                    "Error", 
-                    JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, result.getMessage(), 
+                    "Time Out Failed", JOptionPane.WARNING_MESSAGE);
             }
 
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid Employee ID!", 
+                "Error", JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error recording Time Out: " + e.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+                "System Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnTimeOutActionPerformed
 
     private void btnRequestPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestPortActionPerformed
         // TODO add your handling code here:.
-        mainTabbed.setSelectedIndex(1);
+        try {
+        // Switch to requests tab
+            mainTabbed.setSelectedIndex(1);
+            comboTypeRequest.setSelectedIndex(0);
+            tabbedInsideRequest.setSelectedIndex(0);
 
-        // Set the combo box to "All Request" (index 0) and display the "All Request" panel
-        comboTypeRequest.setSelectedIndex(0);
-        tabbedInsideRequest.setSelectedIndex(0);
+            System.out.println("\n=== Loading Employee Requests ===");
 
-        // Display all requests in the table
-        employee.setTableData(employee.getDataAllRequests());
-        employee.setTableSize(7);
-        employee.displayDataTable(jTableAllRequest);
-  
+            // Make sure employee ID is set
+            if (employee.getEmployeeID() == 0) {
+                System.out.println("Setting employee ID from sidebar: " + lblIDSidebar.getText());
+                employee.setEmployeeID(Integer.parseInt(lblIDSidebar.getText()));
+            }
+
+            // Load all requests from database
+            ArrayList<ArrayList<String>> allRequests = employee.getDataAllRequests();
+
+            // Display the data
+            employee.displayDataTable(jTableAllRequest);
+
+            System.out.println("=== End Loading Requests ===\n");
+
+        } catch (Exception e) {
+            System.err.println("Error in btnRequestPortActionPerformed: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Error loading requests: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnRequestPortActionPerformed
 
     private void btnDTRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDTRActionPerformed
@@ -2368,7 +2290,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void txtDaysNumber1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDaysNumber1ActionPerformed
-        // TODO add your handling code here:
+        updateDaysCalculation();
     }//GEN-LAST:event_txtDaysNumber1ActionPerformed
 
     private void btnSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit1ActionPerformed
@@ -2400,57 +2322,66 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
     private void dateToOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToOvertimePropertyChange
         // TODO add your handling code here:
-        if(dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null){
-            if(employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
-                txtDaysNumber1.setText(String.valueOf(employee.getNumberOfDaysLeave()));
-                employee.setNumberOfDaysLeave();
-            }else{
-                employee.setNumberOfDaysLeave();
-                txtDaysNumber1.setText(String.valueOf(employee.getNumberOfDaysLeave()));
+        if (employee != null && "date".equals(evt.getPropertyName())) {
+        // Use the correct overtime date components
+            if (dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null) {
+                int days = employee.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
+                txtDaysNumber1.setText(String.valueOf(days));
+            } else {
+                txtDaysNumber1.setText("0");
             }
         }
     }//GEN-LAST:event_dateToOvertimePropertyChange
 
     private void dateFromOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromOvertimePropertyChange
         // TODO add your handling code here:
-        if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null){
-            if(employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
-                txtDaysNumber1.setText(String.valueOf(employee.getNumberOfDaysLeave()));
-                employee.setNumberOfDaysLeave();
-            }else{
-                employee.setNumberOfDaysLeave();
-                txtDaysNumber1.setText(String.valueOf(employee.getNumberOfDaysLeave()));
+        if (employee != null && "date".equals(evt.getPropertyName())) {
+        // Use the correct overtime date components
+            if (dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null) {
+                int days = employee.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
+                txtDaysNumber1.setText(String.valueOf(days));
+            } else {
+                txtDaysNumber1.setText("0");
             }
         }
     }//GEN-LAST:event_dateFromOvertimePropertyChange
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
 
-        if (comboLeaveType.getSelectedIndex() == 0 || dateFrom.getDate() == null || dateTo.getDate() == null || txtReason.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please provide all the necessary details for filing of Leave Request!");
-            return;
-        }else if(txtDaysNumber.getText().equals("0")){
-            JOptionPane.showMessageDialog(null, "Error date of leave!");
+        if (comboLeaveType.getSelectedIndex() == 0 || dateFrom.getDate() == null || 
+        dateTo.getDate() == null || txtReason.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please fill all required fields!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+        if (txtDaysNumber.getText().equals("0")) {
+            JOptionPane.showMessageDialog(this, "Invalid date range!", "Date Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
+        // Submit request
+        ArrayList<String> data = new ArrayList<>();
         data.add(String.valueOf(employee.accountDetails.getEmployeeID()));
         data.add(employee.accountDetails.getEmployeeCompleteName());
         data.add(comboLeaveType.getSelectedItem().toString());
         data.add(dateFormat.format(dateFrom.getDate()));
         data.add(dateFormat.format(dateTo.getDate()));
         data.add(txtDaysNumber.getText());
-        data.add(txtReason.getText());
+        data.add(txtReason.getText().trim());
 
-        if(employee.fileLeaveRequest(data)){
-            txtDaysNumber.setText(null);
-            comboLeaveType.setSelectedIndex(0);
-            dateFrom.setDate(null);
-            dateTo.setDate(null);
-            txtReason.setText(null);
-            JOptionPane.showMessageDialog(null, "Successfuly File A Leave Request!");
-        }else{
-            JOptionPane.showMessageDialog(null, "Error Leave Request!");
+        if (employee.fileLeaveRequest(data)) {
+            clearLeaveForm();
+            JOptionPane.showMessageDialog(this, "Leave request submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+            // Refresh the ALL REQUEST table if it's currently showing
+            if (comboTypeRequest.getSelectedItem().toString().equals("All Request")) {
+                // Reload the data
+                employee.setTableData(employee.getDataAllRequests());
+                employee.setTableSize(7);
+                employee.displayDataTable(jTableAllRequest);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to submit leave request!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
@@ -2461,26 +2392,24 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
     private void dateFromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromPropertyChange
         // TODO add your handling code here:
-        if(dateTo.getDate() != null && dateFrom.getDate() != null){
-            if(employee.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
-                txtDaysNumber.setText(String.valueOf(employee.getNumberOfDaysLeave()));
-                employee.setNumberOfDaysLeave();
-            }else{
-                employee.setNumberOfDaysLeave();
-                txtDaysNumber.setText(String.valueOf(employee.getNumberOfDaysLeave()));
+        if (employee != null && "date".equals(evt.getPropertyName())) {
+            if (dateFrom.getDate() != null && dateTo.getDate() != null) {
+                int days = employee.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
+                txtDaysNumber.setText(String.valueOf(days));
+            } else {
+                txtDaysNumber.setText("0");
             }
         }
     }//GEN-LAST:event_dateFromPropertyChange
 
     private void dateToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToPropertyChange
         // TODO add your handling code here:
-        if(dateFrom.getDate() != null && dateTo.getDate() != null){
-            if(employee.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
-                txtDaysNumber.setText(String.valueOf(employee.getNumberOfDaysLeave()));
-                employee.setNumberOfDaysLeave();
-            }else{
-                employee.setNumberOfDaysLeave();
-                txtDaysNumber.setText(String.valueOf(employee.getNumberOfDaysLeave()));
+        if (employee != null && "date".equals(evt.getPropertyName())) {
+            if (dateFrom.getDate() != null && dateTo.getDate() != null) {
+                int days = employee.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
+                txtDaysNumber.setText(String.valueOf(days));
+            } else {
+                txtDaysNumber.setText("0");
             }
         }
     }//GEN-LAST:event_dateToPropertyChange
@@ -2491,11 +2420,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
         if(selectedItem.equals("All Request")) {
             tabbedInsideRequest.setSelectedIndex(0);
-            // Display all requests in the table
-            employee.setTableData(employee.getDataAllRequests());
-            employee.setTableSize(7);
+
+            // Refresh and display all requests
+            employee.refreshAllRequests();
             employee.displayDataTable(jTableAllRequest);
-            
+
         } else if(selectedItem.equals("Leave Application")) {
             tabbedInsideRequest.setSelectedIndex(1);
 
@@ -2509,9 +2438,9 @@ public class EmployeeGUI extends javax.swing.JFrame {
             tabbedInsideRequest.setSelectedIndex(2);
             lblID1.setText(String.valueOf(employee.accountDetails.getEmployeeID()));
             lblMyName2.setText(employee.accountDetails.getEmployeeCompleteName());
-            // Display all requests in the table
-            employee.setTableData(employee.getDataAllRequests());
-            employee.setTableSize(7);
+
+            // Refresh and display for overtime tab
+            employee.refreshAllRequests();
             employee.displayDataTable(jTableAllRequest);
         }
     }//GEN-LAST:event_comboTypeRequestActionPerformed
@@ -2526,30 +2455,40 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
     private void btnSubmitToSepervisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitToSepervisorActionPerformed
         // TODO add your handling code here:
-        ArrayList<ArrayList<String>> tempData = new ArrayList<>();
-        int[] row = jTableAllDTR.getSelectedRows();
-        DefaultTableModel model = (DefaultTableModel)jTableAllDTR.getModel();
-        for(int r : row){
-            if(model.getValueAt(r, 3).toString().equals("Yes")){
-                JOptionPane.showMessageDialog(null, "You Have Selectetd A DTR That Was Already Forwarded To Supervisor!");
-                btnSubmitToSepervisor.enable(false);
-            }else{
-                btnSubmitToSepervisor.enable(true);
-                ArrayList <String> rowData = new ArrayList<>();
-                rowData.add(model.getValueAt(r, 0).toString());
-                rowData.add(model.getValueAt(r, 3).toString());
-                tempData.add(rowData);
+        if (dateFromOvertime.getDate() == null || dateToOvertime.getDate() == null || 
+        txtReasonOvertime.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please fill all required fields!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+        return;
+        }
+
+            if (txtDaysNumber1.getText().equals("0")) {
+                JOptionPane.showMessageDialog(this, "Invalid date range!", "Date Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-        }
-        if(jTableAllDTR.getSelectedRow() != -1 && !tempData.isEmpty()){
-            employee.forwardDTRToSupervisor(tempData);
-            employee.setTableData(employee.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
-            employee.setTableSize(5);
-            employee.displayDataTable(jTableAllDTR);
-            JOptionPane.showMessageDialog(null, "Successfuly Submitted the "+tempData.size()+" DTR to Your Supervisor!");
-        }else if(jTableAllDTR.getSelectedRow() == -1){
-            JOptionPane.showMessageDialog(null, "Select DTR First!");
-        }
+
+            // Submit request
+            ArrayList<String> data = new ArrayList<>();
+            data.add(String.valueOf(employee.accountDetails.getEmployeeID()));
+            data.add(employee.accountDetails.getEmployeeCompleteName());
+            data.add(dateFormat.format(dateFromOvertime.getDate()));
+            data.add(dateFormat.format(dateToOvertime.getDate()));
+            data.add(txtDaysNumber1.getText());
+            data.add(txtReasonOvertime.getText().trim());
+
+            if (employee.fileOvertimeRequest(data)) {
+                clearOvertimeForm();
+                JOptionPane.showMessageDialog(this, "Overtime request submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                // Refresh the ALL REQUEST table if it's currently showing
+                if (comboTypeRequest.getSelectedItem().toString().equals("All Request")) {
+                    // Reload the data
+                    employee.setTableData(employee.getDataAllRequests());
+                    employee.setTableSize(7);
+                    employee.displayDataTable(jTableAllRequest);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to submit overtime request!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_btnSubmitToSepervisorActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
@@ -2562,6 +2501,10 @@ public class EmployeeGUI extends javax.swing.JFrame {
             login.setVisible(true);
         }
     }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIDActionPerformed
 
     private AttendanceRecord getTodayAttendanceRecord(int employeeId, java.util.Date date) {
         try {
@@ -2579,6 +2522,24 @@ public class EmployeeGUI extends javax.swing.JFrame {
             return null;
         }
     }
+    
+    private void updateAttendanceButtonStates() {
+    try {
+        int employeeId = Integer.parseInt(lblIDSidebar.getText());
+        AttendanceStatus status = attendanceService.getAttendanceStatus(employeeId);
+        
+        btnTimeIn.setEnabled(status.canTimeIn());
+        btnTimeOut.setEnabled(status.canTimeOut());
+        
+        // Optional: Show status message somewhere in UI
+        // lblStatusMessage.setText(status.getStatusMessage());
+        
+    } catch (Exception e) {
+        // Default state if there's an error
+        btnTimeIn.setEnabled(true);
+        btnTimeOut.setEnabled(false);
+    }
+}
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

@@ -24,29 +24,41 @@ public class EmployeeGUI extends javax.swing.JFrame {
         this.id = userDetails.get(0).get(0);
         this.name = userDetails.get(0).get(1);
         this.role = userDetails.get(0).get(3);
-        
-        this.employee = new HumanResource();
-        
+
+        // IMPORTANT: Initialize Employee with the actual employee ID
+        this.employee = new Employee(this.id); // Pass the ID string to Employee constructor
+
         initComponents();
-        
+
         lblNameSidebar.setText(name);
         lblIDSidebar.setText(id);
-        
+
         try {
-        EmployeeDAO employeeDAO = new EmployeeDAO();
-        employee.accountDetails = employeeDAO.read(Integer.parseInt(id));
-        employee.viewPersonalDetails(id);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            EmployeeDAO employeeDAO = new EmployeeDAO();
+            employee.accountDetails = employeeDAO.read(Integer.parseInt(id));
+            employee.viewPersonalDetails(id);
 
-            // Initialize services
-            this.attendanceService = new AttendanceService();
+            // CRITICAL: Set the employeeID field in the Employee object
+            employee.setEmployeeID(Integer.parseInt(lblIDSidebar.getText()));
 
-            // Update attendance button states after everything is loaded
-            updateAttendanceButtonStates();
+            System.out.println("✅ Employee initialized with ID: " + id);
+            System.out.println("✅ Employee object employeeID: " + employee.getEmployeeID());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("❌ Error initializing employee: " + e.getMessage());
         }
 
+        // Initialize services
+        this.attendanceService = new AttendanceService();
+
+        // Setup DTR table
+        setupEmployeeDTRTable();
+
+        // Update attendance button states after everything is loaded
+    updateAttendanceButtonStates();
+
+    }
     private EmployeeGUI() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
@@ -2170,34 +2182,26 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void btnRequestPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestPortActionPerformed
         // TODO add your handling code here:.
         try {
-        // Switch to requests tab
             mainTabbed.setSelectedIndex(1);
             comboTypeRequest.setSelectedIndex(0);
             tabbedInsideRequest.setSelectedIndex(0);
 
-            System.out.println("\n=== Loading Employee Requests ===");
+            System.out.println("Loading requests for employee: " + employee.getEmployeeID());
 
-            // Make sure employee ID is set
-            if (employee.getEmployeeID() == 0) {
-                System.out.println("Setting employee ID from sidebar: " + lblIDSidebar.getText());
-                employee.setEmployeeID(Integer.parseInt(lblIDSidebar.getText()));
-            }
-
-            // Load all requests from database
+            // Load requests from database
             ArrayList<ArrayList<String>> allRequests = employee.getDataAllRequests();
+            System.out.println("Requests loaded: " + allRequests.size());
 
-            // Display the data
+            // Set data and display
+            employee.setTableData(allRequests);
+            employee.setTableSize(7);
             employee.displayDataTable(jTableAllRequest);
 
-            System.out.println("=== End Loading Requests ===\n");
+            System.out.println("Table updated with " + jTableAllRequest.getRowCount() + " rows");
 
         } catch (Exception e) {
-            System.err.println("Error in btnRequestPortActionPerformed: " + e.getMessage());
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, 
-                "Error loading requests: " + e.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error loading requests: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnRequestPortActionPerformed
 
@@ -2295,28 +2299,35 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
     private void btnSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit1ActionPerformed
         // TODO add your handling code here:
-        if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null && !txtReasonOvertime.getText().trim().isEmpty()){
-            if(employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
-                
+        if (dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null && !txtReasonOvertime.getText().trim().isEmpty()) {
+            if (employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())) {
+
+                ArrayList<String> data = new ArrayList<>();
                 data.add(String.valueOf(employee.accountDetails.getEmployeeID()));
                 data.add(employee.accountDetails.getEmployeeCompleteName());
                 data.add(dateFormat.format(dateFromOvertime.getDate()));
                 data.add(dateFormat.format(dateToOvertime.getDate()));
                 data.add(txtDaysNumber1.getText());
                 data.add(txtReasonOvertime.getText());
-                if(employee.fileOvertimeRequest(data)){
-                    dateFromOvertime.setDate(null);
-                    dateToOvertime.setDate(null);
-                    txtDaysNumber1.setText(null);
-                    txtReasonOvertime.setText(null);
+
+                if (employee.fileOvertimeRequest(data)) {
+                    clearOvertimeForm();
                     employee.setNumberOfDaysLeave();
-                    JOptionPane.showMessageDialog(null, "Successfuly File An Overtime Request!");
-                }else{
-                    JOptionPane.showMessageDialog(null, "Error Overtime Request!");
+                    JOptionPane.showMessageDialog(null, "Successfully filed an overtime request!");
+
+                    // Always refresh the request table
+                    ArrayList<ArrayList<String>> updatedRequests = employee.getDataAllRequests();
+                    employee.setTableData(updatedRequests);
+                    employee.setTableSize(7);
+                    employee.displayDataTable(jTableAllRequest);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error filing overtime request!");
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid date range - From date cannot be after To date!");
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Provide all the neccessary details for overtime!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Please provide all the necessary details for overtime!");
         }
     }//GEN-LAST:event_btnSubmit1ActionPerformed
 
@@ -2373,13 +2384,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
             clearLeaveForm();
             JOptionPane.showMessageDialog(this, "Leave request submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            // Refresh the ALL REQUEST table if it's currently showing
-            if (comboTypeRequest.getSelectedItem().toString().equals("All Request")) {
-                // Reload the data
-                employee.setTableData(employee.getDataAllRequests());
-                employee.setTableSize(7);
-                employee.displayDataTable(jTableAllRequest);
-            }
+            // Always refresh table
+            ArrayList<ArrayList<String>> updatedRequests = employee.getDataAllRequests();
+            employee.setTableData(updatedRequests);
+            employee.setTableSize(7);
+            employee.displayDataTable(jTableAllRequest);
         } else {
             JOptionPane.showMessageDialog(this, "Failed to submit leave request!", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -2418,14 +2427,16 @@ public class EmployeeGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         String selectedItem = comboTypeRequest.getSelectedItem().toString();
 
-        if(selectedItem.equals("All Request")) {
+        if (selectedItem.equals("All Request")) {
             tabbedInsideRequest.setSelectedIndex(0);
 
-            // Refresh and display all requests
-            employee.refreshAllRequests();
+            // Load and display all requests
+            ArrayList<ArrayList<String>> allRequests = employee.getDataAllRequests();
+            employee.setTableData(allRequests);
+            employee.setTableSize(7);
             employee.displayDataTable(jTableAllRequest);
 
-        } else if(selectedItem.equals("Leave Application")) {
+        } else if (selectedItem.equals("Leave Application")) {
             tabbedInsideRequest.setSelectedIndex(1);
 
             employee.leaveBalancesInformation();
@@ -2438,10 +2449,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
             tabbedInsideRequest.setSelectedIndex(2);
             lblID1.setText(String.valueOf(employee.accountDetails.getEmployeeID()));
             lblMyName2.setText(employee.accountDetails.getEmployeeCompleteName());
-
-            // Refresh and display for overtime tab
-            employee.refreshAllRequests();
-            employee.displayDataTable(jTableAllRequest);
         }
     }//GEN-LAST:event_comboTypeRequestActionPerformed
 
@@ -2455,42 +2462,249 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
     private void btnSubmitToSepervisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitToSepervisorActionPerformed
         // TODO add your handling code here:
-        if (dateFromOvertime.getDate() == null || dateToOvertime.getDate() == null || 
-        txtReasonOvertime.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please fill all required fields!", "Validation Error", JOptionPane.WARNING_MESSAGE);
-        return;
-        }
+        try {
+            System.out.println("=== Employee DTR Submission Button Clicked ===");
 
-            if (txtDaysNumber1.getText().equals("0")) {
-                JOptionPane.showMessageDialog(this, "Invalid date range!", "Date Error", JOptionPane.ERROR_MESSAGE);
+            // Validate employee and connection first
+            if (!employee.validateEmployeeAndConnection()) {
+                JOptionPane.showMessageDialog(this, 
+                    "❌ Database connection or employee validation failed!\nCheck console for details.", 
+                    "Validation Error", 
+                    JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // Submit request
-            ArrayList<String> data = new ArrayList<>();
-            data.add(String.valueOf(employee.accountDetails.getEmployeeID()));
-            data.add(employee.accountDetails.getEmployeeCompleteName());
-            data.add(dateFormat.format(dateFromOvertime.getDate()));
-            data.add(dateFormat.format(dateToOvertime.getDate()));
-            data.add(txtDaysNumber1.getText());
-            data.add(txtReasonOvertime.getText().trim());
+            int[] selectedRows = jTableAllDTR.getSelectedRows();
 
-            if (employee.fileOvertimeRequest(data)) {
-                clearOvertimeForm();
-                JOptionPane.showMessageDialog(this, "Overtime request submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                // Refresh the ALL REQUEST table if it's currently showing
-                if (comboTypeRequest.getSelectedItem().toString().equals("All Request")) {
-                    // Reload the data
-                    employee.setTableData(employee.getDataAllRequests());
-                    employee.setTableSize(7);
-                    employee.displayDataTable(jTableAllRequest);
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Failed to submit overtime request!", "Error", JOptionPane.ERROR_MESSAGE);
+            if (selectedRows.length == 0) {
+                JOptionPane.showMessageDialog(this, 
+                    "Please select DTR entries to submit to your supervisor.\n\n" +
+                    "Click on the rows you want to submit, then click SUBMIT.", 
+                    "No Selection", 
+                    JOptionPane.WARNING_MESSAGE);
+                return;
             }
-    }//GEN-LAST:event_btnSubmitToSepervisorActionPerformed
 
+            DefaultTableModel model = (DefaultTableModel) jTableAllDTR.getModel();
+            ArrayList<ArrayList<String>> tempData = new ArrayList<>();
+
+            System.out.println("Selected " + selectedRows.length + " rows for submission");
+
+            // Check if any already submitted and prepare data
+            for (int row : selectedRows) {
+                String date = model.getValueAt(row, 0).toString(); // DATE
+                String submittedStatus = model.getValueAt(row, 3).toString(); // SUBMITTED TO SUPERVISOR
+
+                System.out.println("Row " + row + ": Date=" + date + ", Submitted=" + submittedStatus);
+
+                if (submittedStatus.equals("Yes")) {
+                    JOptionPane.showMessageDialog(this, 
+                        "Some DTR entries are already submitted to supervisor!\n\nDate: " + date, 
+                        "Already Submitted", 
+                        JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                ArrayList<String> rowData = new ArrayList<>();
+                rowData.add(date);
+                rowData.add(submittedStatus);
+                tempData.add(rowData);
+            }
+
+            // Confirm submission
+            int choice = JOptionPane.showConfirmDialog(this,
+                "Submit " + selectedRows.length + " DTR entries to your supervisor?\n\n" +
+                "This action cannot be undone.",
+                "Confirm DTR Submission", 
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+            if (choice != JOptionPane.YES_OPTION) return;
+
+            // Submit to supervisor using Employee method
+            employee.forwardDTRToSupervisor(tempData);
+
+            // Refresh the table to show updated submission status
+            refreshEmployeeDTRTable();
+
+            JOptionPane.showMessageDialog(this, 
+                "Submission process completed!\nCheck console for detailed results.", 
+                "Submission Status", 
+                JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            System.err.println("❌ ERROR in DTR submission: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "❌ Error submitting DTR: " + e.getMessage(), 
+                "Submission Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSubmitToSepervisorActionPerformed
+    
+    private void refreshEmployeeDTRTable() {
+    try {
+        System.out.println("=== Refreshing Employee DTR Table ===");
+        
+        // Get current date range from date choosers or use default period
+        Date startDate = dateFrom2.getDate();
+        Date endDate = dateTo2.getDate();
+        
+        if (startDate == null || endDate == null) {
+            // Use current pay period if dates not set
+            Calendar today = Calendar.getInstance();
+            int currentDay = today.get(Calendar.DAY_OF_MONTH);
+            
+            Calendar startCal = Calendar.getInstance();
+            Calendar endCal = Calendar.getInstance();
+            
+            if (currentDay <= 15) {
+                startCal.set(Calendar.DAY_OF_MONTH, 1);
+                endCal.set(Calendar.DAY_OF_MONTH, 15);
+            } else {
+                startCal.set(Calendar.DAY_OF_MONTH, 16);
+                endCal.set(Calendar.DAY_OF_MONTH, endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            }
+            
+            startDate = startCal.getTime();
+            endDate = endCal.getTime();
+        }
+        
+        // Load and display updated DTR data
+        employee.setTableData(employee.getDataAllDTR(startDate, endDate));
+        employee.setTableSize(5);
+        employee.displayDataTable(jTableAllDTR);
+        
+        System.out.println("✅ Employee DTR table refreshed");
+        
+    } catch (Exception e) {
+        System.err.println("❌ Error refreshing Employee DTR table: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+
+    // 6. ADD: EmployeeGUI.java - Setup DTR table properly (add to constructor)
+    private void setupEmployeeDTRTable() {
+        try {
+            // Create table model with proper columns for Employee's own DTR
+            DefaultTableModel model = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "DATE", "LOGIN", "LOGOUT", "SUBMITTED TO SUPERVISOR", "REMARKS"
+                }
+            ) {
+                boolean[] canEdit = new boolean[]{
+                    false, false, false, false, false
+                };
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            };
+
+            jTableAllDTR.setModel(model);
+
+            // Enable multiple row selection for submission
+            jTableAllDTR.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
+            System.out.println("✅ Employee DTR table setup completed");
+
+        } catch (Exception e) {
+            System.err.println("❌ Error setting up Employee DTR table: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+    private Date getDateFromPicker(Object datePicker) {
+    try {
+        if (datePicker == null) return null;
+        
+        // Try common date picker methods
+        if (datePicker instanceof com.toedter.calendar.JDateChooser) {
+            return ((com.toedter.calendar.JDateChooser) datePicker).getDate();
+        }
+        
+        // Try reflection to call getDate() method
+        java.lang.reflect.Method getDateMethod = datePicker.getClass().getMethod("getDate");
+        return (Date) getDateMethod.invoke(datePicker);
+        
+    } catch (Exception e) {
+        System.err.println("Error getting date from picker: " + e.getMessage());
+        return null;
+    }
+}
+    private void refreshDTRTable() {
+     try {
+        System.out.println("=== DEBUG: refreshDTRTable ===");
+        
+        // Get current date range from the date pickers
+        Date fromDate = dateFrom.getDate();
+        Date toDate = dateTo.getDate();
+        
+        if (fromDate == null || toDate == null) {
+            // Use default dates if pickers are null
+            Date[] defaultDates = employee.getCurrentPayrollPeriodDates();
+            fromDate = defaultDates[0];
+            toDate = defaultDates[1];
+        }
+        
+        System.out.println("Refreshing table for period: " + fromDate + " to " + toDate);
+        
+        // Reload DTR data - make sure this gets fresh data from database
+        ArrayList<ArrayList<String>> dtrData = employee.getDataAllDTR(fromDate, toDate);
+        
+        System.out.println("Loaded " + dtrData.size() + " DTR records for table refresh");
+        
+        // Debug: Print the data to see if it has updated values
+        for (ArrayList<String> row : dtrData) {
+            if (row.size() >= 6) { // Assuming submitted status is at index 5
+                System.out.println("Date: " + row.get(0) + ", Submitted: " + row.get(5));
+            }
+        }
+        
+        // Update the employee object's table data
+        employee.setTableData(dtrData);
+        employee.setTableSize(5); // Adjust based on your table columns
+        
+        // Display in the actual table (replace with your table variable name)
+        employee.displayDataTable(jTableAllDTR); // Replace jTableDTR with your actual table name
+        
+        System.out.println("✅ DTR table refreshed successfully");
+        
+    } catch (Exception e) {
+        System.err.println("❌ Error refreshing DTR table: " + e.getMessage());
+        e.printStackTrace();
+    }
+}
+
+    // IF you need to initialize the submit button, add this to your constructor or initialization:
+    private void initializeDTRSubmission() {
+        try {
+            // Set default date range to current payroll period if date pickers are empty
+            if (dateFrom.getDate() == null || dateTo.getDate() == null) {
+                Calendar cal = Calendar.getInstance();
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                if (day <= 15) {
+                    // First half of month
+                    cal.set(Calendar.DAY_OF_MONTH, 1);
+                    dateFrom.setDate(cal.getTime());
+                    cal.set(Calendar.DAY_OF_MONTH, 15);
+                    dateTo.setDate(cal.getTime());
+                } else {
+                    // Second half of month
+                    cal.set(Calendar.DAY_OF_MONTH, 16);
+                    dateFrom.setDate(cal.getTime());
+                    cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+                    dateTo.setDate(cal.getTime());
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error initializing DTR submission: " + e.getMessage());
+        }
+    }
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
         int choice = JOptionPane.showConfirmDialog(null, "Are You Sure You Want To Logout This Account?", "Confirm", JOptionPane.YES_NO_OPTION);
@@ -2538,6 +2752,31 @@ public class EmployeeGUI extends javax.swing.JFrame {
         // Default state if there's an error
         btnTimeIn.setEnabled(true);
         btnTimeOut.setEnabled(false);
+    }
+}
+    private void updateLeaveDaysCalculation() {
+    try {
+        if (dateFrom.getDate() != null && dateTo.getDate() != null) {
+            System.out.println("DEBUG: Calculating days - From: " + dateFrom.getDate() + ", To: " + dateTo.getDate());
+            
+            // Ensure the date range is valid (to date is not before from date)
+            if (dateTo.getDate().before(dateFrom.getDate())) {
+                txtDaysNumber.setText("0");
+                System.out.println("DEBUG: Invalid date range - To date is before From date");
+                return;
+            }
+            
+            int days = employee.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
+            txtDaysNumber.setText(String.valueOf(days));
+            
+            System.out.println("DEBUG: Calculated " + days + " days");
+        } else {
+            txtDaysNumber.setText("0");
+            System.out.println("DEBUG: One or both dates are null");
+        }
+    } catch (Exception e) {
+        System.err.println("ERROR in updateLeaveDaysCalculation: " + e.getMessage());
+        txtDaysNumber.setText("0");
     }
 }
     public static void main(String args[]) {

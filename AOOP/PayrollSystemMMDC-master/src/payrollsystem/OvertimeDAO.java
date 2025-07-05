@@ -12,11 +12,78 @@ public class OvertimeDAO {
     public OvertimeDAO() {
         try {
             this.connection = DatabaseConnection.getInstance().getConnection();
-            System.out.println("OvertimeDAO initialized successfully");
+            
+            // Test the connection
+            if (connection == null) {
+                System.err.println("ERROR: OvertimeDAO connection is NULL!");
+            } else if (connection.isClosed()) {
+                System.err.println("ERROR: OvertimeDAO connection is CLOSED!");
+            } else {
+                System.out.println("OvertimeDAO initialized successfully with valid connection");
+                
+                // Test query
+                Statement stmt = connection.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM overtime_requests");
+                if (rs.next()) {
+                    System.out.println("Total overtime_requests in database: " + rs.getInt(1));
+                }
+                rs.close();
+                stmt.close();
+            }
         } catch (SQLException e) {
             System.err.println("Error initializing OvertimeDAO: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Get all overtime requests for a specific employee - FIXED to use correct connection
+     */
+    public List<ArrayList<String>> getOvertimeRequestsByEmployee(int employeeId) {
+        List<ArrayList<String>> overtimeRequests = new ArrayList<>();
+        
+        String query = "SELECT date_filed, from_time, to_time, number_of_days, reason, status " +
+                       "FROM overtime_requests " +
+                       "WHERE employee_id = ? " +
+                       "ORDER BY date_filed DESC";
+        
+        System.out.println("DEBUG OvertimeDAO: Executing query for employee " + employeeId);
+        
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, employeeId);
+            ResultSet rs = stmt.executeQuery();
+            
+            SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat datetimeFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            
+            while (rs.next()) {
+                ArrayList<String> row = new ArrayList<>();
+                
+                Date dateFiled = rs.getDate("date_filed");
+                Timestamp fromTime = rs.getTimestamp("from_time");
+                Timestamp toTime = rs.getTimestamp("to_time");
+                
+                row.add(displayFormat.format(dateFiled)); // DATE FILED
+                row.add("Overtime"); // TYPE OF REQUEST  
+                row.add(datetimeFormat.format(fromTime)); // PERIOD FROM
+                row.add(datetimeFormat.format(toTime)); // PERIOD TO
+                row.add(String.valueOf(rs.getDouble("number_of_days"))); // NUMBER OF DAYS
+                row.add(rs.getString("reason")); // REASON
+                row.add(rs.getString("status")); // STATUS
+                
+                overtimeRequests.add(row);
+                System.out.println("DEBUG: Added overtime request: " + row);
+            }
+            
+            rs.close();
+            
+        } catch (SQLException e) {
+            System.err.println("ERROR in OvertimeDAO.getOvertimeRequestsByEmployee: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        System.out.println("DEBUG OvertimeDAO: Returning " + overtimeRequests.size() + " overtime requests");
+        return overtimeRequests;
     }
     
     /**
@@ -53,96 +120,34 @@ public class OvertimeDAO {
         }
     }
     
-    /**
-     * Get all overtime requests for a specific employee - FIXED SQL QUERY
-     */
-    public List<ArrayList<String>> getOvertimeRequestsByEmployee(int employeeId) {
-    List<ArrayList<String>> overtimeRequests = new ArrayList<>();
-        String query = "SELECT o.*, e.first_name, e.last_name " +
-                       "FROM overtime o " +
-                       "JOIN employees e ON o.employee_id = e.employee_id " +
-                       "WHERE o.employee_id = ? " +
-                       "ORDER BY o.date_filed DESC";
-
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setInt(1, employeeId);
-            ResultSet rs = stmt.executeQuery();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy");
-
-            while (rs.next()) {
-                ArrayList<String> row = new ArrayList<>();
-
-                // Format dates without time
-                Date dateFiled = rs.getDate("date_filed");
-                Timestamp fromTime = rs.getTimestamp("from_time");
-                Timestamp toTime = rs.getTimestamp("to_time");
-
-                row.add(displayFormat.format(dateFiled)); // DATE FILED
-                row.add("Overtime Request"); // TYPE OF REQUEST
-
-                // Format overtime dates without the time portion
-                if (fromTime != null) {
-                    row.add(displayFormat.format(new Date(fromTime.getTime()))); // PERIOD FROM (date only)
-                } else {
-                    row.add("");
-                }
-
-                if (toTime != null) {
-                    row.add(displayFormat.format(new Date(toTime.getTime()))); // PERIOD TO (date only)
-                } else {
-                    row.add("");
-                }
-
-                row.add(String.valueOf(rs.getDouble("number_of_hours"))); // NUMBER OF DAYS/HOURS
-                row.add(rs.getString("reason")); // REASON
-                row.add(rs.getString("status")); // STATUS
-
-                overtimeRequests.add(row);
-            }
-
-        } catch (SQLException e) {
-            System.err.println("Error retrieving overtime requests: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        return overtimeRequests;
-}
-    
-    /**
-     * Get all pending overtime requests (for supervisors) - FIXED SQL QUERY
-     */
     public List<ArrayList<String>> getPendingOvertimeRequests() {
         List<ArrayList<String>> requests = new ArrayList<>();
-        // FIXED: Corrected the table alias
-        String sql = "SELECT ot.*, e.first_name, e.last_name FROM overtime_requests ot " +
-                    "JOIN employees e ON ot.employee_id = e.employee_id " +
-                    "WHERE ot.status = 'Pending' ORDER BY ot.date_filed ASC";
+        String sql = "SELECT o.*, e.first_name, e.last_name FROM overtime_requests o " +
+                    "JOIN employees e ON o.employee_id = e.employee_id " +
+                    "WHERE o.status = 'Pending' ORDER BY o.date_filed ASC";
         
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
+            
+            SimpleDateFormat displayFormat = new SimpleDateFormat("MM/dd/yyyy");
+            SimpleDateFormat datetimeFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm");
             
             while (rs.next()) {
                 ArrayList<String> row = new ArrayList<>();
                 row.add(String.valueOf(rs.getInt("overtime_id")));
                 row.add(String.valueOf(rs.getInt("employee_id")));
                 row.add(rs.getString("first_name") + " " + rs.getString("last_name"));
-                row.add(rs.getDate("date_filed").toString());
-                row.add(rs.getString("type_request"));
-                row.add(rs.getTimestamp("from_time").toString());
-                row.add(rs.getTimestamp("to_time").toString());
+                row.add(displayFormat.format(rs.getDate("date_filed")));
+                row.add(datetimeFormat.format(rs.getTimestamp("from_time")));
+                row.add(datetimeFormat.format(rs.getTimestamp("to_time")));
                 row.add(String.valueOf(rs.getDouble("number_of_days")));
                 row.add(rs.getString("reason"));
                 row.add(rs.getString("status"));
                 requests.add(row);
             }
             
-            System.out.println("Retrieved " + requests.size() + " pending overtime requests");
-            
         } catch (SQLException e) {
-            System.err.println("Database error getting pending overtime requests: " + e.getMessage());
             e.printStackTrace();
         }
         
@@ -150,7 +155,7 @@ public class OvertimeDAO {
     }
     
     /**
-     * Update overtime request status (approve/deny)
+     * Update overtime request status (Approve/Reject)
      */
     public boolean updateOvertimeRequestStatus(int overtimeId, String status) {
         String sql = "UPDATE overtime_requests SET status = ? WHERE overtime_id = ?";
@@ -161,20 +166,67 @@ public class OvertimeDAO {
             pstmt.setInt(2, overtimeId);
             
             int result = pstmt.executeUpdate();
-            boolean success = result > 0;
-            
-            if (success) {
-                System.out.println("Overtime request " + overtimeId + " status updated to: " + status);
-            } else {
-                System.err.println("Failed to update overtime request " + overtimeId);
-            }
-            
-            return success;
+            return result > 0;
             
         } catch (SQLException e) {
-            System.err.println("Database error updating overtime status: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
+    }
+    
+    /**
+     * Cancel overtime request (only if pending)
+     */
+    public boolean cancelOvertimeRequest(int overtimeId) {
+        String sql = "DELETE FROM overtime_requests WHERE overtime_id = ? AND status = 'Pending'";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, overtimeId);
+            
+            int result = pstmt.executeUpdate();
+            return result > 0;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Get approved overtime for payroll processing
+     */
+    public List<ArrayList<String>> getApprovedOvertimeForPayroll(String payrollPeriod) {
+        List<ArrayList<String>> approvedOvertime = new ArrayList<>();
+        // Implementation for getting approved overtime within payroll period
+        return approvedOvertime;
+    }
+    
+    /**
+     * Get overtime hours by employee for a date range
+     */
+    public double getOvertimeHours(int employeeId, Date startDate, Date endDate) {
+        String sql = "SELECT SUM(number_of_days * 8) as total_hours FROM overtime_requests " +
+                    "WHERE employee_id = ? AND status = 'Approved' " +
+                    "AND from_time >= ? AND to_time <= ?";
+        
+        double totalHours = 0.0;
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, employeeId);
+            pstmt.setDate(2, new java.sql.Date(startDate.getTime()));
+            pstmt.setDate(3, new java.sql.Date(endDate.getTime()));
+            
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                totalHours = rs.getDouble("total_hours");
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return totalHours;
     }
 }

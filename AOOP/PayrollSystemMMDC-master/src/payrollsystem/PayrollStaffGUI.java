@@ -4,39 +4,62 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class PayrollStaffGUI extends javax.swing.JFrame {
     String id, name, role;
     PayrollStaff payrollStaff;
-    ArrayList<String> data = new ArrayList<>(); //To hold as storage
+    ArrayList<String> data = new ArrayList<>(); 
     SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy");
+    private AttendanceService attendanceService;
     
     public PayrollStaffGUI(ArrayList<ArrayList<String>> userDetails) {
-        initComponents();
         this.id = userDetails.get(0).get(0);
         this.name = userDetails.get(0).get(1);
         this.role = userDetails.get(0).get(3);
         
-        lblNameSidebar.setText(name);
-        lblIDSidebar.setText(id);
-        payrollStaff = new PayrollStaff(lblIDSidebar.getText().toString());
-        payrollStaff.viewPersonalDetails(lblIDSidebar.getText());
+        initComponents();
+        this.id = userDetails.get(0).get(0);
+          this.name = userDetails.get(0).get(1);
+          this.role = userDetails.get(0).get(3);  // ADDED THIS LINE
+
+          payrollStaff = new PayrollStaff(id);
+
+          lblNameSidebar.setText(name);
+          lblIDSidebar.setText(id);
+
+          // FIXED: Method call without parameters
+          payrollStaff.viewPersonalDetails(id);
+          this.attendanceService = new AttendanceService();
+          updateAttendanceButtonStates();
+          
     }
+    
+    private void setupEventListeners() {
+    // ADD these lines in your constructor after initComponents()
+    jDateFrom.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
+    jDateTo.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
+}
+    private void onPayrollDateRangeChanged() {
+    if (jDateFrom.getDate() != null && jDateTo.getDate() != null && !jDateFrom.getDate().after(jDateTo.getDate())) {
+        ArrayList<ArrayList<String>> existingData = payrollStaff.getPayrollDataForDateRange(
+            jDateFrom.getDate(), jDateTo.getDate());
+        
+        payrollStaff.setTableData(existingData);
+        payrollStaff.setTableSize(14);
+        payrollStaff.displayDataTable(jTablePayroll);
+        
+        btnReleased.setEnabled(!existingData.isEmpty());
+        updatePayrollPeriodLabel();
+    }
+}
 
     private PayrollStaffGUI() {
         throw new UnsupportedOperationException("Not supported yet."); 
     }
-
-   private void setDateTextField(javax.swing.JTextField textField, java.util.Date date) {
-    if (date != null) {
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM/dd/yyyy");
-        textField.setText(sdf.format(date));
-    } else {
-        textField.setText("");
-    }
-}
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -58,13 +81,62 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         btnDTR = new javax.swing.JButton();
         btnLeaveLedger = new javax.swing.JButton();
         btnLeaveLedger1 = new javax.swing.JButton();
-        btnLeaveLedger2 = new javax.swing.JButton();
-        btnLeaveLedger3 = new javax.swing.JButton();
+        btncomputePayroll = new javax.swing.JButton();
+        btnemployeeDTR = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
         btnLogout = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         mainTabbed = new javax.swing.JTabbedPane();
+        panelMotorPH = new javax.swing.JPanel();
+        tabbedPersonalDetails = new javax.swing.JPanel();
+        panelPersonalDetails1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        lblEmpID = new javax.swing.JLabel();
+        lblFName = new javax.swing.JLabel();
+        lblLName = new javax.swing.JLabel();
+        lblBDay = new javax.swing.JLabel();
+        lblAddress = new javax.swing.JLabel();
+        lblPhoneNum = new javax.swing.JLabel();
+        txtID = new javax.swing.JTextField();
+        txtFName = new javax.swing.JTextField();
+        txtLName = new javax.swing.JTextField();
+        txtBDay = new javax.swing.JTextField();
+        txtPhoneNum = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        textAreaAddress = new javax.swing.JTextArea();
+        panelPersonalDetails = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        lblBasicSalary = new javax.swing.JLabel();
+        lblRiceSubsidy = new javax.swing.JLabel();
+        lblPhoneAllowances = new javax.swing.JLabel();
+        lblClothingAllowanes = new javax.swing.JLabel();
+        txtBasicSalary = new javax.swing.JTextField();
+        txtRiceSubsidy = new javax.swing.JTextField();
+        txtPhoneAllowance = new javax.swing.JTextField();
+        txtClothingAllowance = new javax.swing.JTextField();
+        lblBiMonthlyRate = new javax.swing.JLabel();
+        txtBiMonthlyRate = new javax.swing.JTextField();
+        lblHourlyRate = new javax.swing.JLabel();
+        txtHourlyRate = new javax.swing.JTextField();
+        panelPersonalDetails2 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        lblPhilNum = new javax.swing.JLabel();
+        lblSSSNum = new javax.swing.JLabel();
+        lblTINNum = new javax.swing.JLabel();
+        lblPagIbigNum = new javax.swing.JLabel();
+        txtPhilNum = new javax.swing.JTextField();
+        txtSSSNum = new javax.swing.JTextField();
+        txtTINNum = new javax.swing.JTextField();
+        txtPagIbigNum = new javax.swing.JTextField();
+        panelPersonalDetails3 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        lblPosition = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
+        lblSupervisor = new javax.swing.JLabel();
+        txtPosition = new javax.swing.JTextField();
+        txtStatus = new javax.swing.JTextField();
+        txtSupervisor = new javax.swing.JTextField();
         tabbedRequest = new javax.swing.JPanel();
         panelTypeRequest = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -195,6 +267,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         jDateFrom = new com.toedter.calendar.JDateChooser();
         jDateTo = new com.toedter.calendar.JDateChooser();
         btnGeneratePayrollReport = new javax.swing.JButton();
+        searchDate = new javax.swing.JButton();
         tabbedEmployeeDTR = new javax.swing.JPanel();
         panelTypeRequest2 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
@@ -206,55 +279,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         jScrollPane6 = new javax.swing.JScrollPane();
         jTableDTR = new javax.swing.JTable();
         jSeparator17 = new javax.swing.JSeparator();
-        panelMotorPH = new javax.swing.JPanel();
-        tabbedPersonalDetails = new javax.swing.JPanel();
-        panelPersonalDetails1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        lblEmpID = new javax.swing.JLabel();
-        lblFName = new javax.swing.JLabel();
-        lblLName = new javax.swing.JLabel();
-        lblBDay = new javax.swing.JLabel();
-        lblAddress = new javax.swing.JLabel();
-        lblPhoneNum = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
-        txtFName = new javax.swing.JTextField();
-        txtLName = new javax.swing.JTextField();
-        txtBDay = new javax.swing.JTextField();
-        txtPhoneNum = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        textAreaAddress = new javax.swing.JTextArea();
-        panelPersonalDetails = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        lblBasicSalary = new javax.swing.JLabel();
-        lblRiceSubsidy = new javax.swing.JLabel();
-        lblPhoneAllowances = new javax.swing.JLabel();
-        lblClothingAllowanes = new javax.swing.JLabel();
-        txtBasicSalary = new javax.swing.JTextField();
-        txtRiceSubsidy = new javax.swing.JTextField();
-        txtPhoneAllowance = new javax.swing.JTextField();
-        txtClothingAllowance = new javax.swing.JTextField();
-        lblBiMonthlyRate = new javax.swing.JLabel();
-        txtBiMonthlyRate = new javax.swing.JTextField();
-        lblHourlyRate = new javax.swing.JLabel();
-        txtHourlyRate = new javax.swing.JTextField();
-        panelPersonalDetails2 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        lblPhilNum = new javax.swing.JLabel();
-        lblSSSNum = new javax.swing.JLabel();
-        lblTINNum = new javax.swing.JLabel();
-        lblPagIbigNum = new javax.swing.JLabel();
-        txtPhilNum = new javax.swing.JTextField();
-        txtSSSNum = new javax.swing.JTextField();
-        txtTINNum = new javax.swing.JTextField();
-        txtPagIbigNum = new javax.swing.JTextField();
-        panelPersonalDetails3 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        lblPosition = new javax.swing.JLabel();
-        lblStatus = new javax.swing.JLabel();
-        lblSupervisor = new javax.swing.JLabel();
-        txtPosition = new javax.swing.JTextField();
-        txtStatus = new javax.swing.JTextField();
-        txtSupervisor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -337,21 +361,21 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             }
         });
 
-        btnLeaveLedger2.setBackground(new java.awt.Color(27, 49, 74));
-        btnLeaveLedger2.setForeground(new java.awt.Color(255, 255, 255));
-        btnLeaveLedger2.setText("COMPUTE PAYROLL");
-        btnLeaveLedger2.addActionListener(new java.awt.event.ActionListener() {
+        btncomputePayroll.setBackground(new java.awt.Color(27, 49, 74));
+        btncomputePayroll.setForeground(new java.awt.Color(255, 255, 255));
+        btncomputePayroll.setText("COMPUTE PAYROLL");
+        btncomputePayroll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLeaveLedger2ActionPerformed(evt);
+                btncomputePayrollActionPerformed(evt);
             }
         });
 
-        btnLeaveLedger3.setBackground(new java.awt.Color(27, 49, 74));
-        btnLeaveLedger3.setForeground(new java.awt.Color(255, 255, 255));
-        btnLeaveLedger3.setText("EMPLOYEE DTR");
-        btnLeaveLedger3.addActionListener(new java.awt.event.ActionListener() {
+        btnemployeeDTR.setBackground(new java.awt.Color(27, 49, 74));
+        btnemployeeDTR.setForeground(new java.awt.Color(255, 255, 255));
+        btnemployeeDTR.setText("EMPLOYEE DTR");
+        btnemployeeDTR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLeaveLedger3ActionPerformed(evt);
+                btnemployeeDTRActionPerformed(evt);
             }
         });
 
@@ -384,10 +408,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         sideBarPanelLayout.setHorizontalGroup(
             sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sideBarPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator14, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(sideBarPanelLayout.createSequentialGroup()
                 .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(sideBarPanelLayout.createSequentialGroup()
                         .addGap(96, 96, 96)
@@ -401,24 +421,27 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                         .addGap(54, 54, 54)
                         .addComponent(jLabel5))
                     .addGroup(sideBarPanelLayout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(jLabel8))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sideBarPanelLayout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator14, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
+                        .addGap(97, 97, 97))
+                    .addGroup(sideBarPanelLayout.createSequentialGroup()
                         .addGap(36, 36, 36)
                         .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnLeaveLedger3, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnLeaveLedger2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnemployeeDTR, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btncomputePayroll, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLeaveLedger1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLeaveLedger, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnDTR, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnRequestPort, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblNameSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(sideBarPanelLayout.createSequentialGroup()
-                                .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(36, Short.MAX_VALUE))
-            .addGroup(sideBarPanelLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel8)
+                            .addComponent(lblNameSidebar, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(sideBarPanelLayout.createSequentialGroup()
@@ -453,9 +476,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnLeaveLedger1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLeaveLedger2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btncomputePayroll, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnLeaveLedger3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnemployeeDTR, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(sideBarPanelLayout.createSequentialGroup()
                         .addGap(87, 87, 87)
@@ -469,7 +492,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                             .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap(127, Short.MAX_VALUE))
             .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(sideBarPanelLayout.createSequentialGroup()
                     .addGap(158, 158, 158)
@@ -483,6 +506,484 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         );
 
         jPanel1.add(sideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 260, 760));
+
+        panelMotorPH.setBackground(new java.awt.Color(255, 255, 255));
+
+        tabbedPersonalDetails.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
+
+        panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
+
+        lblEmpID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblEmpID.setText("Employee ID:");
+
+        lblFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFName.setText("First Name:");
+
+        lblLName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLName.setText("Last Name:");
+
+        lblBDay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblBDay.setText("Birthday:");
+
+        lblAddress.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblAddress.setText("Address: ");
+
+        lblPhoneNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPhoneNum.setText("Phone No.");
+
+        txtID.setEditable(false);
+        txtID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtFName.setEditable(false);
+        txtFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtLName.setEditable(false);
+        txtLName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtBDay.setEditable(false);
+        txtBDay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtPhoneNum.setEditable(false);
+        txtPhoneNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        textAreaAddress.setEditable(false);
+        textAreaAddress.setColumns(20);
+        textAreaAddress.setRows(5);
+        jScrollPane1.setViewportView(textAreaAddress);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblEmpID, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblFName)
+                        .addGap(25, 25, 25)
+                        .addComponent(txtFName))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(lblPhoneNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblBDay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblLName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblAddress))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(txtLName)
+                            .addComponent(txtBDay)
+                            .addComponent(txtPhoneNum))))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblEmpID)
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblFName)
+                    .addComponent(txtFName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblLName)
+                    .addComponent(txtLName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBDay)
+                    .addComponent(txtBDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblPhoneNum)
+                    .addComponent(txtPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblAddress)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout panelPersonalDetails1Layout = new javax.swing.GroupLayout(panelPersonalDetails1);
+        panelPersonalDetails1.setLayout(panelPersonalDetails1Layout);
+        panelPersonalDetails1Layout.setHorizontalGroup(
+            panelPersonalDetails1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetails1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelPersonalDetails1Layout.setVerticalGroup(
+            panelPersonalDetails1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetails1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
+
+        lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblBasicSalary.setText("Basic Salary :");
+
+        lblRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRiceSubsidy.setText("Rice Subsidy: ");
+
+        lblPhoneAllowances.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPhoneAllowances.setText("Phone Allowances: ");
+
+        lblClothingAllowanes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblClothingAllowanes.setText("Clothing Allowances: ");
+
+        txtBasicSalary.setEditable(false);
+        txtBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtBasicSalary.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBasicSalaryActionPerformed(evt);
+            }
+        });
+
+        txtRiceSubsidy.setEditable(false);
+        txtRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtRiceSubsidy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtRiceSubsidyActionPerformed(evt);
+            }
+        });
+
+        txtPhoneAllowance.setEditable(false);
+        txtPhoneAllowance.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPhoneAllowance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPhoneAllowanceActionPerformed(evt);
+            }
+        });
+
+        txtClothingAllowance.setEditable(false);
+        txtClothingAllowance.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtClothingAllowance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtClothingAllowanceActionPerformed(evt);
+            }
+        });
+
+        lblBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblBiMonthlyRate.setText("BiMonthly Rate:");
+
+        txtBiMonthlyRate.setEditable(false);
+        txtBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblHourlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblHourlyRate.setText("Hourly Rate:");
+
+        txtHourlyRate.setEditable(false);
+        txtHourlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblBasicSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel5Layout.createSequentialGroup()
+                                    .addComponent(lblBiMonthlyRate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGap(36, 36, 36)))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(lblHourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(36, 36, 36)))
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtHourlyRate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                            .addComponent(txtBiMonthlyRate, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtBasicSalary, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblClothingAllowanes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblPhoneAllowances, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblRiceSubsidy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPhoneAllowance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
+                            .addComponent(txtClothingAllowance, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtRiceSubsidy, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGap(6, 6, 6))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBasicSalary)
+                    .addComponent(txtBasicSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblBiMonthlyRate)
+                    .addComponent(txtBiMonthlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblHourlyRate)
+                    .addComponent(txtHourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblRiceSubsidy)
+                    .addComponent(txtRiceSubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPhoneAllowances)
+                    .addComponent(txtPhoneAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblClothingAllowanes)
+                    .addComponent(txtClothingAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panelPersonalDetailsLayout = new javax.swing.GroupLayout(panelPersonalDetails);
+        panelPersonalDetails.setLayout(panelPersonalDetailsLayout);
+        panelPersonalDetailsLayout.setHorizontalGroup(
+            panelPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetailsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+        panelPersonalDetailsLayout.setVerticalGroup(
+            panelPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetailsLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
+
+        lblPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPhilNum.setText("PhilHealth No.");
+
+        lblSSSNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSSSNum.setText("SSS No.");
+
+        lblTINNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTINNum.setText("TIN No.");
+
+        lblPagIbigNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPagIbigNum.setText("PagIbig No.");
+
+        txtPhilNum.setEditable(false);
+        txtPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtSSSNum.setEditable(false);
+        txtSSSNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtTINNum.setEditable(false);
+        txtTINNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtPagIbigNum.setEditable(false);
+        txtPagIbigNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                            .addComponent(lblTINNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(23, 23, 23)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtTINNum, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                            .addComponent(txtPagIbigNum)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSSSNum)
+                            .addComponent(lblPhilNum))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPhilNum)
+                            .addComponent(txtSSSNum))))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblPhilNum)
+                    .addComponent(txtPhilNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSSSNum)
+                    .addComponent(txtSSSNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTINNum)
+                    .addComponent(txtTINNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPagIbigNum)
+                    .addComponent(txtPagIbigNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout panelPersonalDetails2Layout = new javax.swing.GroupLayout(panelPersonalDetails2);
+        panelPersonalDetails2.setLayout(panelPersonalDetails2Layout);
+        panelPersonalDetails2Layout.setHorizontalGroup(
+            panelPersonalDetails2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetails2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelPersonalDetails2Layout.setVerticalGroup(
+            panelPersonalDetails2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetails2Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
+
+        lblPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPosition.setText("Position: ");
+
+        lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblStatus.setText("Status:");
+
+        lblSupervisor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSupervisor.setText("Supervisor:");
+
+        txtPosition.setEditable(false);
+        txtPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPosition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPositionActionPerformed(evt);
+            }
+        });
+
+        txtStatus.setEditable(false);
+        txtStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtSupervisor.setEditable(false);
+        txtSupervisor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSupervisor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSupervisorActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblSupervisor, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
+                    .addComponent(lblPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                    .addComponent(txtSupervisor)
+                    .addComponent(txtPosition))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPosition)
+                    .addComponent(txtPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblStatus)
+                    .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblSupervisor)
+                    .addComponent(txtSupervisor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panelPersonalDetails3Layout = new javax.swing.GroupLayout(panelPersonalDetails3);
+        panelPersonalDetails3.setLayout(panelPersonalDetails3Layout);
+        panelPersonalDetails3Layout.setHorizontalGroup(
+            panelPersonalDetails3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetails3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelPersonalDetails3Layout.setVerticalGroup(
+            panelPersonalDetails3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPersonalDetails3Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(171, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout tabbedPersonalDetailsLayout = new javax.swing.GroupLayout(tabbedPersonalDetails);
+        tabbedPersonalDetails.setLayout(tabbedPersonalDetailsLayout);
+        tabbedPersonalDetailsLayout.setHorizontalGroup(
+            tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedPersonalDetailsLayout.createSequentialGroup()
+                .addContainerGap(75, Short.MAX_VALUE)
+                .addComponent(panelPersonalDetails1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
+                .addComponent(panelPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58)
+                .addComponent(panelPersonalDetails2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(panelPersonalDetails3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(91, 91, 91))
+        );
+        tabbedPersonalDetailsLayout.setVerticalGroup(
+            tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabbedPersonalDetailsLayout.createSequentialGroup()
+                .addGap(152, 152, 152)
+                .addGroup(tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelPersonalDetails1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelPersonalDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelPersonalDetails2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelPersonalDetails3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(266, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout panelMotorPHLayout = new javax.swing.GroupLayout(panelMotorPH);
+        panelMotorPH.setLayout(panelMotorPHLayout);
+        panelMotorPHLayout.setHorizontalGroup(
+            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMotorPHLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tabbedPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        panelMotorPHLayout.setVerticalGroup(
+            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMotorPHLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tabbedPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        mainTabbed.addTab("tab6", panelMotorPH);
 
         panelTypeRequest.setBackground(new java.awt.Color(255, 255, 255));
         panelTypeRequest.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "NEW REQUEST", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
@@ -568,11 +1069,11 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         txtReason.setColumns(20);
         txtReason.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtReason.setRows(5);
-        txtReason.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        txtReason.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane2.setViewportView(txtReason);
 
         dateTo.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         dateTo.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateToPropertyChange(evt);
@@ -580,7 +1081,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         dateFrom.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
         dateFrom.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateFromPropertyChange(evt);
@@ -592,7 +1093,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         txtDaysNumber.setEditable(false);
         txtDaysNumber.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 102))); // NOI18N
+        txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDaysNumberActionPerformed(evt);
@@ -643,7 +1144,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         comboLeaveType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         comboLeaveType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Vacation Leave", "Sick Leave" }));
-        comboLeaveType.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Type of Leave", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        comboLeaveType.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Type of Leave", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         javax.swing.GroupLayout panelLeaveRequestDetailsLayout = new javax.swing.GroupLayout(panelLeaveRequestDetails);
         panelLeaveRequestDetails.setLayout(panelLeaveRequestDetailsLayout);
@@ -766,7 +1267,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblMyName2.setText("John Paul Arquita");
 
         dateFromOvertime.setBackground(new java.awt.Color(255, 255, 255));
-        dateFromOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFromOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
         dateFromOvertime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateFromOvertimePropertyChange(evt);
@@ -774,7 +1275,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         dateToOvertime.setBackground(new java.awt.Color(255, 255, 255));
-        dateToOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateToOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         dateToOvertime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 dateToOvertimePropertyChange(evt);
@@ -787,7 +1288,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         txtReasonOvertime.setColumns(20);
         txtReasonOvertime.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtReasonOvertime.setRows(5);
-        txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane3.setViewportView(txtReasonOvertime);
 
         btnSubmit1.setText("SUBMIT");
@@ -810,7 +1311,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         txtDaysNumber1.setEditable(false);
         txtDaysNumber1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 102))); // NOI18N
+        txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDaysNumber1ActionPerformed(evt);
@@ -907,7 +1408,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(panelTypeRequestLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTypeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 997, Short.MAX_VALUE)
+                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -966,10 +1467,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         tableDTR.setViewportView(jTableAllDTR);
 
         dateFrom2.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
 
         dateTo2.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         lblPeriod.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblPeriod.setText("Period :");
@@ -1262,10 +1763,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblID4.setText("N/A");
 
         dateFrom3.setBackground(new java.awt.Color(255, 255, 255));
-        dateFrom3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51)))); // NOI18N
+        dateFrom3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(null, "From", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51)))); // NOI18N
 
         dateTo3.setBackground(new java.awt.Color(255, 255, 255));
-        dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
+        dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
         btnReport.setText("Generate");
         btnReport.addActionListener(new java.awt.event.ActionListener() {
@@ -1588,6 +2089,13 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             }
         });
 
+        searchDate.setText("Search");
+        searchDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchDateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelAllRequest1Layout = new javax.swing.GroupLayout(panelAllRequest1);
         panelAllRequest1.setLayout(panelAllRequest1Layout);
         panelAllRequest1Layout.setHorizontalGroup(
@@ -1605,9 +2113,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addComponent(lblTo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnGeneratePayrollReport)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(searchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
                                 .addComponent(lblAllRequest3)
                                 .addGap(0, 889, Short.MAX_VALUE))
                             .addComponent(jSeparator16)
@@ -1619,7 +2127,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addComponent(lblPayrollPeriod))
                             .addGroup(panelAllRequest1Layout.createSequentialGroup()
                                 .addGap(24, 24, 24)
-                                .addComponent(btnReleased, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnReleased, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnGeneratePayrollReport, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -1628,24 +2138,27 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(panelAllRequest1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAllRequest3)
-                    .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblTo)
+                    .addGroup(panelAllRequest1Layout.createSequentialGroup()
                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lblFrom)
-                                .addComponent(btnGeneratePayrollReport)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(lblPayrollPeriod)
+                            .addComponent(lblAllRequest3)
+                            .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jDateFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblTo)
+                                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblFrom))))
+                        .addGap(11, 11, 11)
+                        .addComponent(lblPayrollPeriod))
+                    .addComponent(searchDate))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator16, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnReleased, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnReleased, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGeneratePayrollReport, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(84, 84, 84))
         );
 
         tabbedInsideRequest1.addTab("", panelAllRequest1);
@@ -1806,484 +2319,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         mainTabbed.addTab("tab8", tabbedEmployeeDTR);
 
-        panelMotorPH.setBackground(new java.awt.Color(255, 255, 255));
-
-        tabbedPersonalDetails.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
-
-        panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
-
-        lblEmpID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblEmpID.setText("Employee ID:");
-
-        lblFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblFName.setText("First Name:");
-
-        lblLName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblLName.setText("Last Name:");
-
-        lblBDay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblBDay.setText("Birthday:");
-
-        lblAddress.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblAddress.setText("Address: ");
-
-        lblPhoneNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPhoneNum.setText("Phone No.");
-
-        txtID.setEditable(false);
-        txtID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtFName.setEditable(false);
-        txtFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtLName.setEditable(false);
-        txtLName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtBDay.setEditable(false);
-        txtBDay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtPhoneNum.setEditable(false);
-        txtPhoneNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        textAreaAddress.setEditable(false);
-        textAreaAddress.setColumns(20);
-        textAreaAddress.setRows(5);
-        jScrollPane1.setViewportView(textAreaAddress);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblEmpID, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblFName)
-                        .addGap(25, 25, 25)
-                        .addComponent(txtFName))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(lblPhoneNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblBDay, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblLName, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(lblAddress))
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(txtLName)
-                            .addComponent(txtBDay)
-                            .addComponent(txtPhoneNum))))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmpID)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFName)
-                    .addComponent(txtFName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblLName)
-                    .addComponent(txtLName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBDay)
-                    .addComponent(txtBDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblPhoneNum)
-                    .addComponent(txtPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAddress)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout panelPersonalDetails1Layout = new javax.swing.GroupLayout(panelPersonalDetails1);
-        panelPersonalDetails1.setLayout(panelPersonalDetails1Layout);
-        panelPersonalDetails1Layout.setHorizontalGroup(
-            panelPersonalDetails1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetails1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        panelPersonalDetails1Layout.setVerticalGroup(
-            panelPersonalDetails1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetails1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
-
-        lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblBasicSalary.setText("Basic Salary :");
-
-        lblRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblRiceSubsidy.setText("Rice Subsidy: ");
-
-        lblPhoneAllowances.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPhoneAllowances.setText("Phone Allowances: ");
-
-        lblClothingAllowanes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblClothingAllowanes.setText("Clothing Allowances: ");
-
-        txtBasicSalary.setEditable(false);
-        txtBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtBasicSalary.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBasicSalaryActionPerformed(evt);
-            }
-        });
-
-        txtRiceSubsidy.setEditable(false);
-        txtRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtRiceSubsidy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtRiceSubsidyActionPerformed(evt);
-            }
-        });
-
-        txtPhoneAllowance.setEditable(false);
-        txtPhoneAllowance.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtPhoneAllowance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPhoneAllowanceActionPerformed(evt);
-            }
-        });
-
-        txtClothingAllowance.setEditable(false);
-        txtClothingAllowance.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtClothingAllowance.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtClothingAllowanceActionPerformed(evt);
-            }
-        });
-
-        lblBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblBiMonthlyRate.setText("BiMonthly Rate:");
-
-        txtBiMonthlyRate.setEditable(false);
-        txtBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        lblHourlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblHourlyRate.setText("Hourly Rate:");
-
-        txtHourlyRate.setEditable(false);
-        txtHourlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblBasicSalary, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel5Layout.createSequentialGroup()
-                                    .addComponent(lblBiMonthlyRate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGap(36, 36, 36)))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(lblHourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(36, 36, 36)))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtHourlyRate, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                            .addComponent(txtBiMonthlyRate, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtBasicSalary, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblClothingAllowanes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPhoneAllowances, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblRiceSubsidy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPhoneAllowance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                            .addComponent(txtClothingAllowance, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtRiceSubsidy, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addGap(6, 6, 6))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBasicSalary)
-                    .addComponent(txtBasicSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblBiMonthlyRate)
-                    .addComponent(txtBiMonthlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHourlyRate)
-                    .addComponent(txtHourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRiceSubsidy)
-                    .addComponent(txtRiceSubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPhoneAllowances)
-                    .addComponent(txtPhoneAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblClothingAllowanes)
-                    .addComponent(txtClothingAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout panelPersonalDetailsLayout = new javax.swing.GroupLayout(panelPersonalDetails);
-        panelPersonalDetails.setLayout(panelPersonalDetailsLayout);
-        panelPersonalDetailsLayout.setHorizontalGroup(
-            panelPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetailsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
-        );
-        panelPersonalDetailsLayout.setVerticalGroup(
-            panelPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetailsLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
-
-        lblPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPhilNum.setText("PhilHealth No.");
-
-        lblSSSNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblSSSNum.setText("SSS No.");
-
-        lblTINNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblTINNum.setText("TIN No.");
-
-        lblPagIbigNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPagIbigNum.setText("PagIbig No.");
-
-        txtPhilNum.setEditable(false);
-        txtPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtSSSNum.setEditable(false);
-        txtSSSNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtTINNum.setEditable(false);
-        txtTINNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtPagIbigNum.setEditable(false);
-        txtPagIbigNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, Short.MAX_VALUE)
-                            .addComponent(lblTINNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(23, 23, 23)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTINNum, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                            .addComponent(txtPagIbigNum)))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblSSSNum)
-                            .addComponent(lblPhilNum))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPhilNum)
-                            .addComponent(txtSSSNum))))
-                .addContainerGap())
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblPhilNum)
-                    .addComponent(txtPhilNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSSSNum)
-                    .addComponent(txtSSSNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTINNum)
-                    .addComponent(txtTINNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPagIbigNum)
-                    .addComponent(txtPagIbigNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout panelPersonalDetails2Layout = new javax.swing.GroupLayout(panelPersonalDetails2);
-        panelPersonalDetails2.setLayout(panelPersonalDetails2Layout);
-        panelPersonalDetails2Layout.setHorizontalGroup(
-            panelPersonalDetails2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetails2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelPersonalDetails2Layout.setVerticalGroup(
-            panelPersonalDetails2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetails2Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Helvetica Neue", 0, 13), new java.awt.Color(255, 153, 51))); // NOI18N
-
-        lblPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblPosition.setText("Position: ");
-
-        lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblStatus.setText("Status:");
-
-        lblSupervisor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        lblSupervisor.setText("Supervisor:");
-
-        txtPosition.setEditable(false);
-        txtPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtPosition.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPositionActionPerformed(evt);
-            }
-        });
-
-        txtStatus.setEditable(false);
-        txtStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtSupervisor.setEditable(false);
-        txtSupervisor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtSupervisor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSupervisorActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblSupervisor, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                    .addComponent(lblPosition, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtStatus, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                    .addComponent(txtSupervisor)
-                    .addComponent(txtPosition))
-                .addContainerGap())
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPosition)
-                    .addComponent(txtPosition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblStatus)
-                    .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSupervisor)
-                    .addComponent(txtSupervisor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout panelPersonalDetails3Layout = new javax.swing.GroupLayout(panelPersonalDetails3);
-        panelPersonalDetails3.setLayout(panelPersonalDetails3Layout);
-        panelPersonalDetails3Layout.setHorizontalGroup(
-            panelPersonalDetails3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetails3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        panelPersonalDetails3Layout.setVerticalGroup(
-            panelPersonalDetails3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelPersonalDetails3Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(171, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout tabbedPersonalDetailsLayout = new javax.swing.GroupLayout(tabbedPersonalDetails);
-        tabbedPersonalDetails.setLayout(tabbedPersonalDetailsLayout);
-        tabbedPersonalDetailsLayout.setHorizontalGroup(
-            tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedPersonalDetailsLayout.createSequentialGroup()
-                .addContainerGap(75, Short.MAX_VALUE)
-                .addComponent(panelPersonalDetails1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
-                .addComponent(panelPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58)
-                .addComponent(panelPersonalDetails2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52)
-                .addComponent(panelPersonalDetails3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(91, 91, 91))
-        );
-        tabbedPersonalDetailsLayout.setVerticalGroup(
-            tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tabbedPersonalDetailsLayout.createSequentialGroup()
-                .addGap(152, 152, 152)
-                .addGroup(tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelPersonalDetails1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPersonalDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPersonalDetails2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelPersonalDetails3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(266, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout panelMotorPHLayout = new javax.swing.GroupLayout(panelMotorPH);
-        panelMotorPH.setLayout(panelMotorPHLayout);
-        panelMotorPHLayout.setHorizontalGroup(
-            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMotorPHLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tabbedPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        panelMotorPHLayout.setVerticalGroup(
-            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMotorPHLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(tabbedPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        mainTabbed.addTab("tab6", panelMotorPH);
-
         jPanel1.add(mainTabbed, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 60, 1510, 800));
 
         jScrollPane7.setViewportView(jPanel1);
@@ -2305,86 +2340,289 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
         // TODO add your handling code here:
-        payrollStaff.userLogout();
+       try {
+            if (attendanceService == null) {
+                this.attendanceService = new AttendanceService();
+            }
+
+            int employeeId = Integer.parseInt(lblIDSidebar.getText());
+            AttendanceResult result = attendanceService.processTimeOut(employeeId);
+
+            if (result.isSuccess()) {
+                JOptionPane.showMessageDialog(this, result.getMessage(), 
+                    "Time Out Success", JOptionPane.INFORMATION_MESSAGE);
+                updateAttendanceButtonStates();
+
+                // Refresh DTR if viewing
+                if (mainTabbed.getSelectedIndex() == 2) {
+                    refreshDTRTable();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, result.getMessage(), 
+                    "Time Out Failed", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+                "System Error", JOptionPane.ERROR_MESSAGE);
+        }
+
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         // TODO add your handling code here:
-        payrollStaff.userLogin();
+       try {
+            if (attendanceService == null) {
+                this.attendanceService = new AttendanceService();
+            }
+
+            int employeeId = Integer.parseInt(lblIDSidebar.getText());
+            AttendanceResult result = attendanceService.processTimeIn(employeeId);
+
+            if (result.isSuccess()) {
+                JOptionPane.showMessageDialog(this, result.getMessage(), 
+                    "Time In Success", JOptionPane.INFORMATION_MESSAGE);
+                updateAttendanceButtonStates();
+
+                // Refresh DTR if viewing
+                if (mainTabbed.getSelectedIndex() == 2) {
+                    refreshDTRTable();
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, result.getMessage(), 
+                    "Time In Failed", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), 
+                "System Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
-    private void btnLeaveLedger2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedger2ActionPerformed
+    private void refreshDTRTable() {
+        if (dateFrom2.getDate() != null && dateTo2.getDate() != null) {
+            payrollStaff.setTableData(payrollStaff.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
+            payrollStaff.setTableSize(5);
+            payrollStaff.displayDataTable(jTableAllDTR);
+        }
+    }
+    
+    private void btncomputePayrollActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncomputePayrollActionPerformed
         // TODO add your handling code here:
-        jDateFrom.setDate(null);
-        jDateTo.setDate(null);
-        mainTabbed.setSelectedIndex(6);
-        btnReleased.setEnabled(true);
-        String payrollRange = payrollStaff.computePayroll();
-        System.out.println("Somnething");
-        payrollStaff.setTableData(payrollStaff.getDataForPayrollTable());
-        payrollStaff.setTableSize(14);
-        payrollStaff.displayDataTable(jTablePayroll);
-        lblPayrollPeriod.setText("Payroll from "+payrollRange);
-    }//GEN-LAST:event_btnLeaveLedger2ActionPerformed
+        try {
+            mainTabbed.setSelectedIndex(5);
+            jDateFrom.setDate(null);
+            jDateTo.setDate(null);
+            btnReleased.setEnabled(true);
 
-    private void btnLeaveLedger3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedger3ActionPerformed
+            ArrayList<ArrayList<String>> currentPayrollData = payrollStaff.getDataForPayrollTableDB();
+            payrollStaff.setTableData(currentPayrollData);
+            payrollStaff.setTableSize(14);
+            payrollStaff.displayDataTable(jTablePayroll);
+
+            String currentPeriod = payrollStaff.getCurrentPayrollPeriod();
+            lblPayrollPeriod.setText("Current Payroll Period: " + currentPeriod + 
+                " (Database Records: " + currentPayrollData.size() + ")");
+
+            System.out.println("Loaded payroll data from database: " + currentPayrollData.size() + " records");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Error loading payroll data from database: " + e.getMessage(),
+                "Database Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btncomputePayrollActionPerformed
+
+    private void btnemployeeDTRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnemployeeDTRActionPerformed
         // TODO add your handling code here:
-        mainTabbed.setSelectedIndex(7);
-        comboEmployeeName.removeAllItems();
-        comboEmployeeName.addItem("");
-        String employeeName = payrollStaff.accountDetails.getLastName()+", "+payrollStaff.accountDetails.getFirstName();
-        payrollStaff.getEmployeeNames();
-          for (ArrayList<String> row : payrollStaff.getNewData()) {
-            for (String item : row) {
-                if(!item.equals(payrollStaff.accountDetails.getLastName()+", "+payrollStaff.accountDetails.getFirstName()))
-                    comboEmployeeName.addItem(item);  // Add each element of the 2D ArrayList
-            }
-           }
-          System.out.println("Name :"+employeeName);
-          payrollStaff.getNewData().clear();
-    }//GEN-LAST:event_btnLeaveLedger3ActionPerformed
+        try {
+            // Switch to Employee DTR tab
+            mainTabbed.setSelectedIndex(6); // Replace with correct tab index
+
+            // Load employee dropdown when tab opens
+            loadEmployeeDropdown();
+
+        } catch (Exception e) {
+            System.err.println("Error opening Employee DTR tab: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnemployeeDTRActionPerformed
 
     private void btnReleasedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReleasedActionPerformed
         // TODO add your handling code here:
-        ArrayList<ArrayList<String>> tempData = new ArrayList<>();
-        int[] row = jTablePayroll.getSelectedRows();
-        DefaultTableModel model = (DefaultTableModel)jTablePayroll.getModel();
-        for(int r : row){
-            ArrayList <String> rowData = new ArrayList<>();
-            rowData.add(model.getValueAt(r, 0).toString());  //ID
-            rowData.add(model.getValueAt(r, 1).toString());  //NAME
-            rowData.add(model.getValueAt(r, 2).toString());  //PAYROLL PERIOD
-            rowData.add(model.getValueAt(r, 13).toString()); //STATUS
-            tempData.add(rowData);
-        }
-        if(jTablePayroll.getSelectedRow() != -1){
-            payrollStaff.releasedPayroll(tempData);
-            String payrollRange = payrollStaff.computePayroll();
-            payrollStaff.setTableData(payrollStaff.getDataForPayrollTable());
-            payrollStaff.setTableSize(14);
-            payrollStaff.displayDataTable(jTablePayroll);
-            lblPayrollPeriod.setText("Payroll from "+payrollRange);
-            payrollStaff.setTableData();
-            JOptionPane.showMessageDialog(null, "Successfuly Released Payroll!");
-        }else{
-            JOptionPane.showMessageDialog(null, "Select Payroll First!");
+        try {
+            ArrayList<ArrayList<String>> tempData = new ArrayList<>();
+            int[] row = jTablePayroll.getSelectedRows();
+            DefaultTableModel model = (DefaultTableModel)jTablePayroll.getModel();
+
+            if (row.length == 0) {
+                JOptionPane.showMessageDialog(null, "Select Payroll First!");
+                return;
+            }
+
+            // Prepare data for release using database format
+            for(int r : row){
+                ArrayList <String> rowData = new ArrayList<>();
+                rowData.add(model.getValueAt(r, 0).toString());  //ID
+                rowData.add(model.getValueAt(r, 1).toString());  //NAME
+                rowData.add(model.getValueAt(r, 2).toString());  //PAYROLL PERIOD
+                rowData.add(model.getValueAt(r, 13).toString()); //STATUS
+                tempData.add(rowData);
+            }
+
+            // Confirm the release action
+            int choice = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to release " + tempData.size() + " selected payroll record(s)?\n" +
+                "This action will mark them as 'Approved' in the database and they cannot be modified.",
+                "Confirm Release",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+            if (choice != JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            // Release the payrolls using database method
+            payrollStaff.releasedPayrollDB(tempData);
+
+            // Refresh the table with updated database data
+            if (jDateFrom.getDate() != null && jDateTo.getDate() != null) {
+                ArrayList<ArrayList<String>> refreshedData = payrollStaff.getPayrollDataForDateRange(
+                    jDateFrom.getDate(), jDateTo.getDate());
+
+                payrollStaff.setTableData(refreshedData);
+                payrollStaff.setTableSize(14);
+                payrollStaff.displayDataTable(jTablePayroll);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
+                String startFormatted = sdf.format(jDateFrom.getDate());
+                String endFormatted = sdf.format(jDateTo.getDate());
+                String dateRange = startFormatted + "-" + endFormatted + ", 2025";
+                lblPayrollPeriod.setText("Payroll from " + dateRange);
+            }
+
+            JOptionPane.showMessageDialog(this,
+                "Successfully released " + tempData.size() + " payroll record(s) in database.",
+                "Release Successful",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this,
+                "Error releasing payroll records: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnReleasedActionPerformed
 
     private void comboEmployeeNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboEmployeeNameActionPerformed
         // TODO add your handling code here:
-        String selectedItem;
-        if(comboEmployeeName.getSelectedItem() == null)
-            selectedItem = "";
-        else
-            selectedItem = comboEmployeeName.getSelectedItem().toString();
+       try {
+        System.out.println("=== DEBUG: Employee Selection Event ===");
         
-        payrollStaff.setSelectedName(selectedItem);
-        payrollStaff.setTableData(payrollStaff.getDataForDTRTable());
-        payrollStaff.setTableSize(6);
-        payrollStaff.displayDataTable(jTableDTR);
-        payrollStaff.setTableData();
+        // NULL-SAFE way to get selected item
+        Object selectedItem = comboEmployeeName.getSelectedItem();
+        
+        // Check if something is actually selected
+        if (selectedItem == null) {
+            System.out.println("DEBUG: No item selected (selectedItem is null)");
+            return; // Exit early if nothing selected
+        }
+        
+        String selectedEmployee = selectedItem.toString();
+        System.out.println("DEBUG: Selected employee: " + selectedEmployee);
+        
+            // Skip if empty or default selection
+            if (selectedEmployee.trim().isEmpty() || 
+                selectedEmployee.equals("Select Employee") ||
+                selectedEmployee.equals("")) {
+                System.out.println("DEBUG: Invalid selection, skipping DTR load");
+                return;
+            }
+
+            // Check if combo box is still being populated
+            if (comboEmployeeName.getItemCount() <= 1) {
+                System.out.println("DEBUG: Combo box not fully loaded yet");
+                return;
+            }
+
+            // Get date range for DTR
+            Date[] periodDates = payrollStaff.getCurrentPayrollPeriodDates();
+            Date fromDate = periodDates[0];
+            Date toDate = periodDates[1];
+
+            System.out.println("DEBUG: Loading DTR for " + selectedEmployee + 
+                              " from " + fromDate + " to " + toDate);
+
+            // Load DTR data
+            ArrayList<ArrayList<String>> dtrData = payrollStaff.getEmployeeDTR(selectedEmployee, fromDate, toDate);
+
+            // Update table
+            payrollStaff.setTableData(dtrData);
+            payrollStaff.setTableSize(7);
+            payrollStaff.displayDataTable(jTableAllDTR);
+
+            System.out.println("✅ Successfully loaded " + dtrData.size() + " DTR records");
+
+        } catch (Exception e) {
+            System.err.println("❌ ERROR in employee selection: " + e.getMessage());
+            e.printStackTrace();
+
+            // Show user-friendly error
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error loading employee data. Please try again.", 
+                "Loading Error", 
+                javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_comboEmployeeNameActionPerformed
+
+    private void loadEmployeeDropdown() {
+       try {
+            System.out.println("=== Loading Employee Dropdown ===");
+
+            // Temporarily remove the action listener to prevent events during loading
+            java.awt.event.ActionListener[] listeners = comboEmployeeName.getActionListeners();
+            for (java.awt.event.ActionListener listener : listeners) {
+                comboEmployeeName.removeActionListener(listener);
+            }
+
+            // Clear and populate combo box
+            comboEmployeeName.removeAllItems();
+            comboEmployeeName.addItem("Select Employee"); // Default item
+
+            // Get employee names
+            ArrayList<String> employeeNames = payrollStaff.getAllEmployeeNames();
+
+            // Add each employee to combo box
+            for (String employeeName : employeeNames) {
+                comboEmployeeName.addItem(employeeName);
+            }
+
+            // Re-add the action listeners
+            for (java.awt.event.ActionListener listener : listeners) {
+                comboEmployeeName.addActionListener(listener);
+            }
+
+            System.out.println("✅ Loaded " + employeeNames.size() + " employees in dropdown");
+
+        } catch (Exception e) {
+            System.err.println("❌ ERROR loading employee dropdown: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // CALL this method in your constructor or when the DTR tab is opened:
+    // Add this to your constructor or DTR button action:
+    public void initializeDTRTab() {
+        loadEmployeeDropdown();
+
+        // Set default date range to current payroll period
+        Date[] periodDates = payrollStaff.getCurrentPayrollPeriodDates();
+        if (dateFrom != null && dateTo != null) { // Replace with your actual date picker names
+            dateFrom.setDate(periodDates[0]);
+            dateTo.setDate(periodDates[1]);
+        }
+    }
 
     private void btnGeneratePayrollReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGeneratePayrollReportActionPerformed
         // TODO add your handling code here:
@@ -2465,7 +2703,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void btnPersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonalDetailsActionPerformed
         // TODO add your handling code here:
-        mainTabbed.setSelectedIndex(1);
+        mainTabbed.setSelectedIndex(0);
         txtID.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
         txtFName.setText(payrollStaff.accountDetails.getFirstName());
         txtLName.setText(payrollStaff.accountDetails.getLastName());
@@ -2489,7 +2727,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void btnRequestPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestPortActionPerformed
         // TODO add your handling code here:.
-        mainTabbed.setSelectedIndex(2);
+        mainTabbed.setSelectedIndex(1);
 
         // Set the combo box to "All Request" (index 0) and display the "All Request" panel
         comboTypeRequest.setSelectedIndex(0);
@@ -2503,45 +2741,46 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void btnDTRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDTRActionPerformed
         // TODO add your handling code here:
-        mainTabbed.setSelectedIndex(3);
+        try {
+            mainTabbed.setSelectedIndex(2);
 
-        // Set employee details in the DTR panel
-        payrollStaff.viewPersonalDetails(lblIDSidebar.getText());
-        lblID2.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
-        lblMyName4.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
+            payrollStaff.viewPersonalDetails(lblIDSidebar.getText());
+            lblID2.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
+            lblMyName4.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
 
-        // Get current date
-        Calendar today = Calendar.getInstance();
-        int currentDay = today.get(Calendar.DAY_OF_MONTH);
+            Calendar today = Calendar.getInstance();
+            int currentDay = today.get(Calendar.DAY_OF_MONTH);
 
-        // Set up date range based on current period (1-15 or 16-end of month)
-        Calendar startCal = Calendar.getInstance();
-        Calendar endCal = Calendar.getInstance();
+            Calendar startCal = Calendar.getInstance();
+            Calendar endCal = Calendar.getInstance();
 
-        if (currentDay <= 15) {
-            // First half of the month (1-15)
-            startCal.set(Calendar.DAY_OF_MONTH, 1);
-            endCal.set(Calendar.DAY_OF_MONTH, 15);
-        } else {
-            // Second half of the month (16-end)
-            startCal.set(Calendar.DAY_OF_MONTH, 16);
-            endCal.set(Calendar.DAY_OF_MONTH, endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            if (currentDay <= 15) {
+                startCal.set(Calendar.DAY_OF_MONTH, 1);
+                endCal.set(Calendar.DAY_OF_MONTH, 15);
+            } else {
+                startCal.set(Calendar.DAY_OF_MONTH, 16);
+                endCal.set(Calendar.DAY_OF_MONTH, endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            }
+
+            dateFrom2.setDate(startCal.getTime());
+            dateTo2.setDate(endCal.getTime());
+
+            payrollStaff.setTableData(payrollStaff.getDataAllDTR(startCal.getTime(), endCal.getTime()));
+            payrollStaff.setTableSize(5);
+            payrollStaff.displayDataTable(jTableAllDTR);
+
+            updateAttendanceButtonStates();
+
+        } catch (Exception e) {
+            System.err.println("ERROR in DTR button: " + e.getMessage());
+            e.printStackTrace();
         }
-
-        // Set the date fields to show the current period
-        dateFrom2.setDate(startCal.getTime());
-        dateTo2.setDate(endCal.getTime());
-
-        // Load and display the attendance records for the current period
-        payrollStaff.setTableData(payrollStaff.getDataAllDTR(startCal.getTime(), endCal.getTime()));
-        payrollStaff.setTableSize(5);
-        payrollStaff.displayDataTable(jTableAllDTR);
     }//GEN-LAST:event_btnDTRActionPerformed
 
     private void btnLeaveLedgerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedgerActionPerformed
         // TODO add your handling code here:
         // Switch to the Leave Ledger tab
-        mainTabbed.setSelectedIndex(4);
+        mainTabbed.setSelectedIndex(3);
 
         // Set employee details in the Leave Ledger panel
         payrollStaff.viewPersonalDetails(lblIDSidebar.getText());
@@ -2558,7 +2797,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void btnLeaveLedger1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedger1ActionPerformed
         // TODO add your handling code here:
-        mainTabbed.setSelectedIndex(5);
+        mainTabbed.setSelectedIndex(4);
     }//GEN-LAST:event_btnLeaveLedger1ActionPerformed
 
     private void txtBasicSalaryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBasicSalaryActionPerformed
@@ -2587,12 +2826,13 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void btnSubmitToSepervisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitToSepervisorActionPerformed
         // TODO add your handling code here:
-        ArrayList<ArrayList<String>> tempData = new ArrayList<>();
+         ArrayList<ArrayList<String>> tempData = new ArrayList<>();
         int[] row = jTableAllDTR.getSelectedRows();
         DefaultTableModel model = (DefaultTableModel)jTableAllDTR.getModel();
+
         for(int r : row){
             if(model.getValueAt(r, 3).toString().equals("Yes")){
-                JOptionPane.showMessageDialog(null, "You Have Selectetd A DTR That Was Already Forwarded To Supervisor!");
+                JOptionPane.showMessageDialog(null, "You Have Selected A DTR That Was Already Forwarded To Supervisor!");
                 btnSubmitToSepervisor.enable(false);
             }else{
                 btnSubmitToSepervisor.enable(true);
@@ -2602,12 +2842,13 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 tempData.add(rowData);
             }
         }
+
         if(jTableAllDTR.getSelectedRow() != -1 && !tempData.isEmpty()){
             payrollStaff.forwardDTRToSupervisor(tempData);
             payrollStaff.setTableData(payrollStaff.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
             payrollStaff.setTableSize(5);
             payrollStaff.displayDataTable(jTableAllDTR);
-            JOptionPane.showMessageDialog(null, "Successfuly Submitted the "+tempData.size()+" DTR to Your Supervisor!");
+            JOptionPane.showMessageDialog(null, "Successfully Submitted the "+tempData.size()+" DTR to Your Supervisor!");
         }else if(jTableAllDTR.getSelectedRow() == -1){
             JOptionPane.showMessageDialog(null, "Select DTR First!");
         }
@@ -2615,79 +2856,79 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
-
-        payrollStaff.setTableData(payrollStaff.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
-        payrollStaff.setTableSize(5);
-        payrollStaff.displayDataTable(jTableAllDTR);
+        if (dateFrom2.getDate() != null && dateTo2.getDate() != null) {
+                payrollStaff.setTableData(payrollStaff.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
+                payrollStaff.setTableSize(5);
+                payrollStaff.displayDataTable(jTableAllDTR);
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select both From and To dates!");
+        }
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
         // TODO add your handling code here:
-        ArrayList<ArrayList<String>> tempData = payrollStaff.viewPersonalPayslip(dateFrom3.getDate(), dateTo3.getDate(), lblIDSidebar.getText());
-    
-        if(tempData.isEmpty()){
-            JOptionPane.showMessageDialog(null, "No Payroll Found!");
-            // Reset labels
-            lblID4.setText("N/A");
-            lblMyName6.setText("N/A");
-            lblPayrollPeriod.setText("N/A");
-            lblPositon.setText("N/A");
-            lblGross.setText("0.00");
-            lblBenefits.setText("0.00");
-            lblOvertime.setText("0.00");
-            lblUndertime.setText("0.00");
-            lblSSS.setText("0.00");
-            lblPhilHealth.setText("0.00");
-            lblPagIbig.setText("0.00");
-            lblTax.setText("0.00");
-            lblNetPay.setText("0.00");
-        } else {
+        if (dateFrom3.getDate() != null && dateTo3.getDate() != null && !lblIDSidebar.getText().trim().isEmpty()) {
+            ArrayList<ArrayList<String>> tempData = payrollStaff.viewPersonalPayslip(
+                dateFrom3.getDate(), 
+                dateTo3.getDate(), 
+                lblIDSidebar.getText()
+            );
 
-            lblID4.setText(tempData.get(0).get(0));              // Employee ID
-            lblMyName6.setText(tempData.get(0).get(1));          // Employee Name
-            lblPayrollPeriod.setText(tempData.get(0).get(2));    // Payroll Period
-            lblPositon.setText(tempData.get(0).get(3));          // Position
-            lblGross.setText(tempData.get(0).get(4));            // Gross Income
-            lblBenefits.setText(tempData.get(0).get(5));         // Benefits
-            lblOvertime.setText(tempData.get(0).get(6));         // Overtime
-            lblUndertime.setText(tempData.get(0).get(7));        // Undertime
-            lblSSS.setText(tempData.get(0).get(8));              // SSS
-            lblPhilHealth.setText(tempData.get(0).get(9));       // PhilHealth
-            lblPagIbig.setText(tempData.get(0).get(10));         // Pag-IBIG
-            lblTax.setText(tempData.get(0).get(11));             // Tax
-            lblNetPay.setText(tempData.get(0).get(12));          // Net Pay
-
-            // Ask if user wants to generate PDF
-            int choice = JOptionPane.showConfirmDialog(null, 
-                "Would you like to save this payslip as a file?", 
-                "Save Payslip", 
-                JOptionPane.YES_NO_OPTION);
-
-            if (choice == JOptionPane.YES_OPTION) {
-                ReportGenerator generator = new ReportGenerator();
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                String period = sdf.format(dateFrom3.getDate()) + " to " + sdf.format(dateTo3.getDate());
-                generator.generatePayslipPDF(Integer.parseInt(lblIDSidebar.getText()), period);
+            if (tempData.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No Payroll Found!");
+                // Reset all labels to default values
+                lblID4.setText("N/A");
+                lblMyName6.setText("N/A");
+                lblPayrollPeriod.setText("N/A");
+                lblPosition.setText("N/A");
+                lblGross.setText("0.00");
+                lblBenefits.setText("0.00");
+                lblOvertime.setText("0.00");
+                lblUndertime.setText("0.00");
+                lblSSS.setText("0.00");
+                lblPhilHealth.setText("0.00");
+                lblPagIbig.setText("0.00");
+                lblTax.setText("0.00");
+                lblNetPay.setText("0.00");
+            } else {
+                // Populate labels with data
+                ArrayList<String> payslipData = tempData.get(0);
+                lblID4.setText(payslipData.get(0));           // Employee ID
+                lblMyName6.setText(payslipData.get(1));       // Name
+                lblPayrollPeriod.setText(payslipData.get(2)); // Payroll Period
+                lblPosition.setText(payslipData.get(3));      // Position
+                lblGross.setText(payslipData.get(4));         // Gross Income
+                lblBenefits.setText(payslipData.get(5));      // Benefits
+                lblOvertime.setText(payslipData.get(6));      // Overtime
+                lblUndertime.setText(payslipData.get(7));     // Undertime
+                lblSSS.setText(payslipData.get(8));           // SSS
+                lblPhilHealth.setText(payslipData.get(9));    // PhilHealth
+                lblPagIbig.setText(payslipData.get(10));      // Pag-IBIG
+                lblTax.setText(payslipData.get(11));          // Tax
+                lblNetPay.setText(payslipData.get(12));       // Net Pay
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select date range and ensure employee is selected!");
         }
-        tempData.clear();
     }//GEN-LAST:event_btnReportActionPerformed
 
     private void comboTypeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTypeRequestActionPerformed
         // TODO add your handling code here:
-        String selectedItem = comboTypeRequest.getSelectedItem().toString();
+        try {
+            String selectedItem = comboTypeRequest.getSelectedItem().toString();
 
-        if(selectedItem.equals("All Request")) {
-            tabbedInsideRequest.setSelectedIndex(0);
-            // Display all requests in the table
-            payrollStaff.setTableData(payrollStaff.getDataAllRequests());
-            payrollStaff.setTableSize(7);
-            payrollStaff.displayDataTable(jTableAllRequest);
+            if(selectedItem.equals("All Request")) {
+                tabbedInsideRequest.setSelectedIndex(0);
+                payrollStaff.setTableData(payrollStaff.getDataAllRequests());
+                payrollStaff.setTableSize(7);
+                payrollStaff.displayDataTable(jTableAllRequest);
 
             } else if(selectedItem.equals("Leave Application")) {
                 tabbedInsideRequest.setSelectedIndex(1);
 
+                payrollStaff.viewPersonalDetails(lblIDSidebar.getText());
                 payrollStaff.leaveBalancesInformation();
+
                 lblID.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
                 lblMyName.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
                 lblVLBalance.setText(payrollStaff.getBalanceVL());
@@ -2695,39 +2936,30 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
             } else {
                 tabbedInsideRequest.setSelectedIndex(2);
+
+                payrollStaff.viewPersonalDetails(lblIDSidebar.getText());
+
                 lblID1.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
                 lblMyName2.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
-                // Display all requests in the table
-                payrollStaff.setTableData(payrollStaff.getDataAllRequests());
-                payrollStaff.setTableSize(7);
-                payrollStaff.displayDataTable(jTableAllRequest);
+            }
+        } catch (Exception e) {
+            System.err.println("ERROR in comboTypeRequestActionPerformed: " + e.getMessage());
+            e.printStackTrace();
         }
     }//GEN-LAST:event_comboTypeRequestActionPerformed
 
     private void dateToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToPropertyChange
         // TODO add your handling code here:
-        if(dateFrom.getDate() != null && dateTo.getDate() != null){
-            if(payrollStaff.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
-                txtDaysNumber.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-                payrollStaff.setNumberOfDaysLeave();
-            }else{
-                payrollStaff.setNumberOfDaysLeave();
-                txtDaysNumber.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-            }
-        }
+        if (payrollStaff != null && "date".equals(evt.getPropertyName())) {
+          updateLeaveDaysCalculation();
+      }
     }//GEN-LAST:event_dateToPropertyChange
 
     private void dateFromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromPropertyChange
         // TODO add your handling code here:
-        if(dateTo.getDate() != null && dateFrom.getDate() != null){
-            if(payrollStaff.isValidDateRange(dateFrom.getDate(), dateTo.getDate())){
-                txtDaysNumber.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-                payrollStaff.setNumberOfDaysLeave();
-            }else{
-                payrollStaff.setNumberOfDaysLeave();
-                txtDaysNumber.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-            }
-        }
+        if (payrollStaff != null && "date".equals(evt.getPropertyName())) {
+         updateLeaveDaysCalculation();
+     }
     }//GEN-LAST:event_dateFromPropertyChange
 
     private void txtDaysNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDaysNumberActionPerformed
@@ -2735,84 +2967,145 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDaysNumberActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
+        try {
+             System.out.println("DEBUG: Leave submit button clicked");
 
-        if (comboLeaveType.getSelectedIndex() == 0 || dateFrom.getDate() == null || dateTo.getDate() == null || txtReason.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please provide all the necessary details for filing of Leave Request!");
-            return;
-        }else if(txtDaysNumber.getText().equals("0")){
-            JOptionPane.showMessageDialog(null, "Error date of leave!");
-            return;
-        }
+             if (comboLeaveType.getSelectedIndex() == 0) {
+                 JOptionPane.showMessageDialog(this, "Please select a leave type!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
 
-        data.add(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
-        data.add(payrollStaff.accountDetails.getEmployeeCompleteName());
-        data.add(comboLeaveType.getSelectedItem().toString());
-        data.add(dateFormat.format(dateFrom.getDate()));
-        data.add(dateFormat.format(dateTo.getDate()));
-        data.add(txtDaysNumber.getText());
-        data.add(txtReason.getText());
+             if (dateFrom.getDate() == null) {
+                 JOptionPane.showMessageDialog(this, "Please select a FROM date!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
 
-        if(payrollStaff.fileLeaveRequest(data)){
-            txtDaysNumber.setText(null);
-            comboLeaveType.setSelectedIndex(0);
-            dateFrom.setDate(null);
-            dateTo.setDate(null);
-            txtReason.setText(null);
-            JOptionPane.showMessageDialog(null, "Successfuly File A Leave Request!");
-        }else{
-            JOptionPane.showMessageDialog(null, "Error Leave Request!");
-        }
+             if (dateTo.getDate() == null) {
+                 JOptionPane.showMessageDialog(this, "Please select a TO date!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
+
+             if (txtReason.getText().trim().isEmpty()) {
+                 JOptionPane.showMessageDialog(this, "Please provide a reason for the leave!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                 return;
+             }
+
+             if (dateTo.getDate().before(dateFrom.getDate())) {
+                 JOptionPane.showMessageDialog(this, "TO date cannot be before FROM date!", "Date Error", JOptionPane.ERROR_MESSAGE);
+                 return;
+             }
+
+             // Force calculate days
+             int calculatedDays = payrollStaff.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
+             txtDaysNumber.setText(String.valueOf(calculatedDays));
+
+             System.out.println("DEBUG: Calculated days: " + calculatedDays);
+
+             if (calculatedDays <= 0) {
+                 JOptionPane.showMessageDialog(this, "Invalid date range! Please check your selected dates.", "Date Error", JOptionPane.ERROR_MESSAGE);
+                 return;
+             }
+
+             data.clear();
+             data.add(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
+             data.add(payrollStaff.accountDetails.getEmployeeCompleteName());
+             data.add(comboLeaveType.getSelectedItem().toString());
+             data.add(dateFormat.format(dateFrom.getDate()));
+             data.add(dateFormat.format(dateTo.getDate()));
+             data.add(String.valueOf(calculatedDays));
+             data.add(txtReason.getText().trim());
+
+             System.out.println("DEBUG: Submitting leave request with data: " + data);
+
+             if (payrollStaff.fileLeaveRequest(data)) {
+                 txtDaysNumber.setText("0");
+                 comboLeaveType.setSelectedIndex(0);
+                 dateFrom.setDate(null);
+                 dateTo.setDate(null);
+                 txtReason.setText("");
+                 JOptionPane.showMessageDialog(this, "Leave request submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+             } else {
+                 JOptionPane.showMessageDialog(this, "Failed to submit leave request! Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+             }
+
+         } catch (Exception e) {
+             System.err.println("Error in btnSubmitActionPerformed: " + e.getMessage());
+             e.printStackTrace();
+             JOptionPane.showMessageDialog(this, "System error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+         }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void dateFromOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromOvertimePropertyChange
         // TODO add your handling code here:
-        if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null){
-            if(payrollStaff.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
-                txtDaysNumber1.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-                payrollStaff.setNumberOfDaysLeave();
-            }else{
-                payrollStaff.setNumberOfDaysLeave();
-                txtDaysNumber1.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-            }
+        if (payrollStaff != null && "date".equals(evt.getPropertyName())) {
+                updateOvertimeDaysCalculation();
         }
     }//GEN-LAST:event_dateFromOvertimePropertyChange
 
     private void dateToOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToOvertimePropertyChange
         // TODO add your handling code here:
-        if(dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null){
-            if(payrollStaff.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
-                txtDaysNumber1.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-                payrollStaff.setNumberOfDaysLeave();
-            }else{
-                payrollStaff.setNumberOfDaysLeave();
-                txtDaysNumber1.setText(String.valueOf(payrollStaff.getNumberOfDaysLeave()));
-            }
+        if (payrollStaff != null && "date".equals(evt.getPropertyName())) {
+        updateOvertimeDaysCalculation();
+        
         }
     }//GEN-LAST:event_dateToOvertimePropertyChange
 
     private void btnSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit1ActionPerformed
         // TODO add your handling code here:
-        if(dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null && !txtReasonOvertime.getText().trim().isEmpty()){
-            if(payrollStaff.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())){
-                data.add(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
-                data.add(payrollStaff.accountDetails.getEmployeeCompleteName());
-                data.add(dateFormat.format(dateFromOvertime.getDate()));
-                data.add(dateFormat.format(dateToOvertime.getDate()));
-                data.add(txtDaysNumber1.getText());
-                data.add(txtReasonOvertime.getText());
-                if(payrollStaff.fileOvertimeRequest(data)){
-                    dateFromOvertime.setDate(null);
-                    dateToOvertime.setDate(null);
-                    txtDaysNumber1.setText(null);
-                    txtReasonOvertime.setText(null);
-                    payrollStaff.setNumberOfDaysLeave();
-                    JOptionPane.showMessageDialog(null, "Successfuly File A Overtime Request!");
-                }else{
-                    JOptionPane.showMessageDialog(null, "Error Overtime Request!");
-                }
+        try {
+            System.out.println("DEBUG: Overtime submit button clicked");
+
+            if (dateFromOvertime.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Please select a FROM date!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return;
             }
-        }else{
-            JOptionPane.showMessageDialog(null, "Provide all the neccessary details for overtime!!");
+
+            if (dateToOvertime.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Please select a TO date!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (txtReasonOvertime.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please provide a reason for overtime!", "Validation Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            if (dateToOvertime.getDate().before(dateFromOvertime.getDate())) {
+                JOptionPane.showMessageDialog(this, "TO date cannot be before FROM date!", "Date Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Force calculate days
+            int calculatedDays = payrollStaff.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
+            txtDaysNumber1.setText(String.valueOf(calculatedDays));
+
+            if (calculatedDays <= 0) {
+                JOptionPane.showMessageDialog(this, "Invalid date range! Please check your selected dates.", "Date Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            data.clear();
+            data.add(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
+            data.add(payrollStaff.accountDetails.getEmployeeCompleteName());
+            data.add(dateFormat.format(dateFromOvertime.getDate()));
+            data.add(dateFormat.format(dateToOvertime.getDate()));
+            data.add(String.valueOf(calculatedDays));
+            data.add(txtReasonOvertime.getText().trim());
+
+            if (payrollStaff.fileOvertimeRequest(data)) {
+                dateFromOvertime.setDate(null);
+                dateToOvertime.setDate(null);
+                txtDaysNumber1.setText("0");
+                txtReasonOvertime.setText("");
+                JOptionPane.showMessageDialog(this, "Overtime request submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to submit overtime request! Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error in btnSubmit1ActionPerformed: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "System error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSubmit1ActionPerformed
 
@@ -2831,6 +3124,224 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel8MouseClicked
 
+    private void searchDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchDateActionPerformed
+        // TODO add your handling code here:
+    if (!validatePayrollDates()) return;
+    
+        String message = String.format(
+            "Do you want to compute payroll for the period:\n%s to %s?\n\n" +
+            "This will calculate payroll for all active employees using database records.",
+            dateFormat.format(jDateFrom.getDate()), dateFormat.format(jDateTo.getDate())
+        );
+
+        int choice = JOptionPane.showConfirmDialog(this, message, "Confirm Payroll Computation", 
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (choice != JOptionPane.YES_OPTION) {
+            showExistingPayrollData();
+            return;
+        }
+
+        computePayrollInBackground();
+    }//GEN-LAST:event_searchDateActionPerformed
+
+    private boolean validatePayrollDates() {
+        if (jDateFrom.getDate() == null || jDateTo.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Please select both From and To dates.", 
+                "Date Selection Required", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if (jDateFrom.getDate().after(jDateTo.getDate())) {
+            JOptionPane.showMessageDialog(this, "From date cannot be later than To date.", 
+                "Invalid Date Range", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void showExistingPayrollData() {
+        btnReleased.setEnabled(false);
+        ArrayList<ArrayList<String>> existingData = payrollStaff.getPayrollDataForDateRange(
+            jDateFrom.getDate(), jDateTo.getDate());
+
+        payrollStaff.setTableData(existingData);
+        payrollStaff.setTableSize(14);
+        payrollStaff.displayDataTable(jTablePayroll);
+        updatePayrollPeriodLabel();
+    }
+
+    private void computePayrollInBackground() {
+        searchDate.setEnabled(false);
+        searchDate.setText("Computing...");
+
+        javax.swing.JDialog progressDialog = createProgressDialog();
+
+        Thread computeThread = new Thread(() -> {
+            try {
+                boolean success = payrollStaff.computePayrollForDateRange(jDateFrom.getDate(), jDateTo.getDate());
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    progressDialog.dispose();
+                    handleComputationResult(success);
+                    searchDate.setEnabled(true);
+                    searchDate.setText("Generate Report");
+                });
+            } catch (Exception e) {
+                javax.swing.SwingUtilities.invokeLater(() -> {
+                    progressDialog.dispose();
+                    JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    searchDate.setEnabled(true);
+                    searchDate.setText("Generate Report");
+                });
+            }
+        });
+
+        computeThread.start();
+        progressDialog.setVisible(true);
+    }
+
+    private void handleComputationResult(boolean success) {
+        if (success) {
+            btnReleased.setEnabled(true);
+            ArrayList<ArrayList<String>> newData = payrollStaff.getPayrollDataForDateRange(
+                jDateFrom.getDate(), jDateTo.getDate());
+
+            payrollStaff.setTableData(newData);
+            payrollStaff.setTableSize(14);
+            payrollStaff.displayDataTable(jTablePayroll);
+            updatePayrollPeriodLabel();
+
+            JOptionPane.showMessageDialog(this, 
+                "Payroll computation completed successfully!\nProcessed " + newData.size() + 
+                " employee records.", "Success", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Payroll computation failed. Please check the database connection.", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private javax.swing.JDialog createProgressDialog() {
+        javax.swing.JDialog dialog = new javax.swing.JDialog(this, "Processing Payroll", true);
+        dialog.add(new javax.swing.JLabel("Computing payroll, please wait...", javax.swing.SwingConstants.CENTER));
+        dialog.setSize(300, 100);
+        dialog.setLocationRelativeTo(this);
+        dialog.setDefaultCloseOperation(javax.swing.JDialog.DO_NOTHING_ON_CLOSE);
+        return dialog;
+    }
+
+    private void updatePayrollPeriodLabel() {
+        if (jDateFrom.getDate() != null && jDateTo.getDate() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
+            String dateRange = sdf.format(jDateFrom.getDate()) + "-" + sdf.format(jDateTo.getDate()) + ", 2025";
+            lblPayrollPeriod.setText("Payroll from " + dateRange);
+        }
+    }
+   
+        private void jDateFromPropertyChange(java.beans.PropertyChangeEvent evt) {
+        if ("date".equals(evt.getPropertyName())) {
+            onPayrollDateRangeChanged();
+        }
+    }
+
+    private void jDateToPropertyChange(java.beans.PropertyChangeEvent evt) {
+        if ("date".equals(evt.getPropertyName())) {
+            onPayrollDateRangeChanged();
+        }
+    }
+
+    private void updateAttendanceButtonStates() {
+    try {
+        if (attendanceService == null) {
+            btnLogin.setEnabled(true);
+            btnLogout.setEnabled(false);
+            return;
+        }
+        
+        int employeeId = Integer.parseInt(lblIDSidebar.getText());
+        AttendanceStatus status = attendanceService.getAttendanceStatus(employeeId);
+
+        btnLogin.setEnabled(status.canTimeIn());
+        btnLogout.setEnabled(status.canTimeOut());
+
+        System.out.println("DEBUG: Buttons updated - TimeIn: " + status.canTimeIn() + ", TimeOut: " + status.canTimeOut());
+
+    } catch (Exception e) {
+        System.err.println("Error updating button states: " + e.getMessage());
+        btnLogin.setEnabled(true);
+        btnLogout.setEnabled(false);
+    }
+}
+
+    private void refreshDTRTableIfVisible() {
+        try {
+            int currentTab = mainTabbed.getSelectedIndex();
+
+            if (currentTab == 2 && dateFrom2 != null && dateTo2 != null && 
+                dateFrom2.getDate() != null && dateTo2.getDate() != null) {
+
+                payrollStaff.setTableData(payrollStaff.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
+                payrollStaff.setTableSize(5);
+                payrollStaff.displayDataTable(jTableAllDTR);
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error refreshing DTR table: " + e.getMessage());
+        }
+    }
+
+    private void updateLeaveDaysCalculation() {
+        try {
+            if (dateFrom != null && dateTo != null && dateFrom.getDate() != null && dateTo.getDate() != null) {
+
+                if (dateTo.getDate().before(dateFrom.getDate())) {
+                    txtDaysNumber.setText("0");
+                    return;
+                }
+
+                int days = payrollStaff.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
+                txtDaysNumber.setText(String.valueOf(days));
+
+            } else {
+                txtDaysNumber.setText("0");
+            }
+        } catch (Exception e) {
+            System.err.println("ERROR in updateLeaveDaysCalculation: " + e.getMessage());
+            txtDaysNumber.setText("0");
+        }
+    }
+
+    private void updateOvertimeDaysCalculation() {
+        try {
+            if (dateFromOvertime != null && dateToOvertime != null && 
+                dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null) {
+
+                if (dateToOvertime.getDate().before(dateFromOvertime.getDate())) {
+                    txtDaysNumber1.setText("0");
+                    return;
+                }
+
+                int days = payrollStaff.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
+                txtDaysNumber1.setText(String.valueOf(days));
+
+            } else {
+                txtDaysNumber1.setText("0");
+            }
+        } catch (Exception e) {
+            System.err.println("ERROR in updateOvertimeDaysCalculation: " + e.getMessage());
+            txtDaysNumber1.setText("0");
+        }
+    }
+
+    private void setDateTextField(javax.swing.JTextField textField, java.util.Date date) {
+        if (date != null) {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM/dd/yyyy");
+            textField.setText(sdf.format(date));
+        } else {
+            textField.setText("");
+        }
+    }
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -2845,8 +3356,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnGeneratePayrollReport;
     private javax.swing.JButton btnLeaveLedger;
     private javax.swing.JButton btnLeaveLedger1;
-    private javax.swing.JButton btnLeaveLedger2;
-    private javax.swing.JButton btnLeaveLedger3;
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnPersonalDetails;
@@ -2856,6 +3365,8 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnSubmit;
     private javax.swing.JButton btnSubmit1;
     private javax.swing.JButton btnSubmitToSepervisor;
+    private javax.swing.JButton btncomputePayroll;
+    private javax.swing.JButton btnemployeeDTR;
     private javax.swing.JComboBox<String> comboEmployeeName;
     private javax.swing.JComboBox<String> comboLeaveType;
     private javax.swing.JComboBox<String> comboTypeRequest;
@@ -3018,6 +3529,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private javax.swing.JPanel panelTypeRequest;
     private javax.swing.JPanel panelTypeRequest1;
     private javax.swing.JPanel panelTypeRequest2;
+    private javax.swing.JButton searchDate;
     private javax.swing.JPanel sideBarPanel;
     private javax.swing.JPanel tabbedDTR;
     private javax.swing.JPanel tabbedEmployeeDTR;

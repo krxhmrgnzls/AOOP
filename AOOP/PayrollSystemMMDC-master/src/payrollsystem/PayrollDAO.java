@@ -228,34 +228,105 @@ public class PayrollDAO {
             return null;
         }
     }
-    
-    private double getOvertimeHours(int employeeId, String period) {
-        // Query overtime_requests table for approved overtime
-        String sql = "SELECT COALESCE(SUM(number_of_days * 8), 0) FROM overtime_requests " +
-                    "WHERE employee_id = ? AND status = 'Approved'";
+
+        private double getOvertimeHours(int employeeId, String period) {
+            // Query overtime_requests table for approved overtime
+            String sql = "SELECT COALESCE(SUM(number_of_days * 8), 0) FROM overtime_requests " +
+                        "WHERE employee_id = ? AND status = 'Approved'";
+            try {
+                PreparedStatement pstmt = connection.prepareStatement(sql);
+                pstmt.setInt(1, employeeId);
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getDouble(1);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return 0.0;
+        }
+
+        private double getUndertimeHours(int employeeId, String period) {
+            // Simplified - return 0 for now, implement based on attendance
+            return 0.0;
+        }
+
+        private double calculateTax(double taxableIncome) {
+            // Simplified tax calculation - implement proper tax brackets
+            if (taxableIncome <= 20000) return 0;
+            else if (taxableIncome <= 33000) return (taxableIncome - 20000) * 0.15;
+            else if (taxableIncome <= 66000) return 1950 + (taxableIncome - 33000) * 0.20;
+            else return 8550 + (taxableIncome - 66000) * 0.25;
+        }
+
+        public List<PayrollRecord> getPayrollByPeriod(String payrollPeriod) {
+        List<PayrollRecord> payrolls = new ArrayList<>();
+        String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
+                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "WHERE p.payroll_period = ? ORDER BY p.employee_id";
+
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, employeeId);
+            pstmt.setString(1, payrollPeriod);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getDouble(1);
+
+            while (rs.next()) {
+                PayrollRecord payroll = createPayrollFromResultSet(rs);
+                payrolls.add(payroll);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0.0;
+
+        return payrolls;
     }
-    
-    private double getUndertimeHours(int employeeId, String period) {
-        // Simplified - return 0 for now, implement based on attendance
-        return 0.0;
+
+    /**
+     * Helper method to create PayrollRecord from ResultSet
+     * ADD this if you don't have it already
+     */
+    private PayrollRecord createPayrollFromResultSet(ResultSet rs) throws SQLException {
+        PayrollRecord payroll = new PayrollRecord();
+
+        // Check if payroll_id column exists
+        try {
+            payroll.setPayrollId(rs.getInt("payroll_id"));
+        } catch (SQLException e) {
+            // Column might not exist, set default value
+            payroll.setPayrollId(0);
+        }
+
+        payroll.setEmployeeId(rs.getInt("employee_id"));
+        payroll.setPayrollPeriod(rs.getString("payroll_period"));
+        payroll.setPosition(rs.getString("position"));
+        payroll.setGrossIncome(rs.getDouble("gross_income"));
+        payroll.setBenefits(rs.getDouble("benefits"));
+        payroll.setOvertime(rs.getDouble("overtime"));
+        payroll.setUndertime(rs.getDouble("undertime"));
+        payroll.setSss(rs.getDouble("sss"));
+        payroll.setPhilhealth(rs.getDouble("philhealth"));
+        payroll.setPagibig(rs.getDouble("pagibig"));
+        payroll.setTax(rs.getDouble("tax"));
+        payroll.setNetPay(rs.getDouble("net_pay"));
+        payroll.setStatus(rs.getString("status"));
+
+        // Set employee name if available
+        try {
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            if (firstName != null && lastName != null) {
+                payroll.setEmployeeName(firstName + " " + lastName);
+            }
+        } catch (SQLException e) {
+            // Columns might not be available
+        }
+
+        return payroll;
     }
-    
-    private double calculateTax(double taxableIncome) {
-        // Simplified tax calculation - implement proper tax brackets
-        if (taxableIncome <= 20000) return 0;
-        else if (taxableIncome <= 33000) return (taxableIncome - 20000) * 0.15;
-        else if (taxableIncome <= 66000) return 1950 + (taxableIncome - 33000) * 0.20;
-        else return 8550 + (taxableIncome - 66000) * 0.25;
+
+    List<PayrollRecord> getPayrollByDateRange(java.util.Date fromDate, java.util.Date toDate) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
+
+

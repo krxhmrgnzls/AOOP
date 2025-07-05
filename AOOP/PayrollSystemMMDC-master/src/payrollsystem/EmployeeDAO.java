@@ -32,7 +32,7 @@ public class EmployeeDAO {
             pstmt.setString(6, employee.getPhoneNumber());
             pstmt.setString(7, employee.getSSSNumber());
             pstmt.setString(8, employee.getPhilHealthNumber());
-            pstmt.setString(9, employee.getTINNumber());
+            pstmt.setString(9, employee.getTinNumber());
             pstmt.setString(10, employee.getPagibigNumber());
             pstmt.setString(11, employee.getStatus());
             pstmt.setString(12, employee.getPosition());
@@ -41,7 +41,7 @@ public class EmployeeDAO {
             pstmt.setDouble(15, employee.getRiceSubsidy());
             pstmt.setDouble(16, employee.getPhoneAllowance());
             pstmt.setDouble(17, employee.getClothingAllowance());
-            pstmt.setDouble(18, employee.getSemiMonthlyRate());
+            pstmt.setDouble(18, employee.getSemiBasicSalary());
             pstmt.setDouble(19, employee.getHourlyRate());
             
             int result = pstmt.executeUpdate();
@@ -71,7 +71,7 @@ public class EmployeeDAO {
                 emp.setPhoneNumber(rs.getString("phone_number"));
                 emp.setSSSNumber(rs.getString("sss_number"));
                 emp.setPhilHealthNumber(rs.getString("philhealth_number"));
-                emp.setTINNumber(rs.getString("tin_number"));
+                emp.setTinNumber(rs.getString("tin_number"));
                 emp.setPagibigNumber(rs.getString("pagibig_number"));
                 emp.setStatus(rs.getString("status"));
                 emp.setPosition(rs.getString("position"));
@@ -79,7 +79,7 @@ public class EmployeeDAO {
                 emp.setRiceSubsidy(rs.getDouble("rice_subsidy"));
                 emp.setPhoneAllowance(rs.getDouble("phone_allowance"));
                 emp.setClothingAllowance(rs.getDouble("clothing_allowance"));
-                emp.setSemiMonthlyRate(rs.getDouble("gross_rate"));
+                emp.setSemiBasicSalary(rs.getDouble("gross_rate"));
                 emp.setHourlyRate(rs.getDouble("hourly_rate"));
                 
                 return emp;
@@ -109,7 +109,7 @@ public class EmployeeDAO {
             pstmt.setString(5, employee.getPhoneNumber());
             pstmt.setString(6, employee.getSSSNumber());
             pstmt.setString(7, employee.getPhilHealthNumber());
-            pstmt.setString(8, employee.getTINNumber());
+            pstmt.setString(8, employee.getTinNumber());
             pstmt.setString(9, employee.getPagibigNumber());
             pstmt.setString(10, employee.getStatus());
             pstmt.setString(11, employee.getPosition());
@@ -117,7 +117,7 @@ public class EmployeeDAO {
             pstmt.setDouble(13, employee.getRiceSubsidy());
             pstmt.setDouble(14, employee.getPhoneAllowance());
             pstmt.setDouble(15, employee.getClothingAllowance());
-            pstmt.setDouble(16, employee.getSemiMonthlyRate());
+            pstmt.setDouble(16, employee.getBasicSalary());
             pstmt.setDouble(17, employee.getHourlyRate());
             pstmt.setInt(18, employee.getEmployeeID());
             
@@ -163,7 +163,7 @@ public class EmployeeDAO {
                 emp.setPhoneNumber(rs.getString("phone_number"));
                 emp.setSSSNumber(rs.getString("sss_number"));
                 emp.setPhilHealthNumber(rs.getString("philhealth_number"));
-                emp.setTINNumber(rs.getString("tin_number"));
+                emp.setTinNumber(rs.getString("tin_number"));
                 emp.setPagibigNumber(rs.getString("pagibig_number"));
                 emp.setStatus(rs.getString("status"));
                 emp.setPosition(rs.getString("position"));
@@ -171,7 +171,7 @@ public class EmployeeDAO {
                 emp.setRiceSubsidy(rs.getDouble("rice_subsidy"));
                 emp.setPhoneAllowance(rs.getDouble("phone_allowance"));
                 emp.setClothingAllowance(rs.getDouble("clothing_allowance"));
-                emp.setSemiMonthlyRate(rs.getDouble("gross_rate"));
+                emp.setBasicSalary(rs.getDouble("gross_rate"));
                 emp.setHourlyRate(rs.getDouble("hourly_rate"));
                 
                 employees.add(emp);
@@ -203,7 +203,7 @@ public class EmployeeDAO {
                 emp.setPhoneNumber(rs.getString("phone_number"));
                 emp.setSSSNumber(rs.getString("sss_number"));
                 emp.setPhilHealthNumber(rs.getString("philhealth_number"));
-                emp.setTINNumber(rs.getString("tin_number"));
+                emp.setTinNumber(rs.getString("tin_number"));
                 emp.setPagibigNumber(rs.getString("pagibig_number"));
                 emp.setStatus(rs.getString("status"));
                 emp.setPosition(rs.getString("position"));
@@ -211,7 +211,7 @@ public class EmployeeDAO {
                 emp.setRiceSubsidy(rs.getDouble("rice_subsidy"));
                 emp.setPhoneAllowance(rs.getDouble("phone_allowance"));
                 emp.setClothingAllowance(rs.getDouble("clothing_allowance"));
-                emp.setSemiMonthlyRate(rs.getDouble("gross_rate"));
+                emp.setSemiBasicSalary(rs.getDouble("gross_rate"));
                 emp.setHourlyRate(rs.getDouble("hourly_rate"));
                 
                 return emp;
@@ -241,7 +241,7 @@ public class EmployeeDAO {
             pstmt.setString(5, employee.getPhoneNumber());
             pstmt.setString(6, employee.getSSSNumber());
             pstmt.setString(7, employee.getPhilHealthNumber());
-            pstmt.setString(8, employee.getTINNumber());
+            pstmt.setString(8, employee.getTinNumber());
             pstmt.setString(9, employee.getPagibigNumber());
             pstmt.setString(10, employee.getStatus());
             pstmt.setString(11, employee.getPosition());
@@ -249,7 +249,7 @@ public class EmployeeDAO {
             pstmt.setDouble(13, employee.getRiceSubsidy());
             pstmt.setDouble(14, employee.getPhoneAllowance());
             pstmt.setDouble(15, employee.getClothingAllowance());
-            pstmt.setDouble(16, employee.getSemiMonthlyRate());
+            pstmt.setDouble(16, employee.getSemiBasicSalary());
             pstmt.setDouble(17, employee.getHourlyRate());
             pstmt.setInt(18, employee.getEmployeeID());
             

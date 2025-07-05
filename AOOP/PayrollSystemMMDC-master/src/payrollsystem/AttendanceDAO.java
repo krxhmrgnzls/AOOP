@@ -243,4 +243,8 @@ public class AttendanceDAO {
         }
         return summary;
     }
+
+    List<AttendanceRecord> getAttendanceByEmployee(int employeeID, java.util.Date fromDate, java.util.Date toDate) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

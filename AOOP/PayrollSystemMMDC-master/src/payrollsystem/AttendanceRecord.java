@@ -60,7 +60,6 @@ public class AttendanceRecord {
     public String getRemarks() { return remarks; }
     public void setRemarks(String remarks) { this.remarks = remarks; }
     
-    // Helper methods
     public double getWorkingHours() {
         if (loginTime != null && logoutTime != null) {
             long diff = logoutTime.getTime() - loginTime.getTime();
@@ -101,7 +100,6 @@ class AttendanceSummary {
     
     public AttendanceSummary() {}
     
-    // Getters and Setters
     public int getTotalDays() { return totalDays; }
     public void setTotalDays(int totalDays) { 
         this.totalDays = totalDays;

@@ -36,7 +36,7 @@ public class EmployeeDAO {
             pstmt.setString(10, employee.getPagibigNumber());
             pstmt.setString(11, employee.getStatus());
             pstmt.setString(12, employee.getPosition());
-            pstmt.setInt(13, 0); // supervisor_id - set default
+            pstmt.setInt(13, 0); 
             pstmt.setDouble(14, employee.getBasicSalary());
             pstmt.setDouble(15, employee.getRiceSubsidy());
             pstmt.setDouble(16, employee.getPhoneAllowance());
@@ -144,7 +144,6 @@ public class EmployeeDAO {
         }
     }
     
-    // Get all employees - matches your existing code expectations
     public List<AccountDetails> findAll() {
         List<AccountDetails> employees = new ArrayList<>();
         String sql = "SELECT * FROM employees ORDER BY employee_id";
@@ -183,8 +182,7 @@ public class EmployeeDAO {
         
         return employees;
     }
-    
-    // Find employee by ID
+
     public AccountDetails findById(int employeeId) {
         String sql = "SELECT * FROM employees WHERE employee_id = ?";
         
@@ -224,7 +222,6 @@ public class EmployeeDAO {
         return null;
     }
     
-    // Update employee information
     public boolean updateEmployee(AccountDetails employee) {
         String sql = "UPDATE employees SET last_name=?, first_name=?, birthday=?, address=?, " +
                     "phone_number=?, sss_number=?, philhealth_number=?, tin_number=?, " +
@@ -262,7 +259,6 @@ public class EmployeeDAO {
         }
     }
     
-    // Get employees for dropdown lists (ID and Name)
     public ArrayList<String[]> getEmployeeList() {
         ArrayList<String[]> empList = new ArrayList<>();
         String sql = "SELECT employee_id, first_name, last_name FROM employees ORDER BY last_name, first_name";

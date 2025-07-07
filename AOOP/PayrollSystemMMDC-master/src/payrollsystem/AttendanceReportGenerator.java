@@ -19,7 +19,6 @@ public class AttendanceReportGenerator {
         }
     }
     
-    // Generate Daily Attendance Report
     public File generateDailyReport(java.util.Date selectedDate) {
         try {
             File reportDir = new File("reports/attendance/daily");
@@ -60,7 +59,6 @@ public class AttendanceReportGenerator {
                     hoursWorked = diff / (1000.0 * 60 * 60);
                     totalPresent++;
                     
-                    // Check if late (after 8:00 AM)
                     if (rs.getTime("login_time").after(java.sql.Time.valueOf("08:00:00"))) {
                         status = "LATE";
                         totalLate++;
@@ -163,7 +161,6 @@ public class AttendanceReportGenerator {
         }
     }
     
-    // Generate Monthly Attendance Report
     public File generateMonthlyAttendanceReport(String month, int year) {
         try {
             File reportDir = new File("reports/attendance/monthly");
@@ -194,7 +191,6 @@ public class AttendanceReportGenerator {
             pstmt.setInt(2, year);
             ResultSet rs = pstmt.executeQuery();
             
-            // Calculate working days in month
             Calendar cal = Calendar.getInstance();
             cal.set(year, Integer.parseInt(month) - 1, 1);
             int workingDays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -227,8 +223,7 @@ public class AttendanceReportGenerator {
             return null;
         }
     }
-    
-    // Generate Employee Attendance History
+
     public File generateEmployeeAttendanceHistory(int employeeId, java.util.Date startDate, java.util.Date endDate) {
         try {
             File reportDir = new File("reports/attendance/employee");
@@ -239,7 +234,6 @@ public class AttendanceReportGenerator {
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
             
-            // Get employee info
             String empSql = "SELECT first_name, last_name FROM employees WHERE employee_id = ?";
             PreparedStatement empStmt = connection.prepareStatement(empSql);
             empStmt.setInt(1, employeeId);
@@ -308,7 +302,6 @@ public class AttendanceReportGenerator {
         }
     }
     
-    // Generate Late/Absent Employees Report
     public File generateLateAbsentReport(java.util.Date reportDate) {
         try {
             File reportDir = new File("reports/attendance/late-absent");

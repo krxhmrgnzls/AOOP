@@ -24,9 +24,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
         this.id = userDetails.get(0).get(0);
         this.name = userDetails.get(0).get(1);
         this.role = userDetails.get(0).get(3);
-
-        // IMPORTANT: Initialize Employee with the actual employee ID
-        this.employee = new Employee(this.id); // Pass the ID string to Employee constructor
+        this.employee = new Employee(this.id); 
 
         initComponents();
 
@@ -37,26 +35,20 @@ public class EmployeeGUI extends javax.swing.JFrame {
             EmployeeDAO employeeDAO = new EmployeeDAO();
             employee.accountDetails = employeeDAO.read(Integer.parseInt(id));
             employee.viewPersonalDetails(id);
-
-            // CRITICAL: Set the employeeID field in the Employee object
             employee.setEmployeeID(Integer.parseInt(lblIDSidebar.getText()));
 
-            System.out.println("✅ Employee initialized with ID: " + id);
-            System.out.println("✅ Employee object employeeID: " + employee.getEmployeeID());
+            System.out.println("Employee initialized with ID: " + id);
+            System.out.println("Employee object employeeID: " + employee.getEmployeeID());
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("❌ Error initializing employee: " + e.getMessage());
+            System.err.println("Error initializing employee: " + e.getMessage());
         }
 
-        // Initialize services
         this.attendanceService = new AttendanceService();
 
-        // Setup DTR table
         setupEmployeeDTRTable();
-
-        // Update attendance button states after everything is loaded
-    updateAttendanceButtonStates();
+        updateAttendanceButtonStates();
 
     }
     private EmployeeGUI() {
@@ -83,7 +75,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     
     private void updateDaysCalculation() {
     if (dateFrom.getDate() != null && dateTo.getDate() != null) {
-        // Employee handles all the business logic
         int days = employee.calculateDaysFromGUI(dateFrom.getDate(), dateTo.getDate());
         txtDaysNumber.setText(String.valueOf(days));
     } else {
@@ -2105,7 +2096,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
    }   
     
     private void btnPersonalDetailsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPersonalDetailsActionPerformed
-        // TODO add your handling code here:
         mainTabbed.setSelectedIndex(0);
         txtID.setText(String.valueOf(employee.accountDetails.getEmployeeID()));
         txtFName.setText(employee.accountDetails.getFirstName());
@@ -2130,7 +2120,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPersonalDetailsActionPerformed
 
     private void btnTimeInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimeInActionPerformed
-        // TODO add your handling code here:
         try {
            int employeeId = Integer.parseInt(lblIDSidebar.getText());
 
@@ -2155,7 +2144,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimeInActionPerformed
 
     private void btnTimeOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimeOutActionPerformed
-        // TODO add your handling code here:
         try {
             int employeeId = Integer.parseInt(lblIDSidebar.getText());
 
@@ -2180,7 +2168,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimeOutActionPerformed
 
     private void btnRequestPortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRequestPortActionPerformed
-        // TODO add your handling code here:.
         try {
             mainTabbed.setSelectedIndex(1);
             comboTypeRequest.setSelectedIndex(0);
@@ -2188,11 +2175,9 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
             System.out.println("Loading requests for employee: " + employee.getEmployeeID());
 
-            // Load requests from database
             ArrayList<ArrayList<String>> allRequests = employee.getDataAllRequests();
             System.out.println("Requests loaded: " + allRequests.size());
 
-            // Set data and display
             employee.setTableData(allRequests);
             employee.setTableSize(7);
             employee.displayDataTable(jTableAllRequest);
@@ -2206,33 +2191,26 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRequestPortActionPerformed
 
     private void btnDTRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDTRActionPerformed
-        // TODO add your handling code here:
         mainTabbed.setSelectedIndex(2);
-    
-        // Set employee details in the DTR panel
+
         employee.viewPersonalDetails(lblIDSidebar.getText());
         lblID2.setText(String.valueOf(employee.accountDetails.getEmployeeID()));
         lblMyName4.setText(employee.accountDetails.getEmployeeCompleteName());
 
-        // Get current date
         Calendar today = Calendar.getInstance();
         int currentDay = today.get(Calendar.DAY_OF_MONTH);
 
-        // Set up date range based on current period (1-15 or 16-end of month)
         Calendar startCal = Calendar.getInstance();
         Calendar endCal = Calendar.getInstance();
 
         if (currentDay <= 15) {
-            // First half of the month (1-15)
             startCal.set(Calendar.DAY_OF_MONTH, 1);
             endCal.set(Calendar.DAY_OF_MONTH, 15);
         } else {
-            // Second half of the month (16-end)
             startCal.set(Calendar.DAY_OF_MONTH, 16);
             endCal.set(Calendar.DAY_OF_MONTH, endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
         }
     
-        // Set the date fields to show the current period
         dateFrom2.setDate(startCal.getTime());
         dateTo2.setDate(endCal.getTime());
 
@@ -2243,18 +2221,13 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDTRActionPerformed
 
     private void btnLeaveLedgerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedgerActionPerformed
-        // TODO add your handling code here:
-        // Switch to the Leave Ledger tab
         mainTabbed.setSelectedIndex(3);
 
-        // Set employee details in the Leave Ledger panel
         employee.viewPersonalDetails(lblIDSidebar.getText());
         lblID3.setText(String.valueOf(employee.accountDetails.getEmployeeID()));
         lblMyName5.setText(employee.accountDetails.getEmployeeCompleteName());
-
-        // Update leave balance labels
-        employee.updateLeaveBalanceLabels(lblVLBalance1, lblSLBalance1);
         
+        employee.updateLeaveBalanceLabels(lblVLBalance1, lblSLBalance1);
         employee.setTableData(employee.allApprovedPersonalLeaveLedger());
         employee.setTableSize(7);
         employee.displayDataTable(jTableAllRequest3);
@@ -2262,34 +2235,59 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLeaveLedgerActionPerformed
 
     private void btnLeaveLedger1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedger1ActionPerformed
-        // TODO add your handling code here:
         mainTabbed.setSelectedIndex(4);
     }//GEN-LAST:event_btnLeaveLedger1ActionPerformed
 
     private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
-        // TODO add your handling code here:
-         ArrayList<ArrayList<String>> tempData = employee.viewPersonalPayslip(dateFrom3.getDate(), dateTo3.getDate(), lblIDSidebar.getText());
-    
-        if(tempData.isEmpty()){
-            JOptionPane.showMessageDialog(null, "No Payroll Found!");
+        try {
+            if (dateFrom3.getDate() == null || dateTo3.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Please select both FROM and TO dates!", "Missing Dates", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
 
-        } else {
-            // Display data in labels (existing code)
-            lblID4.setText(tempData.get(0).get(0));
-  
+            String empId = lblIDSidebar.getText();
+            if (empId == null || empId.trim().isEmpty() || empId.equals("N/A")) {
+                JOptionPane.showMessageDialog(this, "Employee ID not found! Please login again.", "Invalid Employee", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            // Ask if user wants to generate PDF
+            if (employee == null) {
+                JOptionPane.showMessageDialog(this, "System error: Employee object not initialized!", "System Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            boolean success = employee.handlePayslipGeneration(
+                dateFrom3.getDate(), dateTo3.getDate(), empId,
+                lblID4, lblMyName6, lblPayrollPeriod, lblPositon,
+                lblGross, lblBenefits, lblOvertime, lblUndertime,
+                lblSSS, lblPhilHealth, lblPagIbig, lblTax, lblNetPay
+            );
+
+            if (!success) {
+                JOptionPane.showMessageDialog(null, "No Payroll Found!");
+                return;
+            }
+
             int choice = JOptionPane.showConfirmDialog(null, 
-                "Would you like to save this payslip as a file?", 
+                "Payslip generated successfully!\nWould you like to save this as a PDF file?", 
                 "Save Payslip", 
                 JOptionPane.YES_NO_OPTION);
 
             if (choice == JOptionPane.YES_OPTION) {
-                ReportGenerator generator = new ReportGenerator();
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-                String period = sdf.format(dateFrom3.getDate()) + " to " + sdf.format(dateTo3.getDate());
-                generator.generatePayslipPDF(Integer.parseInt(lblIDSidebar.getText()), period);
+                try {
+                    ReportGenerator generator = new ReportGenerator();
+                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+                    String period = sdf.format(dateFrom3.getDate()) + " to " + sdf.format(dateTo3.getDate());
+                    generator.generatePayslipPDF(Integer.parseInt(empId), period);
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Error generating PDF: " + e.getMessage());
+                }
             }
+
+        } catch (Exception e) {
+            System.err.println("ERROR in Employee Payslip Generate button: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error generating payslip: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnReportActionPerformed
 
@@ -2298,7 +2296,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDaysNumber1ActionPerformed
 
     private void btnSubmit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmit1ActionPerformed
-        // TODO add your handling code here:
         if (dateToOvertime.getDate() != null && dateFromOvertime.getDate() != null && !txtReasonOvertime.getText().trim().isEmpty()) {
             if (employee.isValidDateRange(dateFromOvertime.getDate(), dateToOvertime.getDate())) {
 
@@ -2315,7 +2312,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
                     employee.setNumberOfDaysLeave();
                     JOptionPane.showMessageDialog(null, "Successfully filed an overtime request!");
 
-                    // Always refresh the request table
                     ArrayList<ArrayList<String>> updatedRequests = employee.getDataAllRequests();
                     employee.setTableData(updatedRequests);
                     employee.setTableSize(7);
@@ -2332,9 +2328,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSubmit1ActionPerformed
 
     private void dateToOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToOvertimePropertyChange
-        // TODO add your handling code here:
         if (employee != null && "date".equals(evt.getPropertyName())) {
-        // Use the correct overtime date components
             if (dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null) {
                 int days = employee.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
                 txtDaysNumber1.setText(String.valueOf(days));
@@ -2345,9 +2339,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_dateToOvertimePropertyChange
 
     private void dateFromOvertimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromOvertimePropertyChange
-        // TODO add your handling code here:
         if (employee != null && "date".equals(evt.getPropertyName())) {
-        // Use the correct overtime date components
             if (dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null) {
                 int days = employee.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
                 txtDaysNumber1.setText(String.valueOf(days));
@@ -2370,7 +2362,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
             return;
         }
 
-        // Submit request
         ArrayList<String> data = new ArrayList<>();
         data.add(String.valueOf(employee.accountDetails.getEmployeeID()));
         data.add(employee.accountDetails.getEmployeeCompleteName());
@@ -2395,12 +2386,10 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void txtDaysNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDaysNumberActionPerformed
-        // TODO add your handling code here:
 
     }//GEN-LAST:event_txtDaysNumberActionPerformed
 
     private void dateFromPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateFromPropertyChange
-        // TODO add your handling code here:
         if (employee != null && "date".equals(evt.getPropertyName())) {
             if (dateFrom.getDate() != null && dateTo.getDate() != null) {
                 int days = employee.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
@@ -2412,7 +2401,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_dateFromPropertyChange
 
     private void dateToPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_dateToPropertyChange
-        // TODO add your handling code here:
         if (employee != null && "date".equals(evt.getPropertyName())) {
             if (dateFrom.getDate() != null && dateTo.getDate() != null) {
                 int days = employee.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
@@ -2424,13 +2412,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_dateToPropertyChange
 
     private void comboTypeRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTypeRequestActionPerformed
-        // TODO add your handling code here:
         String selectedItem = comboTypeRequest.getSelectedItem().toString();
 
         if (selectedItem.equals("All Request")) {
             tabbedInsideRequest.setSelectedIndex(0);
 
-            // Load and display all requests
             ArrayList<ArrayList<String>> allRequests = employee.getDataAllRequests();
             employee.setTableData(allRequests);
             employee.setTableSize(7);
@@ -2453,7 +2439,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_comboTypeRequestActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
 
         employee.setTableData(employee.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
         employee.setTableSize(5);
@@ -2461,14 +2446,12 @@ public class EmployeeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnSubmitToSepervisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitToSepervisorActionPerformed
-        // TODO add your handling code here:
         try {
             System.out.println("=== Employee DTR Submission Button Clicked ===");
 
-            // Validate employee and connection first
             if (!employee.validateEmployeeAndConnection()) {
                 JOptionPane.showMessageDialog(this, 
-                    "❌ Database connection or employee validation failed!\nCheck console for details.", 
+                    "Database connection or employee validation failed!\nCheck console for details.", 
                     "Validation Error", 
                     JOptionPane.ERROR_MESSAGE);
                 return;
@@ -2490,10 +2473,9 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
             System.out.println("Selected " + selectedRows.length + " rows for submission");
 
-            // Check if any already submitted and prepare data
             for (int row : selectedRows) {
-                String date = model.getValueAt(row, 0).toString(); // DATE
-                String submittedStatus = model.getValueAt(row, 3).toString(); // SUBMITTED TO SUPERVISOR
+                String date = model.getValueAt(row, 0).toString(); 
+                String submittedStatus = model.getValueAt(row, 3).toString();
 
                 System.out.println("Row " + row + ": Date=" + date + ", Submitted=" + submittedStatus);
 
@@ -2511,7 +2493,6 @@ public class EmployeeGUI extends javax.swing.JFrame {
                 tempData.add(rowData);
             }
 
-            // Confirm submission
             int choice = JOptionPane.showConfirmDialog(this,
                 "Submit " + selectedRows.length + " DTR entries to your supervisor?\n\n" +
                 "This action cannot be undone.",
@@ -2521,10 +2502,8 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
             if (choice != JOptionPane.YES_OPTION) return;
 
-            // Submit to supervisor using Employee method
             employee.forwardDTRToSupervisor(tempData);
 
-            // Refresh the table to show updated submission status
             refreshEmployeeDTRTable();
 
             JOptionPane.showMessageDialog(this, 
@@ -2533,10 +2512,10 @@ public class EmployeeGUI extends javax.swing.JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR in DTR submission: " + e.getMessage());
+            System.err.println("ERROR in DTR submission: " + e.getMessage());
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, 
-                "❌ Error submitting DTR: " + e.getMessage(), 
+                "Error submitting DTR: " + e.getMessage(), 
                 "Submission Error", 
                 JOptionPane.ERROR_MESSAGE);
         }
@@ -2545,13 +2524,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private void refreshEmployeeDTRTable() {
     try {
         System.out.println("=== Refreshing Employee DTR Table ===");
-        
-        // Get current date range from date choosers or use default period
+
         Date startDate = dateFrom2.getDate();
         Date endDate = dateTo2.getDate();
         
         if (startDate == null || endDate == null) {
-            // Use current pay period if dates not set
             Calendar today = Calendar.getInstance();
             int currentDay = today.get(Calendar.DAY_OF_MONTH);
             
@@ -2570,23 +2547,20 @@ public class EmployeeGUI extends javax.swing.JFrame {
             endDate = endCal.getTime();
         }
         
-        // Load and display updated DTR data
         employee.setTableData(employee.getDataAllDTR(startDate, endDate));
         employee.setTableSize(5);
         employee.displayDataTable(jTableAllDTR);
         
-        System.out.println("✅ Employee DTR table refreshed");
+        System.out.println("Employee DTR table refreshed");
         
     } catch (Exception e) {
-        System.err.println("❌ Error refreshing Employee DTR table: " + e.getMessage());
+        System.err.println("Error refreshing Employee DTR table: " + e.getMessage());
         e.printStackTrace();
     }
 }
 
-    // 6. ADD: EmployeeGUI.java - Setup DTR table properly (add to constructor)
     private void setupEmployeeDTRTable() {
         try {
-            // Create table model with proper columns for Employee's own DTR
             DefaultTableModel model = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -2604,13 +2578,12 @@ public class EmployeeGUI extends javax.swing.JFrame {
 
             jTableAllDTR.setModel(model);
 
-            // Enable multiple row selection for submission
             jTableAllDTR.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-            System.out.println("✅ Employee DTR table setup completed");
+            System.out.println("Employee DTR table setup completed");
 
         } catch (Exception e) {
-            System.err.println("❌ Error setting up Employee DTR table: " + e.getMessage());
+            System.err.println("Error setting up Employee DTR table: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -2619,13 +2592,11 @@ public class EmployeeGUI extends javax.swing.JFrame {
     private Date getDateFromPicker(Object datePicker) {
     try {
         if (datePicker == null) return null;
-        
-        // Try common date picker methods
+
         if (datePicker instanceof com.toedter.calendar.JDateChooser) {
             return ((com.toedter.calendar.JDateChooser) datePicker).getDate();
         }
         
-        // Try reflection to call getDate() method
         java.lang.reflect.Method getDateMethod = datePicker.getClass().getMethod("getDate");
         return (Date) getDateMethod.invoke(datePicker);
         
@@ -2638,12 +2609,10 @@ public class EmployeeGUI extends javax.swing.JFrame {
      try {
         System.out.println("=== DEBUG: refreshDTRTable ===");
         
-        // Get current date range from the date pickers
         Date fromDate = dateFrom.getDate();
         Date toDate = dateTo.getDate();
         
         if (fromDate == null || toDate == null) {
-            // Use default dates if pickers are null
             Date[] defaultDates = employee.getCurrentPayrollPeriodDates();
             fromDate = defaultDates[0];
             toDate = defaultDates[1];
@@ -2651,49 +2620,40 @@ public class EmployeeGUI extends javax.swing.JFrame {
         
         System.out.println("Refreshing table for period: " + fromDate + " to " + toDate);
         
-        // Reload DTR data - make sure this gets fresh data from database
         ArrayList<ArrayList<String>> dtrData = employee.getDataAllDTR(fromDate, toDate);
         
         System.out.println("Loaded " + dtrData.size() + " DTR records for table refresh");
-        
-        // Debug: Print the data to see if it has updated values
+ 
         for (ArrayList<String> row : dtrData) {
-            if (row.size() >= 6) { // Assuming submitted status is at index 5
+            if (row.size() >= 6) { 
                 System.out.println("Date: " + row.get(0) + ", Submitted: " + row.get(5));
             }
         }
-        
-        // Update the employee object's table data
+
         employee.setTableData(dtrData);
-        employee.setTableSize(5); // Adjust based on your table columns
-        
-        // Display in the actual table (replace with your table variable name)
+        employee.setTableSize(5); 
         employee.displayDataTable(jTableAllDTR); // Replace jTableDTR with your actual table name
         
-        System.out.println("✅ DTR table refreshed successfully");
+        System.out.println("DTR table refreshed successfully");
         
     } catch (Exception e) {
-        System.err.println("❌ Error refreshing DTR table: " + e.getMessage());
+        System.err.println("Error refreshing DTR table: " + e.getMessage());
         e.printStackTrace();
     }
 }
 
-    // IF you need to initialize the submit button, add this to your constructor or initialization:
     private void initializeDTRSubmission() {
         try {
-            // Set default date range to current payroll period if date pickers are empty
             if (dateFrom.getDate() == null || dateTo.getDate() == null) {
                 Calendar cal = Calendar.getInstance();
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 if (day <= 15) {
-                    // First half of month
                     cal.set(Calendar.DAY_OF_MONTH, 1);
                     dateFrom.setDate(cal.getTime());
                     cal.set(Calendar.DAY_OF_MONTH, 15);
                     dateTo.setDate(cal.getTime());
                 } else {
-                    // Second half of month
                     cal.set(Calendar.DAY_OF_MONTH, 16);
                     dateFrom.setDate(cal.getTime());
                     cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -2706,18 +2666,17 @@ public class EmployeeGUI extends javax.swing.JFrame {
         }
     }
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        // TODO add your handling code here:
         int choice = JOptionPane.showConfirmDialog(null, "Are You Sure You Want To Logout This Account?", "Confirm", JOptionPane.YES_NO_OPTION);
-        if(choice == 0){
-            JOptionPane.showMessageDialog(null, "Successfuly Logout Account!");
-            dispose();
-            LoginGUI login = new LoginGUI();
-            login.setVisible(true);
-        }
+            if(choice == 0){
+                JOptionPane.showMessageDialog(null, "Successfuly Logout Account!");
+                dispose();
+                LoginGUI login = new LoginGUI();
+                login.setVisible(true);
+            }
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtIDActionPerformed
 
     private AttendanceRecord getTodayAttendanceRecord(int employeeId, java.util.Date date) {
@@ -2728,7 +2687,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
                 employeeId, sqlDate, sqlDate);
 
             if (!todayRecords.isEmpty()) {
-                return todayRecords.get(0); // Return first record
+                return todayRecords.get(0); 
             }
             return null;
         } catch (Exception e) {
@@ -2745,11 +2704,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
         btnTimeIn.setEnabled(status.canTimeIn());
         btnTimeOut.setEnabled(status.canTimeOut());
         
-        // Optional: Show status message somewhere in UI
-        // lblStatusMessage.setText(status.getStatusMessage());
-        
     } catch (Exception e) {
-        // Default state if there's an error
         btnTimeIn.setEnabled(true);
         btnTimeOut.setEnabled(false);
     }
@@ -2758,8 +2713,7 @@ public class EmployeeGUI extends javax.swing.JFrame {
     try {
         if (dateFrom.getDate() != null && dateTo.getDate() != null) {
             System.out.println("DEBUG: Calculating days - From: " + dateFrom.getDate() + ", To: " + dateTo.getDate());
-            
-            // Ensure the date range is valid (to date is not before from date)
+
             if (dateTo.getDate().before(dateFrom.getDate())) {
                 txtDaysNumber.setText("0");
                 System.out.println("DEBUG: Invalid date range - To date is before From date");

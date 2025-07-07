@@ -19,7 +19,6 @@ public class EmployeeReportGenerator {
         }
     }
     
-    // Generate Employee Directory
     public File generateEmployeeDirectory() {
         try {
             File reportDir = new File("reports/employee/directory");
@@ -58,7 +57,7 @@ public class EmployeeReportGenerator {
             writer.println("Total Employees:," + totalEmployees);
             
             writer.close();
-            System.out.println("✅ Employee directory generated for " + totalEmployees + " employees");
+            System.out.println("Employee directory generated for " + totalEmployees + " employees");
             return file;
             
         } catch (Exception e) {
@@ -66,8 +65,7 @@ public class EmployeeReportGenerator {
             return null;
         }
     }
-    
-    // Generate Employee Benefits Summary
+
     public File generateBenefitsSummary() {
         try {
             File reportDir = new File("reports/employee/benefits");
@@ -76,8 +74,7 @@ public class EmployeeReportGenerator {
             String filename = "Employee_Benefits_Summary_" + java.time.LocalDate.now() + ".csv";
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
-            
-            // Header
+
             writer.println("MOTORPH EMPLOYEE BENEFITS SUMMARY");
             writer.println("Generated on: " + java.time.LocalDate.now());
             writer.println("");
@@ -124,7 +121,7 @@ public class EmployeeReportGenerator {
             writer.println("Average Benefits per Employee:," + String.format("%.2f", totalBenefitsCompany / employeeCount));
             
             writer.close();
-            System.out.println("✅ Employee benefits summary generated");
+            System.out.println("Employee benefits summary generated");
             return file;
             
         } catch (Exception e) {
@@ -133,7 +130,6 @@ public class EmployeeReportGenerator {
         }
     }
     
-    // Generate Leave Balance Report
     public File generateLeaveBalanceReport() {
         try {
             File reportDir = new File("reports/employee/leave-balance");
@@ -143,7 +139,6 @@ public class EmployeeReportGenerator {
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
             
-            // Header
             writer.println("MOTORPH EMPLOYEE LEAVE BALANCE REPORT");
             writer.println("Generated on: " + java.time.LocalDate.now());
             writer.println("");
@@ -165,8 +160,6 @@ public class EmployeeReportGenerator {
                 double vlBalance = rs.getDouble("vacation_leave");
                 double slBalance = rs.getDouble("sick_leave");
                 double totalBalance = vlBalance + slBalance;
-                
-                // Calculate utilization (assuming 24 days annual allocation)
                 double utilizationRate = ((48 - totalBalance) / 48.0) * 100;
                 
                 writer.println(String.format("%d,\"%s %s\",\"%s\",%.1f,%.1f,%.1f,%.1f",
@@ -193,7 +186,7 @@ public class EmployeeReportGenerator {
             writer.println("Company Leave Liability (Days):," + String.format("%.1f", (totalVLBalance + totalSLBalance)));
             
             writer.close();
-            System.out.println("✅ Leave balance report generated");
+            System.out.println("Leave balance report generated");
             return file;
             
         } catch (Exception e) {
@@ -201,8 +194,7 @@ public class EmployeeReportGenerator {
             return null;
         }
     }
-    
-    // Generate Salary Analysis Report
+
     public File generateSalaryAnalysis() {
         try {
             File reportDir = new File("reports/employee/salary-analysis");
@@ -212,12 +204,10 @@ public class EmployeeReportGenerator {
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
             
-            // Header
             writer.println("MOTORPH SALARY ANALYSIS REPORT");
             writer.println("Generated on: " + java.time.LocalDate.now());
             writer.println("");
-            
-            // Salary by Position
+
             writer.println("SALARY ANALYSIS BY POSITION:");
             writer.println("Position,Employee Count,Min Salary,Max Salary,Average Salary,Total Salary Cost");
             
@@ -287,8 +277,7 @@ public class EmployeeReportGenerator {
             return null;
         }
     }
-    
-    // Generate Department Statistics
+
     public File generateDepartmentStats() {
         try {
             File reportDir = new File("reports/employee/department-stats");
@@ -297,13 +286,11 @@ public class EmployeeReportGenerator {
             String filename = "Department_Statistics_" + java.time.LocalDate.now() + ".csv";
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
-            
-            // Header
+
             writer.println("MOTORPH DEPARTMENT STATISTICS REPORT");
             writer.println("Generated on: " + java.time.LocalDate.now());
             writer.println("");
-            
-            // Group by position/department
+
             writer.println("DEPARTMENT BREAKDOWN:");
             writer.println("Department/Position,Employee Count,Average Salary,Total Cost,Avg Benefits");
             
@@ -358,7 +345,7 @@ public class EmployeeReportGenerator {
             writer.println("Estimated Annual Cost:," + String.format("%.2f", totalCost * 12));
             
             writer.close();
-            System.out.println("✅ Department statistics report generated");
+            System.out.println("Department statistics report generated");
             return file;
             
         } catch (Exception e) {

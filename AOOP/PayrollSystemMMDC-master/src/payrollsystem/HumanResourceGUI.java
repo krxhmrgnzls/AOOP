@@ -27,16 +27,13 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         this.name = userDetails.get(0).get(1);
         this.role = userDetails.get(0).get(3);
 
-        // Initialize HumanResource with employee ID
         humanResource = new HumanResource(id);
 
         lblNameSidebar.setText(name);
         lblIDSidebar.setText(id);
 
-        // Load employee details
         humanResource.viewPersonalDetails(id);
 
-        // Initialize services
         this.attendanceService = new AttendanceService();
         updateAttendanceButtonStates();
         }
@@ -46,7 +43,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     }
     void commaConstraints(java.awt.event.KeyEvent evt){
         if (evt.getKeyChar() == ',') {
-                    evt.consume(); // Consume the event, preventing the comma from being entered
+                    evt.consume(); 
                     JOptionPane.showMessageDialog(null, "Commas is not allowed!");
         }
     }
@@ -54,21 +51,21 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         char c = evt.getKeyChar();
         System.out.println("Back : "+c);
         if (!(Character.isDigit(c) || c == '-' || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_ENTER)) {
-            evt.consume(); // Consume the event, preventing the comma from being entered
+            evt.consume(); 
             JOptionPane.showMessageDialog(null, "Invalid key!");
         }
     }
     void numberOnly(java.awt.event.KeyEvent evt){
         char c = evt.getKeyChar();
         if (!(Character.isDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_ENTER)) {
-            evt.consume(); // Consume the event, preventing the comma from being entered
+            evt.consume(); 
             JOptionPane.showMessageDialog(null, "Invalid key!");
         }
     }
     void numberDotOnly(java.awt.event.KeyEvent evt){
         char c = evt.getKeyChar();
         if (!(Character.isDigit(c) || c == '.' || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_ENTER)) {
-            evt.consume(); // Consume the event, preventing the comma from being entered
+            evt.consume(); 
             JOptionPane.showMessageDialog(null, "Invalid key!");
         }
     }
@@ -2641,46 +2638,44 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
         ArrayList<String> tempData = new ArrayList<>();
         if(jBDay2.getDate() == null){
             JOptionPane.showMessageDialog(null, "Please Provide BirthDate!");
-        }else{
-            tempData.add(txtID2.getText());
-            tempData.add(txtFName2.getText());
-            tempData.add(txtLName2.getText());
-            tempData.add(new SimpleDateFormat("MM/dd/yyyy").format(jBDay2.getDate()));
-            tempData.add(textAreaAddress2.getText());
-            tempData.add(txtPhoneNum2.getText());
-            tempData.add(txtSSSNum1.getText());
-            tempData.add(txtPhilNum1.getText());
-            tempData.add(txtTINNum1.getText());
-            tempData.add(txtPagIbigNum1.getText());
-            tempData.add(txtStatus1.getSelectedItem().toString());
-            tempData.add(txtPosition1.getText());
-            tempData.add(txtSupervisor1.getText());
-            tempData.add(txtBasicSalary1.getText());
-            tempData.add(txtRiceSubsidy1.getText());
-            tempData.add(txtPhoneAllowance1.getText());
-            tempData.add(txtClothingAllowance1.getText());
-            tempData.add(txtBiMonthlyRate1.getText());
-            tempData.add(txtHourlyRate1.getText());
+            } else{
+                tempData.add(txtID2.getText());
+                tempData.add(txtFName2.getText());
+                tempData.add(txtLName2.getText());
+                tempData.add(new SimpleDateFormat("MM/dd/yyyy").format(jBDay2.getDate()));
+                tempData.add(textAreaAddress2.getText());
+                tempData.add(txtPhoneNum2.getText());
+                tempData.add(txtSSSNum1.getText());
+                tempData.add(txtPhilNum1.getText());
+                tempData.add(txtTINNum1.getText());
+                tempData.add(txtPagIbigNum1.getText());
+                tempData.add(txtStatus1.getSelectedItem().toString());
+                tempData.add(txtPosition1.getText());
+                tempData.add(txtSupervisor1.getText());
+                tempData.add(txtBasicSalary1.getText());
+                tempData.add(txtRiceSubsidy1.getText());
+                tempData.add(txtPhoneAllowance1.getText());
+                tempData.add(txtClothingAllowance1.getText());
+                tempData.add(txtBiMonthlyRate1.getText());
+                tempData.add(txtHourlyRate1.getText());
 
-            if(humanResource.addDetails(tempData)){
-                humanResource.setTableData(humanResource.displayAllDetails());
-                humanResource.setTableSize(19);
-                humanResource.displayDataTable(jTableEmployees);
-                
-                txtID2.setText(humanResource.nextID());txtFName2.setText("");txtLName2.setText("");jBDay2.setDate(null);textAreaAddress2.setText("");txtPhoneNum2.setText("");txtSSSNum1.setText("");
-                txtPhilNum1.setText("");txtTINNum1.setText("");txtPagIbigNum1.setText("");txtStatus1.setSelectedIndex(0);txtPosition1.setText("");txtSupervisor1.setText("");
-                txtBasicSalary1.setText("");txtRiceSubsidy1.setText("");txtPhoneAllowance1.setText("");txtClothingAllowance1.setText("");txtBiMonthlyRate1.setText("");txtHourlyRate1.setText("");
+                if(humanResource.addDetails(tempData)){
+                    humanResource.setTableData(humanResource.displayAllDetails());
+                    humanResource.setTableSize(19);
+                    humanResource.displayDataTable(jTableEmployees);
+
+                    txtID2.setText(humanResource.nextID());txtFName2.setText("");txtLName2.setText("");jBDay2.setDate(null);textAreaAddress2.setText("");txtPhoneNum2.setText("");txtSSSNum1.setText("");
+                    txtPhilNum1.setText("");txtTINNum1.setText("");txtPagIbigNum1.setText("");txtStatus1.setSelectedIndex(0);txtPosition1.setText("");txtSupervisor1.setText("");
+                    txtBasicSalary1.setText("");txtRiceSubsidy1.setText("");txtPhoneAllowance1.setText("");txtClothingAllowance1.setText("");txtBiMonthlyRate1.setText("");txtHourlyRate1.setText("");
+                }
             }
-        }
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAllEmployeesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllEmployeesActionPerformed
-        // TODO add your handling code here:
-         try {
+        try {
             System.out.println("=== DEBUG: Button clicked ===");
 
             // Switch to the All Employees tab
@@ -2700,10 +2695,8 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
             System.out.println("DEBUG: Database connection is OK");
 
-            // Use HumanResource business logic to load and display employees
             humanResource.displayEmployeeTable(jTableEmployees);
-
-            // Set next available ID for new employee form
+            
             txtID2.setText(humanResource.nextID());
 
             System.out.println("=== DEBUG: Button action completed ===");
@@ -2715,8 +2708,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAllEmployeesActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
-       try {
+        try {
                 int employeeId = Integer.parseInt(lblIDSidebar.getText());
 
             AttendanceResult result = attendanceService.processTimeIn(employeeId);

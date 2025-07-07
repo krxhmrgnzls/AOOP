@@ -31,10 +31,8 @@ public class AccountDetails {
     private double clothingAllowance;
     private double semiBasicSalary;  // Semi-monthly rate
     private double hourlyRate;
-    
-    // Default constructor
+
     public AccountDetails() {
-        // Initialize with default values
         this.employeeID = 0;
         this.firstName = "";
         this.lastName = "";
@@ -56,13 +54,11 @@ public class AccountDetails {
         this.hourlyRate = 0.0;
     }
     
-    // Constructor with employee ID
     public AccountDetails(int employeeID) {
         this();
         this.employeeID = employeeID;
     }
     
-    // ===== BASIC GETTERS AND SETTERS =====
     public int getDatabaseID() { 
         return databaseID; 
     }
@@ -103,7 +99,6 @@ public class AccountDetails {
         this.birthday = birthday; 
     }
     
-    // Get birthday as formatted string
     public String getBirthdayString() {
         if (birthday != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -128,7 +123,6 @@ public class AccountDetails {
         this.phoneNumber = phoneNumber != null ? phoneNumber : ""; 
     }
     
-    // ===== GOVERNMENT ID GETTERS AND SETTERS =====
     public String getSSSNumber() { 
         return sssNumber; 
     }
@@ -161,7 +155,6 @@ public class AccountDetails {
         this.pagibigNumber = pagibigNumber != null ? pagibigNumber : ""; 
     }
     
-    // ===== EMPLOYMENT DETAILS GETTERS AND SETTERS =====
     public String getStatus() { 
         return status; 
     }
@@ -186,7 +179,6 @@ public class AccountDetails {
         this.supervisor = supervisor != null ? supervisor : ""; 
     }
     
-    // ===== SALARY AND ALLOWANCES GETTERS AND SETTERS =====
     public double getBasicSalary() { 
         return basicSalary; 
     }
@@ -235,29 +227,22 @@ public class AccountDetails {
         this.hourlyRate = hourlyRate >= 0 ? hourlyRate : 0.0; 
     }
     
-    // ===== CONVENIENCE METHODS =====
-    
-    // Get complete name
     public String getEmployeeCompleteName() {
         return (firstName + " " + lastName).trim();
     }
     
-    // Get formatted employee ID
     public String getFormattedEmployeeID() {
         return String.format("%05d", employeeID);
     }
     
-    // Calculate total allowances
     public double getTotalAllowances() {
         return riceSubsidy + phoneAllowance + clothingAllowance;
     }
     
-    // Calculate gross income (basic salary + allowances)
     public double getGrossIncome() {
         return basicSalary + getTotalAllowances();
     }
     
-    // Validate employee data
     public boolean isValidEmployee() {
         return employeeID > 0 && 
                !firstName.trim().isEmpty() && 
@@ -265,9 +250,6 @@ public class AccountDetails {
                basicSalary > 0;
     }
     
-    // ===== DISPLAY METHODS =====
-    
-    // Get formatted salary
     public String getFormattedBasicSalary() {
         return String.format("₱%.2f", basicSalary);
     }
@@ -284,14 +266,12 @@ public class AccountDetails {
         return String.format("₱%.2f", getGrossIncome());
     }
     
-    // ===== toString METHOD =====
     @Override
     public String toString() {
         return String.format("Employee[ID=%d, Name=%s %s, Position=%s, Salary=%.2f]", 
                            employeeID, firstName, lastName, position, basicSalary);
     }
     
-    // ===== EQUALS AND HASHCODE =====
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -306,7 +286,6 @@ public class AccountDetails {
         return Integer.hashCode(employeeID);
     }
     
-    // ===== CLONE METHOD =====
     public AccountDetails clone() {
         AccountDetails cloned = new AccountDetails();
         cloned.setDatabaseID(this.databaseID);

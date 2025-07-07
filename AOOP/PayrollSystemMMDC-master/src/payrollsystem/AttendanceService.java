@@ -9,20 +9,13 @@ public class AttendanceService {
     public AttendanceService() {
         this.attendanceDAO = new AttendanceDAO();
     }
-    
-    /**
-     * Handle time in process
-     * @param employeeId Employee ID
-     * @return AttendanceResult with success/failure info
-     */
+
     public AttendanceResult processTimeIn(int employeeId) {
         try {
-            // Business rule: Check if already logged in today
             if (hasAlreadyLoggedInToday(employeeId)) {
                 return new AttendanceResult(false, "You have already logged in today!", null);
             }
             
-            // Create attendance record
             AttendanceRecord attendance = new AttendanceRecord();
             attendance.setEmployeeId(employeeId);
             attendance.setLogDate(new Date());
@@ -32,7 +25,6 @@ public class AttendanceService {
             attendance.setSubmittedToPayroll(false);
             attendance.setRemarks("Regular login");
             
-            // Save to database
             boolean success = attendanceDAO.addAttendance(attendance);
             
             if (success) {
@@ -50,14 +42,8 @@ public class AttendanceService {
         }
     }
     
-    /**
-     * Handle time out process
-     * @param employeeId Employee ID
-     * @return AttendanceResult with success/failure info
-     */
     public AttendanceResult processTimeOut(int employeeId) {
         try {
-            // Business rule: Find today's attendance record
             AttendanceRecord todayRecord = getTodayAttendanceRecord(employeeId);
             
             if (todayRecord == null) {
@@ -69,13 +55,10 @@ public class AttendanceService {
                 return new AttendanceResult(false, "You have already logged out today!", null);
             }
             
-            // Update with logout time
             todayRecord.setLogoutTime(new java.sql.Time(System.currentTimeMillis()));
-            
-            // Business rule: Calculate hours worked
+
             double hoursWorked = todayRecord.getWorkingHours();
-            
-            // Update in database
+
             boolean success = attendanceDAO.updateAttendance(todayRecord);
             
             if (success) {
@@ -93,12 +76,7 @@ public class AttendanceService {
             return new AttendanceResult(false, "Error: " + e.getMessage(), null);
         }
     }
-    
-    /**
-     * Get current attendance status for an employee
-     * @param employeeId Employee ID
-     * @return AttendanceStatus indicating what actions are available
-     */
+
     public AttendanceStatus getAttendanceStatus(int employeeId) {
         try {
             AttendanceRecord todayRecord = getTodayAttendanceRecord(employeeId);
@@ -116,7 +94,6 @@ public class AttendanceService {
         }
     }
     
-    // Private helper methods (business logic)
     private boolean hasAlreadyLoggedInToday(int employeeId) {
         try {
             java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
@@ -144,41 +121,4 @@ public class AttendanceService {
             return null;
         }
     }
-}
-
-// ADD THESE CLASSES TO THE BOTTOM OF YOUR AttendanceService.java FILE:
-
-/**
- * Result object for attendance operations
- */
-class AttendanceResult {
-    private boolean success;
-    private String message;
-    private AttendanceRecord attendanceRecord;
-    
-    public AttendanceResult(boolean success, String message, AttendanceRecord record) {
-        this.success = success;
-        this.message = message;
-        this.attendanceRecord = record;
-    }
-    
-    public boolean isSuccess() { return success; }
-    public String getMessage() { return message; }
-    public AttendanceRecord getAttendanceRecord() { return attendanceRecord; }
-}
-
-class AttendanceStatus {
-    private boolean canTimeIn;
-    private boolean canTimeOut;
-    private String statusMessage;
-    
-    public AttendanceStatus(boolean canTimeIn, boolean canTimeOut, String message) {
-        this.canTimeIn = canTimeIn;
-        this.canTimeOut = canTimeOut;
-        this.statusMessage = message;
-    }
-    
-    public boolean canTimeIn() { return canTimeIn; }
-    public boolean canTimeOut() { return canTimeOut; }
-    public String getStatusMessage() { return statusMessage; }
 }

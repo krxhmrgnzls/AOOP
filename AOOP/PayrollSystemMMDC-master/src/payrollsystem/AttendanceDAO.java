@@ -140,7 +140,6 @@ public class AttendanceDAO {
         }
     }
     
-    // APPROVE - Submit attendance to supervisor
     public boolean submitToSupervisor(int attendanceId) {
         String sql = "UPDATE attendance SET submitted_to_supervisor = true WHERE attendance_id = ?";
         try {
@@ -154,7 +153,6 @@ public class AttendanceDAO {
         }
     }
     
-    // APPROVE - Submit attendance to payroll
     public boolean submitToPayroll(int attendanceId) {
         String sql = "UPDATE attendance SET submitted_to_payroll = true WHERE attendance_id = ?";
         try {
@@ -168,11 +166,9 @@ public class AttendanceDAO {
         }
     }
     
-    // BULK APPROVAL - Submit multiple attendance records to payroll
     public boolean bulkSubmitToPayroll(List<Integer> attendanceIds) {
         String sql = "UPDATE attendance SET submitted_to_payroll = true WHERE attendance_id IN (";
-        
-        // Build IN clause
+
         for (int i = 0; i < attendanceIds.size(); i++) {
             sql += "?";
             if (i < attendanceIds.size() - 1) sql += ",";
@@ -193,7 +189,6 @@ public class AttendanceDAO {
         }
     }
     
-    // ANALYTICS - Get total working hours for employee in period
     public double getTotalWorkingHours(int employeeId, Date startDate, Date endDate) {
         String sql = "SELECT SUM(TIMESTAMPDIFF(HOUR, login_time, logout_time)) as total_hours " +
                     "FROM attendance WHERE employee_id = ? AND log_date BETWEEN ? AND ? " +
@@ -215,7 +210,6 @@ public class AttendanceDAO {
         return 0.0;
     }
     
-    // ANALYTICS - Get attendance summary for employee
     public AttendanceSummary getAttendanceSummary(int employeeId, Date startDate, Date endDate) {
         AttendanceSummary summary = new AttendanceSummary();
         

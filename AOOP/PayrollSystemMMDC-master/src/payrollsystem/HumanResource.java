@@ -52,50 +52,43 @@ public class HumanResource extends Employee {
         this.leaveDAO = new LeaveDAO();
     }
     
-    // *** SEPARATE DATA METHODS FOR EACH TABLE TYPE ***
-    
     public void setEmployeeTableData(ArrayList<ArrayList<String>> data) {
         this.employeeData = data;
-        this.newData = data; // For backward compatibility
+        this.newData = data;
     }
     
     public void setRequestTableData(ArrayList<ArrayList<String>> data) {
         this.requestData = data;
-        this.newData = data; // For backward compatibility
+        this.newData = data; 
     }
     
     public void setDTRTableData(ArrayList<ArrayList<String>> data) {
         this.dtrData = data;
-        this.newData = data; // For backward compatibility
+        this.newData = data;
     }
     
     public void setLedgerTableData(ArrayList<ArrayList<String>> data) {
         this.ledgerData = data;
-        this.newData = data; // For backward compatibility
+        this.newData = data; 
     }
     
     public void setCredentialTableData(ArrayList<ArrayList<String>> data) {
         this.credentialData = data;
-        this.newData = data; // For backward compatibility
+        this.newData = data; 
     }
-    
-    // Keep old method for backward compatibility
+
     public void setTableData(ArrayList<ArrayList<String>> tableData) { 
         this.newData = tableData; 
     }
-    
-    // *** SPECIALIZED DISPLAY METHODS ***
-    
+
     public void displayEmployeeTable(JTable table) {
         try {
             System.out.println("DEBUG: Displaying EMPLOYEE table");
-            
-            // Get fresh employee data
+
             ArrayList<ArrayList<String>> employees = displayAllDetails();
             this.employeeData = employees;
-            this.newData = employees; // Set for display
-            
-            // Display using generic method
+            this.newData = employees; 
+
             displayDataTable(table);
             
             System.out.println("DEBUG: Employee table updated with " + employees.size() + " employees");
@@ -108,13 +101,11 @@ public class HumanResource extends Employee {
     public void displayRequestTable(JTable table) {
         try {
             System.out.println("DEBUG: Displaying REQUEST table");
-            
-            // Get fresh request data
+
             ArrayList<ArrayList<String>> requests = loadAllRequestsForEmployee();
             this.requestData = requests;
-            this.newData = requests; // Set for display
-            
-            // Display using generic method
+            this.newData = requests; 
+
             displayDataTable(table);
             
             System.out.println("DEBUG: Request table updated with " + requests.size() + " requests");
@@ -127,19 +118,17 @@ public class HumanResource extends Employee {
     public void displayDTRTable(JTable table, Date fromDate, Date toDate) {
         try {
             System.out.println("DEBUG: Displaying DTR table");
-            
-            // Get fresh DTR data
+
             ArrayList<ArrayList<String>> dtr = getDTRData(fromDate, toDate);
             this.dtrData = dtr;
-            this.newData = dtr; // Set for display
-            
-            // Display using generic method
+            this.newData = dtr; 
+
             displayDataTable(table);
             
             System.out.println("DEBUG: DTR table updated with " + dtr.size() + " records");
-        } catch (Exception e) {
-            System.err.println("Error displaying DTR table: " + e.getMessage());
-            e.printStackTrace();
+            } catch (Exception e) {
+                System.err.println("Error displaying DTR table: " + e.getMessage());
+                e.printStackTrace();
         }
     }
     
@@ -147,12 +136,10 @@ public class HumanResource extends Employee {
         try {
             System.out.println("DEBUG: Displaying LEDGER table");
             
-            // Get fresh ledger data
             ArrayList<ArrayList<String>> ledger = getLeaveBalancesLedger();
             this.ledgerData = ledger;
-            this.newData = ledger; // Set for display
-            
-            // Display using generic method
+            this.newData = ledger; 
+
             displayDataTable(table);
             
             System.out.println("DEBUG: Ledger table updated with " + ledger.size() + " records");
@@ -166,12 +153,10 @@ public class HumanResource extends Employee {
         try {
             System.out.println("DEBUG: Displaying CREDENTIAL table");
             
-            // Get fresh credential data
             ArrayList<ArrayList<String>> credentials = allCredentials();
             this.credentialData = credentials;
-            this.newData = credentials; // Set for display
-            
-            // Display using generic method
+            this.newData = credentials; 
+
             displayDataTable(table);
             
             System.out.println("DEBUG: Credential table updated with " + credentials.size() + " credentials");
@@ -180,9 +165,7 @@ public class HumanResource extends Employee {
             e.printStackTrace();
         }
     }
-    
-    // *** DATA RETRIEVAL METHODS ***
-    
+
     public ArrayList<ArrayList<String>> loadAllRequestsForEmployee() {
         ArrayList<ArrayList<String>> requests = new ArrayList<>();
         
@@ -271,9 +254,7 @@ public class HumanResource extends Employee {
         
         return ledger;
     }
-    
-    // *** EXISTING GETTER/SETTER METHODS ***
-    
+
     public ArrayList<ArrayList<String>> getIdAndNames() { return idAndNames; }
     public ArrayList<ArrayList<String>> getNewData() { return newData; }
     public void setTableSize(int tableSize) { this.tableSize = tableSize; }
@@ -324,9 +305,7 @@ public class HumanResource extends Employee {
     
     public void setSelectedName(String selectedName) { this.selectedName = selectedName; }
     public String getSelectedName() { return selectedName; }
-    
-    // *** EXISTING BUSINESS LOGIC METHODS ***
-    
+
     public String nextID() {
         String sql = "SELECT MAX(employee_id) FROM employees";
         try (PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -437,8 +416,7 @@ public class HumanResource extends Employee {
     
     public ArrayList<ArrayList<String>> displayAllDetails() {
     ArrayList<ArrayList<String>> employees = new ArrayList<>();
-    
-    // FIXED SQL: Join with supervisor names and proper number formatting
+
     String sql = "SELECT e.employee_id, e.last_name, e.first_name, e.birthday, e.address, e.phone_number, " +
                 "e.sss_number, e.philhealth_number, e.tin_number, e.pagibig_number, e.status, e.position, " +
                 "e.supervisor_id, " +
@@ -460,8 +438,7 @@ public class HumanResource extends Employee {
             row.add(rs.getDate("birthday") != null ? rs.getDate("birthday").toString() : "");
             row.add(rs.getString("address") != null ? rs.getString("address") : "");
             row.add(rs.getString("phone_number") != null ? rs.getString("phone_number") : "");
-            
-            // *** FIX: Format government IDs properly (no scientific notation) ***
+
             row.add(formatGovernmentNumber(rs.getString("sss_number")));
             row.add(formatGovernmentNumber(rs.getString("philhealth_number")));
             row.add(formatGovernmentNumber(rs.getString("tin_number")));
@@ -469,8 +446,7 @@ public class HumanResource extends Employee {
             
             row.add(rs.getString("status") != null ? rs.getString("status") : "");
             row.add(rs.getString("position") != null ? rs.getString("position") : "");
-            
-            // *** FIX: Show supervisor name instead of ID ***
+
             String supervisorName = rs.getString("supervisor_name");
             row.add(supervisorName != null ? supervisorName : "");
             
@@ -805,23 +781,17 @@ public class HumanResource extends Employee {
     }
     
     try {
-        // Check if it's in scientific notation (contains 'E')
         if (numberStr.toUpperCase().contains("E")) {
-            // Convert scientific notation to regular number
             double scientificNumber = Double.parseDouble(numberStr);
-            // Format as whole number without decimals
             return String.format("%.0f", scientificNumber);
         } else {
-            // Return as-is if it's already a normal string
             return numberStr;
         }
     } catch (NumberFormatException e) {
-        // If parsing fails, return the original string
         return numberStr;
     }
 }
 
-    // *** ADD this method that the GUI is calling ***
     public void viewPersonalDetails(String employeeId) {
         String sql = "SELECT e.employee_id, e.last_name, e.first_name, e.birthday, e.address, e.phone_number, " +
                     "e.sss_number, e.philhealth_number, e.tin_number, e.pagibig_number, e.status, e.position, " +
@@ -838,7 +808,6 @@ public class HumanResource extends Employee {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                // Create or update accountDetails object
                 if (accountDetails == null) {
                     accountDetails = new AccountDetails();
                 }
@@ -850,7 +819,6 @@ public class HumanResource extends Employee {
                 accountDetails.setAddress(rs.getString("address"));
                 accountDetails.setPhoneNumber(rs.getString("phone_number"));
 
-                // *** FIX: Set government numbers with proper formatting ***
                 accountDetails.setSSSNumber(formatGovernmentNumber(rs.getString("sss_number")));
                 accountDetails.setPhilHealthNumber(formatGovernmentNumber(rs.getString("philhealth_number")));
                 accountDetails.setTinNumber(formatGovernmentNumber(rs.getString("tin_number")));
@@ -859,7 +827,6 @@ public class HumanResource extends Employee {
                 accountDetails.setStatus(rs.getString("status"));
                 accountDetails.setPosition(rs.getString("position"));
 
-                // *** FIX: Set supervisor name instead of ID ***
                 String supervisorName = rs.getString("supervisor_name");
                 accountDetails.setSupervisor(supervisorName != null ? supervisorName : "");
 
@@ -880,8 +847,6 @@ public class HumanResource extends Employee {
         }
     }
     
-    // *** ADDITIONAL BACKWARD COMPATIBILITY METHODS ***
-    
     public ArrayList<ArrayList<String>> allApprovedPersonalLeaveLedger() {
         return getLeaveBalancesLedger();
     }
@@ -894,12 +859,9 @@ public class HumanResource extends Employee {
         return getDTRData(fromDate, toDate);
     }
     
-    // User login and logout methods (inherited from Employee class)
     public void userLogin() {
-        // Implementation depends on your login system
     }
     
     public void userLogout() {
-        // Implementation depends on your logout system
     }
 }

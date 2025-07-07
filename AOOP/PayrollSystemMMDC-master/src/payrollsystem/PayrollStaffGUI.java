@@ -1,6 +1,5 @@
 package payrollsystem;
 
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,41 +10,51 @@ import javax.swing.table.DefaultTableModel;
 
 public class PayrollStaffGUI extends javax.swing.JFrame {
     String id, name, role;
-    PayrollStaff payrollStaff;  // This was the main issue!
+    PayrollStaff payrollStaff;  
     ArrayList<String> data = new ArrayList<>();
-    SimpleDateFormat dateFormat = new java.text.SimpleDataFormat("MM/dd/yyyy");
+    SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy");
     private AttendanceService attendanceService;
 
-    // 4. CONSTRUCTOR FIX - Initialize payrollStaff correctly
     public PayrollStaffGUI(ArrayList<ArrayList<String>> userDetails) {
-        // Initialize components first
-        initComponents();
-        
-        // Set user details
-        this.id = userDetails.get(0).get(0);
-        this.name = userDetails.get(0).get(1);
-        this.role = userDetails.get(0).get(3);
-        
-        // Set labels
-        lblNameSidebar.setText(name);
-        lblIDSidebar.setText(id);
-        
-        // CRITICAL: Initialize payrollStaff object with the ID
-        payrollStaff.viewPersonalDetails(id);
-        this.attendanceService = new AttendanceService();
-        updateAttendanceButtonStates();
-        
+      // Set user details FIRST
+    this.id = userDetails.get(0).get(0);
+    this.name = userDetails.get(0).get(1);
+    this.role = userDetails.get(0).get(3);
+
+    this.payrollStaff = new PayrollStaff(id);
+    
+
+    initComponents();
+    
+    lblNameSidebar.setText(name);
+    lblIDSidebar.setText(id);
+    
+        try {
+            payrollStaff.viewPersonalDetails(id);
+
+            setupEventListeners();
+
+            this.attendanceService = new AttendanceService();
+            updateAttendanceButtonStates();
+
+            System.out.println("PayrollStaff initialized with ID: " + id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error initializing PayrollStaff: " + e.getMessage());
+        }
     }
+
     private void setupEventListeners() {
     // ADD these lines in your constructor after initComponents()
     jDateFrom.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
     jDateTo.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
 }
     private void onPayrollDateRangeChanged() {
-             payrollStaff.handleDateRangeChange(jDateFrom.getDate(), jDateTo.getDate(), 
-                                      jTablePayroll, lblPayrollPeriod, btnReleased);
+             if (payrollStaff != null && jDateFrom != null && jDateTo != null) {
+        payrollStaff.handleDateRangeChange(jDateFrom.getDate(), jDateTo.getDate(), 
+                                 jTablePayroll, lblPayrollPeriod, btnReleased);
     }
-
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -3112,8 +3121,8 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void searchDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchDateActionPerformed
         // TODO add your handling code here:
-    if (!validatePayrollDates()) return;
-    
+     if (!validatePayrollDates()) return;
+
         String message = String.format(
             "Do you want to compute payroll for the period:\n%s to %s?\n\n" +
             "This will calculate payroll for all active employees using database records.",
@@ -3130,25 +3139,20 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         computePayrollInBackground();
     }//GEN-LAST:event_searchDateActionPerformed
-
-   private boolean validatePayrollDates() {
-    return payrollStaff.validatePayrollDates(jDateFrom.getDate(), jDateTo.getDate(), this);
-}
-
-    private void showExistingPayrollData() {
-        payrollStaff.showExistingPayrollData(jDateFrom.getDate(), jDateTo.getDate(), 
-                                        jTablePayroll, lblPayrollPeriod, btnReleased, this);
-}
+    
+    private boolean validatePayrollDates() {
+        return payrollStaff.validatePayrollDates(jDateFrom.getDate(), jDateTo.getDate(), this);
     }
 
     private void showExistingPayrollData() {
         payrollStaff.showExistingPayrollData(jDateFrom.getDate(), jDateTo.getDate(), 
                                             jTablePayroll, lblPayrollPeriod, btnReleased, this);
-}
+    }
 
     private void clearPayrollTable() {
         payrollStaff.clearPayrollTable(jTablePayroll);
     }
+
     private void computePayrollInBackground() {
         searchDate.setEnabled(false);
         searchDate.setText("Computing...");
@@ -3539,4 +3543,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtSupervisor;
     private javax.swing.JTextField txtTINNum;
     // End of variables declaration//GEN-END:variables
+}
+
 

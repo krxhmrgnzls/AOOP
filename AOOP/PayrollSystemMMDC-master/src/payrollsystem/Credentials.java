@@ -8,7 +8,6 @@ public abstract class Credentials extends AccountDetails {
     protected DatabaseConnection dbConnection;
     protected Connection connection;
     
-    // Constructor
     public Credentials() {
         super();
         initializeDatabaseConnection();
@@ -30,7 +29,6 @@ public abstract class Credentials extends AccountDetails {
         }
     }
     
-    // Getters and Setters
     public String getUserID() {
         return userID;
     }
@@ -39,7 +37,6 @@ public abstract class Credentials extends AccountDetails {
         return userPassword;
     }
     
-    // Check credentials against database
     public ArrayList<ArrayList<String>> checkCredentials() {
         ArrayList<ArrayList<String>> tempData = new ArrayList<>();
         
@@ -73,22 +70,17 @@ public abstract class Credentials extends AccountDetails {
         
         return tempData;
     }
-    
-    // ===== LEGACY METHODS FOR BACKWARD COMPATIBILITY =====
-    
-    // Legacy method - now uses database instead of CSV
+   
     public void setFilePath(String filePath) {
         // This method is kept for compatibility but no longer uses file paths
         System.out.println("Note: setFilePath() is deprecated. Using database instead of CSV files.");
     }
     
-    // Legacy method - now retrieves from database instead of CSV
     public void retrivedDetails() {
         // This method is kept for compatibility but now loads from database
         System.out.println("Note: retrivedDetails() is deprecated. Use checkCredentials() instead.");
     }
     
-    // Legacy method - returns empty list as data is now handled differently
     public ArrayList<ArrayList<String>> getDataList() {
         // Return credentials data from database
         ArrayList<ArrayList<String>> allCredentials = new ArrayList<>();
@@ -102,7 +94,7 @@ public abstract class Credentials extends AccountDetails {
                 ArrayList<String> row = new ArrayList<>();
                 row.add(rs.getString("employee_id"));
                 row.add(rs.getString("employee_name"));
-                row.add(""); // Password placeholder (don't return actual passwords)
+                row.add("");
                 row.add(rs.getString("role"));
                 allCredentials.add(row);
             }
@@ -114,9 +106,6 @@ public abstract class Credentials extends AccountDetails {
         return allCredentials;
     }
     
-    // ===== NEW DATABASE METHODS =====
-    
-    // Add new credentials to database
     public boolean addCredentials(String employeeId, String employeeName, String password, String role) {
         String sql = "INSERT INTO login_credentials (employee_id, employee_name, password, role) VALUES (?, ?, ?, ?)";
         
@@ -135,7 +124,6 @@ public abstract class Credentials extends AccountDetails {
         }
     }
     
-    // Update existing credentials
     public boolean updateCredentials(String employeeId, String newPassword, String newRole) {
         String sql = "UPDATE login_credentials SET password = ?, role = ? WHERE employee_id = ?";
         
@@ -153,7 +141,6 @@ public abstract class Credentials extends AccountDetails {
         }
     }
     
-    // Delete credentials
     public boolean deleteCredentials(String employeeId) {
         String sql = "DELETE FROM login_credentials WHERE employee_id = ?";
         
@@ -169,7 +156,6 @@ public abstract class Credentials extends AccountDetails {
         }
     }
     
-    // Check if user exists
     public boolean userExists(String employeeId) {
         String sql = "SELECT COUNT(*) FROM login_credentials WHERE employee_id = ?";
         
@@ -188,7 +174,6 @@ public abstract class Credentials extends AccountDetails {
         return false;
     }
     
-    // Get user role
     public String getUserRole(String employeeId) {
         String sql = "SELECT role FROM login_credentials WHERE employee_id = ?";
         
@@ -207,7 +192,6 @@ public abstract class Credentials extends AccountDetails {
         return "";
     }
     
-    // Validate credentials (returns user data if valid)
     public ArrayList<String> validateLogin(String employeeId, String password) {
         ArrayList<ArrayList<String>> result = checkCredentials();
         return result.isEmpty() ? new ArrayList<>() : result.get(0);

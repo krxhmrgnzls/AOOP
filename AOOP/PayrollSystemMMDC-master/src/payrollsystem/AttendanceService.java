@@ -146,6 +146,8 @@ public class AttendanceService {
     }
 }
 
+// ADD THESE CLASSES TO THE BOTTOM OF YOUR AttendanceService.java FILE:
+
 /**
  * Result object for attendance operations
  */
@@ -165,9 +167,6 @@ class AttendanceResult {
     public AttendanceRecord getAttendanceRecord() { return attendanceRecord; }
 }
 
-/**
- * Status object for attendance state
- */
 class AttendanceStatus {
     private boolean canTimeIn;
     private boolean canTimeOut;

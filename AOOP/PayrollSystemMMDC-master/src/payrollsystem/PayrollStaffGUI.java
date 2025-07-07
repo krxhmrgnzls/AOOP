@@ -1,65 +1,51 @@
 package payrollsystem;
 
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import javax.swing.JOptionPane;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 public class PayrollStaffGUI extends javax.swing.JFrame {
     String id, name, role;
-    PayrollStaff payrollStaff;
-    ArrayList<String> data = new ArrayList<>(); 
-    SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy");
+    PayrollStaff payrollStaff;  // This was the main issue!
+    ArrayList<String> data = new ArrayList<>();
+    SimpleDateFormat dateFormat = new java.text.SimpleDataFormat("MM/dd/yyyy");
     private AttendanceService attendanceService;
-    
+
+    // 4. CONSTRUCTOR FIX - Initialize payrollStaff correctly
     public PayrollStaffGUI(ArrayList<ArrayList<String>> userDetails) {
+        // Initialize components first
+        initComponents();
+        
+        // Set user details
         this.id = userDetails.get(0).get(0);
         this.name = userDetails.get(0).get(1);
         this.role = userDetails.get(0).get(3);
         
-        initComponents();
-        this.id = userDetails.get(0).get(0);
-          this.name = userDetails.get(0).get(1);
-          this.role = userDetails.get(0).get(3);  // ADDED THIS LINE
-
-          payrollStaff = new PayrollStaff(id);
-
-          lblNameSidebar.setText(name);
-          lblIDSidebar.setText(id);
-
-          // FIXED: Method call without parameters
-          payrollStaff.viewPersonalDetails(id);
-          this.attendanceService = new AttendanceService();
-          updateAttendanceButtonStates();
-          
+        // Set labels
+        lblNameSidebar.setText(name);
+        lblIDSidebar.setText(id);
+        
+        // CRITICAL: Initialize payrollStaff object with the ID
+        payrollStaff.viewPersonalDetails(id);
+        this.attendanceService = new AttendanceService();
+        updateAttendanceButtonStates();
+        
     }
-    
     private void setupEventListeners() {
     // ADD these lines in your constructor after initComponents()
     jDateFrom.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
     jDateTo.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
 }
     private void onPayrollDateRangeChanged() {
-    if (jDateFrom.getDate() != null && jDateTo.getDate() != null && !jDateFrom.getDate().after(jDateTo.getDate())) {
-        ArrayList<ArrayList<String>> existingData = payrollStaff.getPayrollDataForDateRange(
-            jDateFrom.getDate(), jDateTo.getDate());
-        
-        payrollStaff.setTableData(existingData);
-        payrollStaff.setTableSize(14);
-        payrollStaff.displayDataTable(jTablePayroll);
-        
-        btnReleased.setEnabled(!existingData.isEmpty());
-        updatePayrollPeriodLabel();
+             payrollStaff.handleDateRangeChange(jDateFrom.getDate(), jDateTo.getDate(), 
+                                      jTablePayroll, lblPayrollPeriod, btnReleased);
     }
-}
 
-    private PayrollStaffGUI() {
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -3145,33 +3131,24 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         computePayrollInBackground();
     }//GEN-LAST:event_searchDateActionPerformed
 
-    private boolean validatePayrollDates() {
-        if (jDateFrom.getDate() == null || jDateTo.getDate() == null) {
-            JOptionPane.showMessageDialog(this, "Please select both From and To dates.", 
-                "Date Selection Required", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
+   private boolean validatePayrollDates() {
+    return payrollStaff.validatePayrollDates(jDateFrom.getDate(), jDateTo.getDate(), this);
+}
 
-        if (jDateFrom.getDate().after(jDateTo.getDate())) {
-            JOptionPane.showMessageDialog(this, "From date cannot be later than To date.", 
-                "Invalid Date Range", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-
-        return true;
+    private void showExistingPayrollData() {
+        payrollStaff.showExistingPayrollData(jDateFrom.getDate(), jDateTo.getDate(), 
+                                        jTablePayroll, lblPayrollPeriod, btnReleased, this);
+}
     }
 
     private void showExistingPayrollData() {
-        btnReleased.setEnabled(false);
-        ArrayList<ArrayList<String>> existingData = payrollStaff.getPayrollDataForDateRange(
-            jDateFrom.getDate(), jDateTo.getDate());
+        payrollStaff.showExistingPayrollData(jDateFrom.getDate(), jDateTo.getDate(), 
+                                            jTablePayroll, lblPayrollPeriod, btnReleased, this);
+}
 
-        payrollStaff.setTableData(existingData);
-        payrollStaff.setTableSize(14);
-        payrollStaff.displayDataTable(jTablePayroll);
-        updatePayrollPeriodLabel();
+    private void clearPayrollTable() {
+        payrollStaff.clearPayrollTable(jTablePayroll);
     }
-
     private void computePayrollInBackground() {
         searchDate.setEnabled(false);
         searchDate.setText("Computing...");
@@ -3232,14 +3209,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     }
 
     private void updatePayrollPeriodLabel() {
-        if (jDateFrom.getDate() != null && jDateTo.getDate() != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
-            String dateRange = sdf.format(jDateFrom.getDate()) + "-" + sdf.format(jDateTo.getDate()) + ", 2025";
-            lblPayrollPeriod.setText("Payroll from " + dateRange);
-        }
+        payrollStaff.updatePayrollPeriodLabel(lblPayrollPeriod, jDateFrom.getDate(), 
+                                             jDateTo.getDate(), jTablePayroll);
     }
-   
-        private void jDateFromPropertyChange(java.beans.PropertyChangeEvent evt) {
+    private void jDateFromPropertyChange(java.beans.PropertyChangeEvent evt) {
         if ("date".equals(evt.getPropertyName())) {
             onPayrollDateRangeChanged();
         }
@@ -3324,7 +3297,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
                 int days = payrollStaff.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
                 txtDaysNumber1.setText(String.valueOf(days));
-
             } else {
                 txtDaysNumber1.setText("0");
             }
@@ -3345,7 +3317,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PayrollStaffGUI().setVisible(true);
+            new LoginGUI().setVisible(true);
             }
         });
     }
@@ -3567,4 +3539,4 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtSupervisor;
     private javax.swing.JTextField txtTINNum;
     // End of variables declaration//GEN-END:variables
-}
+

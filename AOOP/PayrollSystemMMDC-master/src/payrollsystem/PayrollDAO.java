@@ -3,6 +3,7 @@ package payrollsystem;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 public class PayrollDAO {
     private Connection connection;
@@ -58,22 +59,7 @@ public class PayrollDAO {
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
-                PayrollRecord payroll = new PayrollRecord();
-                payroll.setPayrollId(rs.getInt("payroll_id"));
-                payroll.setEmployeeId(rs.getInt("employee_id"));
-                payroll.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
-                payroll.setPayrollPeriod(rs.getString("payroll_period"));
-                payroll.setPosition(rs.getString("position"));
-                payroll.setGrossIncome(rs.getDouble("gross_income"));
-                payroll.setBenefits(rs.getDouble("benefits"));
-                payroll.setOvertime(rs.getDouble("overtime"));
-                payroll.setUndertime(rs.getDouble("undertime"));
-                payroll.setSss(rs.getDouble("sss"));
-                payroll.setPhilhealth(rs.getDouble("philhealth"));
-                payroll.setPagibig(rs.getDouble("pagibig"));
-                payroll.setTax(rs.getDouble("tax"));
-                payroll.setNetPay(rs.getDouble("net_pay"));
-                payroll.setStatus(rs.getString("status"));
+                PayrollRecord payroll = createPayrollFromResultSet(rs);
                 payrolls.add(payroll);
             }
         } catch (SQLException e) {
@@ -95,27 +81,76 @@ public class PayrollDAO {
             ResultSet rs = pstmt.executeQuery();
             
             while (rs.next()) {
-                PayrollRecord payroll = new PayrollRecord();
-                payroll.setPayrollId(rs.getInt("payroll_id"));
-                payroll.setEmployeeId(rs.getInt("employee_id"));
-                payroll.setEmployeeName(rs.getString("first_name") + " " + rs.getString("last_name"));
-                payroll.setPayrollPeriod(rs.getString("payroll_period"));
-                payroll.setPosition(rs.getString("position"));
-                payroll.setGrossIncome(rs.getDouble("gross_income"));
-                payroll.setBenefits(rs.getDouble("benefits"));
-                payroll.setOvertime(rs.getDouble("overtime"));
-                payroll.setUndertime(rs.getDouble("undertime"));
-                payroll.setSss(rs.getDouble("sss"));
-                payroll.setPhilhealth(rs.getDouble("philhealth"));
-                payroll.setPagibig(rs.getDouble("pagibig"));
-                payroll.setTax(rs.getDouble("tax"));
-                payroll.setNetPay(rs.getDouble("net_pay"));
-                payroll.setStatus(rs.getString("status"));
+                PayrollRecord payroll = createPayrollFromResultSet(rs);
                 payrolls.add(payroll);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return payrolls;
+    }
+    
+    // READ - Get payroll by date range - FIXED IMPLEMENTATION
+    public List<PayrollRecord> getPayrollByDateRange(java.util.Date fromDate, java.util.Date toDate) {
+        List<PayrollRecord> payrolls = new ArrayList<>();
+        
+        if (connection == null) {
+            System.err.println("ERROR: Database connection is null in PayrollDAO.getPayrollByDateRange");
+            return payrolls; // Return empty list instead of throwing exception
+        }
+        
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        String fromDateStr = sdf.format(fromDate);
+        String toDateStr = sdf.format(toDate);
+        
+        String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
+                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "WHERE p.payroll_period LIKE ? OR p.payroll_period LIKE ? " +
+                    "ORDER BY p.payroll_id DESC";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            // Search for payroll periods that contain these dates
+            pstmt.setString(1, "%" + fromDateStr + "%");
+            pstmt.setString(2, "%" + toDateStr + "%");
+            
+            ResultSet rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+                PayrollRecord payroll = createPayrollFromResultSet(rs);
+                payrolls.add(payroll);
+            }
+            
+            System.out.println("Found " + payrolls.size() + " payroll records for date range: " + fromDateStr + " to " + toDateStr);
+            
+        } catch (SQLException e) {
+            System.err.println("Database error in getPayrollByDateRange: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return payrolls;
+    }
+    
+    // READ - Get payroll by period string
+    public List<PayrollRecord> getPayrollByPeriod(String payrollPeriod) {
+        List<PayrollRecord> payrolls = new ArrayList<>();
+        String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
+                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "WHERE p.payroll_period = ? ORDER BY p.employee_id";
+
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, payrollPeriod);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                PayrollRecord payroll = createPayrollFromResultSet(rs);
+                payrolls.add(payroll);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return payrolls;
     }
     
@@ -185,6 +220,7 @@ public class PayrollDAO {
         }
     }
     
+    // HELPER - Calculate payroll for individual employee
     private PayrollRecord calculatePayrollForEmployee(AccountDetails employee, String payrollPeriod) {
         try {
             PayrollRecord payroll = new PayrollRecord();
@@ -229,61 +265,41 @@ public class PayrollDAO {
         }
     }
 
-        private double getOvertimeHours(int employeeId, String period) {
-            // Query overtime_requests table for approved overtime
-            String sql = "SELECT COALESCE(SUM(number_of_days * 8), 0) FROM overtime_requests " +
-                        "WHERE employee_id = ? AND status = 'Approved'";
-            try {
-                PreparedStatement pstmt = connection.prepareStatement(sql);
-                pstmt.setInt(1, employeeId);
-                ResultSet rs = pstmt.executeQuery();
-                if (rs.next()) {
-                    return rs.getDouble(1);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return 0.0;
-        }
-
-        private double getUndertimeHours(int employeeId, String period) {
-            // Simplified - return 0 for now, implement based on attendance
-            return 0.0;
-        }
-
-        private double calculateTax(double taxableIncome) {
-            // Simplified tax calculation - implement proper tax brackets
-            if (taxableIncome <= 20000) return 0;
-            else if (taxableIncome <= 33000) return (taxableIncome - 20000) * 0.15;
-            else if (taxableIncome <= 66000) return 1950 + (taxableIncome - 33000) * 0.20;
-            else return 8550 + (taxableIncome - 66000) * 0.25;
-        }
-
-        public List<PayrollRecord> getPayrollByPeriod(String payrollPeriod) {
-        List<PayrollRecord> payrolls = new ArrayList<>();
-        String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
-                    "JOIN employees e ON p.employee_id = e.employee_id " +
-                    "WHERE p.payroll_period = ? ORDER BY p.employee_id";
-
+    // HELPER - Get overtime hours for employee
+    private double getOvertimeHours(int employeeId, String period) {
+        // Query overtime_requests table for approved overtime
+        String sql = "SELECT COALESCE(SUM(number_of_days * 8), 0) FROM overtime_requests " +
+                    "WHERE employee_id = ? AND status = 'Approved'";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, payrollPeriod);
+            pstmt.setInt(1, employeeId);
             ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                PayrollRecord payroll = createPayrollFromResultSet(rs);
-                payrolls.add(payroll);
+            if (rs.next()) {
+                return rs.getDouble(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return 0.0;
+    }
 
-        return payrolls;
+    // HELPER - Get undertime hours for employee
+    private double getUndertimeHours(int employeeId, String period) {
+        // Simplified - return 0 for now, implement based on attendance
+        return 0.0;
+    }
+
+    // HELPER - Calculate tax based on brackets
+    private double calculateTax(double taxableIncome) {
+        // Simplified tax calculation - implement proper tax brackets
+        if (taxableIncome <= 20000) return 0;
+        else if (taxableIncome <= 33000) return (taxableIncome - 20000) * 0.15;
+        else if (taxableIncome <= 66000) return 1950 + (taxableIncome - 33000) * 0.20;
+        else return 8550 + (taxableIncome - 66000) * 0.25;
     }
 
     /**
      * Helper method to create PayrollRecord from ResultSet
-     * ADD this if you don't have it already
      */
     private PayrollRecord createPayrollFromResultSet(ResultSet rs) throws SQLException {
         PayrollRecord payroll = new PayrollRecord();
@@ -323,10 +339,82 @@ public class PayrollDAO {
 
         return payroll;
     }
+    
+    // UTILITY - Check if payroll exists for period
+    public boolean payrollExistsForPeriod(int employeeId, String payrollPeriod) {
+        String sql = "SELECT COUNT(*) FROM payroll WHERE employee_id = ? AND payroll_period = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, employeeId);
+            pstmt.setString(2, payrollPeriod);
+            
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    // UTILITY - Get existing payroll ID
+    public int getExistingPayrollId(int employeeId, String payrollPeriod) {
+        String sql = "SELECT payroll_id FROM payroll WHERE employee_id = ? AND payroll_period = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, employeeId);
+            pstmt.setString(2, payrollPeriod);
 
-    List<PayrollRecord> getPayrollByDateRange(java.util.Date fromDate, java.util.Date toDate) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("payroll_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    
+    // ANALYTICS - Get total payroll cost for period
+    public double getTotalPayrollCost(String payrollPeriod) {
+        String sql = "SELECT COALESCE(SUM(net_pay), 0) FROM payroll WHERE payroll_period = ?";
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, payrollPeriod);
+            
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+    
+    // BULK UPDATE - Release multiple payrolls
+    public boolean bulkReleasePayrolls(List<Integer> payrollIds) {
+        String sql = "UPDATE payroll SET status = 'Approved' WHERE payroll_id IN (";
+        
+        // Build IN clause
+        for (int i = 0; i < payrollIds.size(); i++) {
+            sql += "?";
+            if (i < payrollIds.size() - 1) sql += ",";
+        }
+        sql += ")";
+        
+        try {
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            for (int i = 0; i < payrollIds.size(); i++) {
+                pstmt.setInt(i + 1, payrollIds.get(i));
+            }
+            
+            int result = pstmt.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
-
-

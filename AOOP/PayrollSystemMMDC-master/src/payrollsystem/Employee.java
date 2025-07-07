@@ -266,52 +266,39 @@ public class Employee {
     
     // ===== REQUEST METHODS =====
     public ArrayList<ArrayList<String>> getDataAllRequests() {
+        return loadAllRequestsForEmployee();
+    }
+    
+    public ArrayList<ArrayList<String>> loadAllRequestsForEmployee() {
+        ArrayList<ArrayList<String>> allRequests = new ArrayList<>();
+        
         try {
-            System.out.println("=== LOADING ALL REQUESTS ===");
-            System.out.println("Employee ID: " + this.employeeID);
-            
+            // Check if employee ID is valid
             if (this.employeeID == 0) {
                 System.err.println("❌ Employee ID is 0! Cannot load requests.");
-                return new ArrayList<>();
+                return allRequests;
             }
             
+            // Check database connection
             if (connection == null || connection.isClosed()) {
                 initializeConnection();
-            }
-            
-            ArrayList<ArrayList<String>> allRequests = new ArrayList<>();
-            
-            // Try to get leave requests
-            String leaveSql = "SELECT date_filed, leave_type as type_request, from_date, to_date, number_of_days, reason, status " +
-                             "FROM leave_requests WHERE employee_id = ?";
-            
-            try (PreparedStatement pstmt = connection.prepareStatement(leaveSql)) {
-                pstmt.setInt(1, this.employeeID);
-                ResultSet rs = pstmt.executeQuery();
-                
-                while (rs.next()) {
-                    ArrayList<String> row = new ArrayList<>();
-                    row.add(rs.getDate("date_filed").toString());
-                    row.add(rs.getString("type_request"));
-                    row.add(rs.getDate("from_date").toString());
-                    row.add(rs.getDate("to_date").toString());
-                    row.add(String.valueOf(rs.getDouble("number_of_days")));
-                    row.add(rs.getString("reason"));
-                    row.add(rs.getString("status"));
-                    allRequests.add(row);
+                if (connection == null) {
+                    return allRequests;
                 }
-            } catch (SQLException e) {
-                System.err.println("Error loading leave requests: " + e.getMessage());
             }
             
-            // Try to get overtime requests
-            String overtimeSql = "SELECT date_filed, type_request, DATE(from_time), DATE(to_time), number_of_days, reason, status " +
-                                "FROM overtime_requests WHERE employee_id = ?";
+            String sql = "SELECT date_filed, leave_type as type_request, from_date, to_date, number_of_days, reason, status " +
+                         "FROM leave_requests WHERE employee_id = ? " +
+                         "UNION ALL " +
+                         "SELECT date_filed, type_request, DATE(from_time), DATE(to_time), number_of_days, reason, status " +
+                         "FROM overtime_requests WHERE employee_id = ? " +
+                         "ORDER BY date_filed DESC";
             
-            try (PreparedStatement pstmt = connection.prepareStatement(overtimeSql)) {
-                pstmt.setInt(1, this.employeeID);
-                ResultSet rs = pstmt.executeQuery();
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, employeeID);
+                pstmt.setInt(2, employeeID);
                 
+                ResultSet rs = pstmt.executeQuery();
                 while (rs.next()) {
                     ArrayList<String> row = new ArrayList<>();
                     row.add(rs.getDate("date_filed").toString());
@@ -324,26 +311,31 @@ public class Employee {
                     allRequests.add(row);
                 }
             } catch (SQLException e) {
-                System.err.println("Error loading overtime requests: " + e.getMessage());
+                System.err.println("❌ Error loading requests: " + e.getMessage());
+                e.printStackTrace();
             }
             
-            System.out.println("✅ Loaded " + allRequests.size() + " total requests");
             this.newData = allRequests;
-            return allRequests;
+            System.out.println("✅ Loaded " + allRequests.size() + " requests for employee " + this.employeeID);
             
         } catch (Exception e) {
-            System.err.println("❌ Error in getDataAllRequests: " + e.getMessage());
-            return new ArrayList<>();
+            System.err.println("❌ Error in loadAllRequestsForEmployee: " + e.getMessage());
+            e.printStackTrace();
         }
+        
+        return allRequests;
     }
     
-    // Helper method for getSemiBasicSalary (if AccountDetails doesn't have it)
-    public double getSemiBasicSalary() {
+    // ===== ACCOUNT DETAILS HELPER METHODS =====
+    public String getEmployeeCompleteName() {
         if (accountDetails != null) {
-            return accountDetails.getBasicSalary() / 2; // Semi-monthly = half of basic salary
+            return accountDetails.getEmployeeCompleteName();
         }
-        return 0.0;
+        return "Unknown Employee";
     }
+    
+    // Note: AccountDetails.getSemiBasicSalary() returns String, but GUI expects double
+    // We need to ensure AccountDetails is loaded properly
     
     // Update viewPersonalDetails to set complete name properly
     public void viewPersonalDetails(String empId) {
@@ -576,14 +568,31 @@ public class Employee {
         }
     }
     
-    // View personal payslip
+    // View personal payslip - FIXED FOR YOUR DATABASE
     public ArrayList<ArrayList<String>> viewPersonalPayslip(Date startDate, Date endDate, String empId) {
         ArrayList<ArrayList<String>> payslipData = new ArrayList<>();
         
         try {
-            String sql = "SELECT e.employee_id, CONCAT(e.first_name, ' ', e.last_name) as name, " +
-                        "e.position, e.basic_salary, e.rice_subsidy, e.phone_allowance, e.clothing_allowance, " +
-                        "e.gross_rate FROM employees e WHERE e.employee_id = ?";
+            System.out.println("=== GENERATING PAYSLIP (FIXED VERSION) ===");
+            System.out.println("Employee ID: " + empId);
+            System.out.println("Date Range: " + startDate + " to " + endDate);
+            
+            // Check if employee exists first
+            String checkSql = "SELECT COUNT(*) FROM employees WHERE employee_id = ?";
+            try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
+                checkStmt.setInt(1, Integer.parseInt(empId));
+                ResultSet checkRs = checkStmt.executeQuery();
+                if (checkRs.next() && checkRs.getInt(1) == 0) {
+                    System.err.println("❌ Employee " + empId + " not found!");
+                    return payslipData;
+                }
+            }
+            
+            // Generate payslip from employee data (since payroll table structure is unknown)
+            String sql = "SELECT employee_id, first_name, last_name, position, " +
+                        "basic_salary, rice_subsidy, phone_allowance, clothing_allowance, " +
+                        "gross_rate, hourly_rate " +
+                        "FROM employees WHERE employee_id = ?";
             
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setInt(1, Integer.parseInt(empId));
@@ -593,41 +602,96 @@ public class Employee {
                     ArrayList<String> row = new ArrayList<>();
                     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                     
-                    row.add(rs.getString("employee_id"));
-                    row.add(rs.getString("name"));
-                    row.add(sdf.format(startDate) + " to " + sdf.format(endDate));
-                    row.add(rs.getString("position"));
-                    row.add(String.valueOf(rs.getDouble("basic_salary")));
+                    // Employee Info
+                    row.add(rs.getString("employee_id"));                           // 0: Employee ID
+                    row.add(rs.getString("first_name") + " " + rs.getString("last_name")); // 1: Name
+                    row.add(sdf.format(startDate) + " to " + sdf.format(endDate)); // 2: Period
+                    row.add(rs.getString("position"));                             // 3: Position
                     
-                    double totalBenefits = rs.getDouble("rice_subsidy") + 
-                                         rs.getDouble("phone_allowance") + 
-                                         rs.getDouble("clothing_allowance");
-                    row.add(String.valueOf(totalBenefits));
+                    // Salary Calculations
+                    double basicSalary = rs.getDouble("basic_salary");
+                    double grossRate = rs.getDouble("gross_rate");
+                    double actualGross = (grossRate > 0) ? grossRate : basicSalary;
                     
-                    row.add("0.00"); // Overtime
-                    row.add("0.00"); // Undertime
+                    row.add(String.format("%.2f", actualGross));                   // 4: Gross Pay
                     
-                    double basicSalary = rs.getDouble("gross_rate");
-                    double sss = Math.min(basicSalary * 0.045, 1125.00);
-                    double philHealth = Math.min(basicSalary * 0.03, 900.00);
-                    double pagIbig = Math.min(basicSalary * 0.02, 100.00);
+                    // Benefits
+                    double riceSubsidy = rs.getDouble("rice_subsidy");
+                    double phoneAllowance = rs.getDouble("phone_allowance");
+                    double clothingAllowance = rs.getDouble("clothing_allowance");
+                    double totalBenefits = riceSubsidy + phoneAllowance + clothingAllowance;
                     
-                    row.add(String.format("%.2f", sss));
-                    row.add(String.format("%.2f", philHealth));
-                    row.add(String.format("%.2f", pagIbig));
-                    row.add("0.00"); // Tax
+                    row.add(String.format("%.2f", totalBenefits));                 // 5: Benefits
+                    row.add("0.00");                                               // 6: Overtime
+                    row.add("0.00");                                               // 7: Undertime
                     
-                    double netPay = basicSalary + totalBenefits - sss - philHealth - pagIbig;
-                    row.add(String.format("%.2f", netPay));
+                    // Deductions
+                    double sss = calculateSSSContribution(actualGross);
+                    double philHealth = calculatePhilHealthContribution(actualGross);
+                    double pagIbig = calculatePagIbigContribution(actualGross);
+                    double taxableIncome = actualGross - sss - philHealth - pagIbig;
+                    double tax = calculateWithholdingTax(taxableIncome);
+                    
+                    row.add(String.format("%.2f", sss));                          // 8: SSS
+                    row.add(String.format("%.2f", philHealth));                   // 9: PhilHealth  
+                    row.add(String.format("%.2f", pagIbig));                      // 10: Pag-IBIG
+                    row.add(String.format("%.2f", tax));                          // 11: Tax
+                    
+                    // Net Pay
+                    double netPay = actualGross + totalBenefits - sss - philHealth - pagIbig - tax;
+                    row.add(String.format("%.2f", netPay));                       // 12: Net Pay
                     
                     payslipData.add(row);
+                    
+                    System.out.println("✅ Payslip generated successfully!");
+                    System.out.println("Employee: " + row.get(1));
+                    System.out.println("Gross Pay: ₱" + row.get(4));
+                    System.out.println("Net Pay: ₱" + row.get(12));
+                    
+                } else {
+                    System.err.println("❌ No employee data found for ID: " + empId);
                 }
             }
+            
+        } catch (NumberFormatException e) {
+            System.err.println("❌ Invalid employee ID format: " + empId);
+        } catch (SQLException e) {
+            System.err.println("❌ Database error: " + e.getMessage());
+            e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("❌ Error getting payslip data: " + e.getMessage());
+            System.err.println("❌ Unexpected error: " + e.getMessage());
+            e.printStackTrace();
         }
         
         return payslipData;
+    }
+    
+    // Enhanced calculation methods (simplified)
+    private double calculateSSSContribution(double salary) {
+        if (salary <= 3250) return 135.00;
+        else if (salary <= 3750) return 157.50;
+        else if (salary <= 4250) return 180.00;
+        else if (salary <= 4750) return 202.50;
+        else if (salary <= 5250) return 225.00;
+        else return Math.min(salary * 0.045, 1125.00);
+    }
+    
+    private double calculatePhilHealthContribution(double salary) {
+        return Math.min(salary * 0.03, 900.00);
+    }
+    
+    private double calculatePagIbigContribution(double salary) {
+        if (salary <= 1500) return salary * 0.01;
+        else return Math.min(salary * 0.02, 100.00);
+    }
+    
+    private double calculateWithholdingTax(double taxableIncome) {
+        if (taxableIncome <= 20833) return 0;
+        else if (taxableIncome <= 33333) return (taxableIncome - 20833) * 0.15;
+        else if (taxableIncome <= 66667) return 1875 + (taxableIncome - 33333) * 0.20;
+        else if (taxableIncome <= 166667) return 8541.80 + (taxableIncome - 66667) * 0.25;
+        else if (taxableIncome <= 666667) return 33541.80 + (taxableIncome - 166667) * 0.30;
+        else return 183541.80 + (taxableIncome - 666667) * 0.35;
     }
     
     // File leave request method
@@ -734,14 +798,6 @@ public class Employee {
         } catch (SQLException e) {
             System.err.println("❌ Error creating default leave balance: " + e.getMessage());
         }
-    }
-    
-    // ===== UTILITY METHODS =====
-    public String getEmployeeCompleteName() {
-        if (accountDetails != null) {
-            return accountDetails.getFirstName() + " " + accountDetails.getLastName();
-        }
-        return "Unknown Employee";
     }
     
     public void refreshAllRequests() {

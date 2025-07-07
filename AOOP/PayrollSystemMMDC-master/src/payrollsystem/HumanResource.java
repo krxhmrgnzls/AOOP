@@ -787,13 +787,6 @@ public class HumanResource extends Employee {
         return days;
     }
     
-    public ArrayList<ArrayList<String>> viewPersonalPayslip(Date fromDate, Date toDate, String empId) {
-        ArrayList<ArrayList<String>> payslip = new ArrayList<>();
-        // This would need to be implemented based on your payroll calculation logic
-        // For now, returning empty list as placeholder
-        return payslip;
-    }
-    
     private String convertToSqlDate(String dateStr) {
         try {
             SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy");

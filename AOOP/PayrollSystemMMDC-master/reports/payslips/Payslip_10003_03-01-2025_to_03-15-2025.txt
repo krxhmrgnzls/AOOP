@@ -1,0 +1,24 @@
+=========================================
+           MOTORPH PAYSLIP               
+=========================================
+Employee ID    : 10003
+Name          : Bianca Sofia Aquino
+Position      : Chief Finance Officer
+Supervisor    : N/A
+Payroll Period: 03/01/2025 to 03/15/2025
+-----------------------------------------
+EARNINGS:
+  Basic Salary    : ₱  60,000.00
+  Rice Subsidy    : ₱   1,500.00
+  Phone Allowance : ₱   2,000.00
+  Clothing Allow. : ₱   1,000.00
+-----------------------------------------
+DEDUCTIONS:
+  SSS            : ₱       0.00
+  PhilHealth     : ₱       0.00
+  Pag-IBIG       : ₱       0.00
+  Income Tax     : ₱       0.00
+-----------------------------------------
+GROSS PAY      : ₱  64,500.00
+NET PAY        : ₱  64,500.00
+=========================================

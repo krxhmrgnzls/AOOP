@@ -20,15 +20,11 @@ public class HumanResource extends Employee {
     private String employeeID, selectedName;
     private ArrayList<String> fullName = new ArrayList<>();
     private ArrayList<ArrayList<String>> idAndNames = new ArrayList<>();
-    
-    // *** FIX: Use separate data variables for each table type ***
     private ArrayList<ArrayList<String>> employeeData = new ArrayList<>();
     private ArrayList<ArrayList<String>> requestData = new ArrayList<>();
     private ArrayList<ArrayList<String>> dtrData = new ArrayList<>();
     private ArrayList<ArrayList<String>> ledgerData = new ArrayList<>();
     private ArrayList<ArrayList<String>> credentialData = new ArrayList<>();
-    
-    // Keep the old newData for backward compatibility
     private ArrayList<ArrayList<String>> newData = new ArrayList<>();
     private int tableSize;
     private int numberOfDaysLeave = 0;

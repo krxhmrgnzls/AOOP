@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 public class SupervisorGUI extends javax.swing.JFrame {
     String id, name, role;
     Supervisor supervisor;
-    ArrayList<String> data = new ArrayList<>(); //To hold as storage
+    ArrayList<String> data = new ArrayList<>(); 
     SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy");
     
     private AttendanceService attendanceService;
@@ -29,7 +29,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
         supervisor = new Supervisor(id);
         supervisor.viewPersonalDetails(id);
         setupEmployeeRequestTable();
-        setupEmployeeDTRTable(); // ← ADD THIS LINE
+        setupEmployeeDTRTable(); 
         setupTableSelection();
         
         
@@ -56,15 +56,12 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 return canEdit[columnIndex];
             }
         };
-        
-        // Apply the new model to the table
+
         jTableAllRequest1.setModel(model);
-        
-        // Configure column properties
+
         jTableAllRequest1.setRowHeight(25);
         jTableAllRequest1.getTableHeader().setReorderingAllowed(false);
-        
-        // Set column widths (optional - adjust as needed)
+
         if (jTableAllRequest1.getColumnCount() >= 10) {
             jTableAllRequest1.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
             jTableAllRequest1.getColumnModel().getColumn(1).setPreferredWidth(150); // NAME
@@ -75,8 +72,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
             jTableAllRequest1.getColumnModel().getColumn(6).setPreferredWidth(80);  // DAYS
             jTableAllRequest1.getColumnModel().getColumn(7).setPreferredWidth(150); // REASON
             jTableAllRequest1.getColumnModel().getColumn(8).setPreferredWidth(80);  // STATUS
-            
-            // Hide the Real ID column (index 9)
+
             jTableAllRequest1.getColumnModel().getColumn(9).setMinWidth(0);
             jTableAllRequest1.getColumnModel().getColumn(9).setMaxWidth(0);
             jTableAllRequest1.getColumnModel().getColumn(9).setWidth(0);
@@ -2421,7 +2417,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
          try {
             if (attendanceService == null) {
-                // Try to reinitialize the service
                 try {
                     this.attendanceService = new AttendanceService();
                 } catch (Exception serviceError) {
@@ -2458,7 +2453,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
          try {
             if (attendanceService == null) {
-                // Try to reinitialize the service
                 try {
                     this.attendanceService = new AttendanceService();
                 } catch (Exception serviceError) {
@@ -2494,7 +2488,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
     private void updateAttendanceButtonStates() {
         try {
             if (attendanceService == null) {
-                // Default state when service is not available
                 btnLogin.setEnabled(true);
                 btnLogout.setEnabled(false);
                 return;
@@ -2507,7 +2500,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
             btnLogout.setEnabled(status.canTimeOut());
             
         } catch (Exception e) {
-            // Default state if there's an error
             btnLogin.setEnabled(true);
             btnLogout.setEnabled(false);
             System.err.println("Error updating attendance button states: " + e.getMessage());
@@ -2520,7 +2512,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
         supervisor.setTableData(supervisor.getAllRequestData(comboTypeRequest1.getSelectedItem().toString()));
         supervisor.setTableSize(9);
         supervisor.displayDataTable(jTableAllRequest1);
-//        supervisor.TableData(jTableAllRequest1, comboTypeRequest1.getSelectedItem().toString());
+        //supervisor.TableData(jTableAllRequest1, comboTypeRequest1.getSelectedItem().toString());
     }//GEN-LAST:event_btnemployeeRequestActionPerformed
 
     private void btnemployeeDTRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnemployeeDTRActionPerformed
@@ -2528,24 +2520,20 @@ public class SupervisorGUI extends javax.swing.JFrame {
         try {
             System.out.println("=== Loading Employee DTR Tab ===");
 
-            // Switch to Employee DTR tab
-            mainTabbed.setSelectedIndex(6); // Make sure this is correct tab index
+            mainTabbed.setSelectedIndex(6); 
 
-            // Clear and reload employees into dropdown
             comboEmployeeName.removeAllItems();
-            comboEmployeeName.addItem("-- Select Employee --"); // Default option
+            comboEmployeeName.addItem("-- Select Employee --"); 
 
-            // Load employees into dropdown using the fixed method
             supervisor.loadEmployeeDropdown(comboEmployeeName);
 
-            // Clear the table initially
             DefaultTableModel model = (DefaultTableModel) jTableDTR.getModel();
             model.setRowCount(0);
 
-            System.out.println("✅ Employee DTR tab loaded with " + (comboEmployeeName.getItemCount() - 1) + " employees");
+            System.out.println("Employee DTR tab loaded with " + (comboEmployeeName.getItemCount() - 1) + " employees");
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR loading Employee DTR: " + e.getMessage());
+            System.err.println("ERROR loading Employee DTR: " + e.getMessage());
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading Employee DTR: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -2561,100 +2549,95 @@ public class SupervisorGUI extends javax.swing.JFrame {
     private void btnUpdate1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdate1ActionPerformed
         // TODO add your handling code here:
            try {
-        System.out.println("=== APPROVED Button Clicked ===");
-        
-        int currentRow = jTableAllRequest1.getSelectedRow();
-        
-        if (currentRow < 0) {
+            System.out.println("=== APPROVED Button Clicked ===");
+
+            int currentRow = jTableAllRequest1.getSelectedRow();
+
+            if (currentRow < 0) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Please select a request row first by clicking on it.",
+                    "No Request Selected",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            System.out.println("DEBUG: Table has " + jTableAllRequest1.getColumnCount() + " columns");
+            System.out.println("DEBUG: Table has " + jTableAllRequest1.getRowCount() + " rows");
+            System.out.println("DEBUG: Selected row: " + currentRow);
+
+            String displayId = jTableAllRequest1.getValueAt(currentRow, 0).toString();
+            String employeeName = jTableAllRequest1.getValueAt(currentRow, 1).toString();
+            String requestType = jTableAllRequest1.getValueAt(currentRow, 3).toString();
+
+            System.out.println("DEBUG: Display ID = " + displayId);
+            System.out.println("DEBUG: Employee = " + employeeName);
+            System.out.println("DEBUG: Request Type = " + requestType);
+
+            int realRequestId = supervisor.getRealIdFromDisplayRow(jTableAllRequest1, currentRow);
+
+            if (realRequestId == -1) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Error: Unable to get request ID for processing.\n\n" +
+                    "Debug Info:\n" +
+                    "- Selected Row: " + currentRow + "\n" +
+                    "- Table Columns: " + jTableAllRequest1.getColumnCount() + "\n" +
+                    "- Display ID: " + displayId,
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String confirmMessage = "Approve this request?\n\n" +
+                                   "Request #: " + displayId + "\n" +
+                                   "Employee: " + employeeName + "\n" +
+                                   "Type: " + requestType + "\n" +
+                                   "Database ID: " + realRequestId;
+
+            int choice = javax.swing.JOptionPane.showConfirmDialog(this,
+                confirmMessage,
+                "Confirm Approval",
+                javax.swing.JOptionPane.YES_NO_OPTION,
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
+
+            if (choice != javax.swing.JOptionPane.YES_OPTION) {
+                return;
+            }
+
+            boolean success = false;
+
+            if (requestType.toLowerCase().contains("leave") || requestType.toLowerCase().contains("vacation") || requestType.toLowerCase().contains("sick")) {
+                success = supervisor.approveLeaveRequest(realRequestId, true);
+            } else if (requestType.toLowerCase().contains("overtime")) {
+                success = supervisor.approveOvertimeRequest(realRequestId, true);
+            } else {
+                success = supervisor.approveRequest(realRequestId, true);
+            }
+
+            if (success) {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Successfully approved request #" + displayId + "\n" +
+                    "Employee: " + employeeName,
+                    "Approval Success",
+                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+                // Refresh table
+                refreshEmployeeRequestTable();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this,
+                    "Failed to approve request #" + displayId,
+                    "Approval Failed",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            System.err.println("ERROR in approval: " + e.getMessage());
+            e.printStackTrace();
+
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Please select a request row first by clicking on it.",
-                "No Request Selected",
-                javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // Debug: Show table structure
-        System.out.println("DEBUG: Table has " + jTableAllRequest1.getColumnCount() + " columns");
-        System.out.println("DEBUG: Table has " + jTableAllRequest1.getRowCount() + " rows");
-        System.out.println("DEBUG: Selected row: " + currentRow);
-        
-        // Get the display ID and other info
-        String displayId = jTableAllRequest1.getValueAt(currentRow, 0).toString();
-        String employeeName = jTableAllRequest1.getValueAt(currentRow, 1).toString();
-        String requestType = jTableAllRequest1.getValueAt(currentRow, 3).toString();
-        
-        System.out.println("DEBUG: Display ID = " + displayId);
-        System.out.println("DEBUG: Employee = " + employeeName);
-        System.out.println("DEBUG: Request Type = " + requestType);
-        
-        // Get the REAL database ID
-        int realRequestId = supervisor.getRealIdFromDisplayRow(jTableAllRequest1, currentRow);
-        
-        if (realRequestId == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Error: Unable to get request ID for processing.\n\n" +
-                "Debug Info:\n" +
-                "- Selected Row: " + currentRow + "\n" +
-                "- Table Columns: " + jTableAllRequest1.getColumnCount() + "\n" +
-                "- Display ID: " + displayId,
+                "Error during approval: " + e.getMessage(),
                 "Error",
                 javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
         }
-        
-        // Confirm approval
-        String confirmMessage = "Approve this request?\n\n" +
-                               "Request #: " + displayId + "\n" +
-                               "Employee: " + employeeName + "\n" +
-                               "Type: " + requestType + "\n" +
-                               "Database ID: " + realRequestId;
-
-        int choice = javax.swing.JOptionPane.showConfirmDialog(this,
-            confirmMessage,
-            "Confirm Approval",
-            javax.swing.JOptionPane.YES_NO_OPTION,
-            javax.swing.JOptionPane.QUESTION_MESSAGE);
-
-        if (choice != javax.swing.JOptionPane.YES_OPTION) {
-            return;
-        }
-
-        // Process approval using the REAL database ID
-        boolean success = false;
-        
-        if (requestType.toLowerCase().contains("leave") || requestType.toLowerCase().contains("vacation") || requestType.toLowerCase().contains("sick")) {
-            success = supervisor.approveLeaveRequest(realRequestId, true);
-        } else if (requestType.toLowerCase().contains("overtime")) {
-            success = supervisor.approveOvertimeRequest(realRequestId, true);
-        } else {
-            success = supervisor.approveRequest(realRequestId, true);
-        }
-
-        if (success) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "✅ Successfully approved request #" + displayId + "\n" +
-                "Employee: " + employeeName,
-                "Approval Success",
-                javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                
-            // Refresh table
-            refreshEmployeeRequestTable();
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "❌ Failed to approve request #" + displayId,
-                "Approval Failed",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
-        }
-
-    } catch (Exception e) {
-        System.err.println("❌ ERROR in approval: " + e.getMessage());
-        e.printStackTrace();
-
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error during approval: " + e.getMessage(),
-            "Error",
-            javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_btnUpdate1ActionPerformed
 
     private void btnCancel3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel3ActionPerformed
@@ -2662,20 +2645,17 @@ public class SupervisorGUI extends javax.swing.JFrame {
         try {
             System.out.println("=== DISAPPROVED Button Clicked ===");
 
-            // Get selected rows from the EMPLOYEE REQUEST table (jTableAllRequest1)
             int[] selectedRows = jTableAllRequest1.getSelectedRows();
             int currentRow = jTableAllRequest1.getSelectedRow();
 
             System.out.println("DEBUG: selectedRows.length = " + selectedRows.length);
             System.out.println("DEBUG: currentRow = " + currentRow);
 
-            // If no rows selected using getSelectedRows, try single selection
             if (selectedRows.length == 0 && currentRow >= 0) {
                 selectedRows = new int[]{currentRow};
                 System.out.println("DEBUG: Using single row selection: " + currentRow);
             }
 
-            // If still no selection, show error
             if (selectedRows.length == 0 || currentRow < 0) {
                 javax.swing.JOptionPane.showMessageDialog(this,
                     "Please click on a request row to select it, then click DISAPPROVED.\n\n" +
@@ -2685,13 +2665,11 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Get details for confirmation
             int row = selectedRows[0];
-            String displayId = jTableAllRequest1.getValueAt(row, 0).toString();  // Display ID (1, 2, 3...)
+            String displayId = jTableAllRequest1.getValueAt(row, 0).toString();
             String employeeName = jTableAllRequest1.getValueAt(row, 1).toString();
             String requestType = jTableAllRequest1.getValueAt(row, 3).toString();
 
-            // Get the REAL database ID from the hidden column
             int realRequestId = supervisor.getRealIdFromDisplayRow(jTableAllRequest1, row);
 
             if (realRequestId == -1) {
@@ -2702,7 +2680,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Confirm disapproval
             String confirmMessage = "Disapprove this request?\n\n" +
                                    "Request #: " + displayId + "\n" +
                                    "Employee: " + employeeName + "\n" +
@@ -2719,7 +2696,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Process disapproval
             int disapprovedCount = 0;
             int failedCount = 0;
 
@@ -2729,11 +2705,10 @@ public class SupervisorGUI extends javax.swing.JFrame {
                     String empName = jTableAllRequest1.getValueAt(rowIndex, 1).toString();
                     String reqType = jTableAllRequest1.getValueAt(rowIndex, 3).toString();
 
-                    // Get the REAL database ID for this row
                     int realId = supervisor.getRealIdFromDisplayRow(jTableAllRequest1, rowIndex);
 
                     if (realId == -1) {
-                        System.err.println("❌ Could not get real ID for display row " + dispId);
+                        System.err.println("Could not get real ID for display row " + dispId);
                         failedCount++;
                         continue;
                     }
@@ -2753,26 +2728,25 @@ public class SupervisorGUI extends javax.swing.JFrame {
 
                     if (success) {
                         disapprovedCount++;
-                        System.out.println("✅ Disapproved: Display ID " + dispId + " (Real ID " + realId + ")");
+                        System.out.println("Disapproved: Display ID " + dispId + " (Real ID " + realId + ")");
                     } else {
                         failedCount++;
-                        System.out.println("❌ Failed to disapprove: Display ID " + dispId + " (Real ID " + realId + ")");
+                        System.out.println("Failed to disapprove: Display ID " + dispId + " (Real ID " + realId + ")");
                     }
 
                 } catch (Exception e) {
                     failedCount++;
-                    System.err.println("❌ Error processing row " + rowIndex + ": " + e.getMessage());
+                    System.err.println("Error processing row " + rowIndex + ": " + e.getMessage());
                 }
             }
 
-            // Show results
             String resultMessage = "";
             if (disapprovedCount > 0) {
-                resultMessage = "✅ Successfully disapproved " + disapprovedCount + " request(s)";
+                resultMessage = "Successfully disapproved " + disapprovedCount + " request(s)";
             }
             if (failedCount > 0) {
                 if (!resultMessage.isEmpty()) resultMessage += "\n";
-                resultMessage += "❌ Failed to disapprove " + failedCount + " request(s)";
+                resultMessage += "Failed to disapprove " + failedCount + " request(s)";
             }
 
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -2780,11 +2754,10 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 "Disapproval Results",
                 disapprovedCount > 0 ? javax.swing.JOptionPane.INFORMATION_MESSAGE : javax.swing.JOptionPane.ERROR_MESSAGE);
 
-            // Refresh table
             refreshEmployeeRequestTable();
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR in disapproval: " + e.getMessage());
+            System.err.println("ERROR in disapproval: " + e.getMessage());
             e.printStackTrace();
 
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -2797,43 +2770,35 @@ public class SupervisorGUI extends javax.swing.JFrame {
     private void refreshEmployeeRequestTable() {
     try {
         System.out.println("=== Refreshing Employee Request Table ===");
-        
-        // Get current request type selection
+
         String selectedType = comboTypeRequest1.getSelectedItem().toString();
         
         ArrayList<ArrayList<String>> requestData;
         
         if (selectedType.equals("All Request")) {
-            // Get only pending requests (approved/rejected should be removed)
             requestData = supervisor.getPendingRequestsOnly();
         } else {
-            // Get specific type of requests that are still pending
             requestData = supervisor.getAllRequestData(selectedType);
-            
-            // Filter to show only pending requests
             requestData.removeIf(row -> {
                 if (row.size() > 8) {
-                    String status = row.get(8); // Assuming status is at index 8
+                    String status = row.get(8); 
                     return status.equals("Approved") || status.equals("Rejected");
                 }
                 return false;
             });
         }
-        
-        // Update supervisor object's table data
+
         supervisor.setTableData(requestData);
-        supervisor.setTableSize(9); // Adjust based on your table columns
-        
-        // Display in the EMPLOYEE REQUEST table (jTableAllRequest1)
+        supervisor.setTableSize(9); 
+
         supervisor.displayDataTable(jTableAllRequest1);
         
-        System.out.println("✅ Employee request table refreshed with " + requestData.size() + " pending requests");
-        
-        // Clear selection
+        System.out.println("Employee request table refreshed with " + requestData.size() + " pending requests");
+
         jTableAllRequest1.clearSelection();
         
     } catch (Exception e) {
-        System.err.println("❌ Error refreshing employee request table: " + e.getMessage());
+        System.err.println("Error refreshing employee request table: " + e.getMessage());
         e.printStackTrace();
     }
 }
@@ -2841,43 +2806,34 @@ public class SupervisorGUI extends javax.swing.JFrame {
     private void refreshRequestTable() {
     try {
         System.out.println("=== Refreshing Personal Request Table ===");
-        
-        // Get current request type selection for personal requests
+
         String selectedType = comboTypeRequest.getSelectedItem().toString();
         
         ArrayList<ArrayList<String>> requestData;
         
         if (selectedType.equals("All Request")) {
-            // Get supervisor's own requests
             requestData = supervisor.getDataAllRequests();
         } else {
-            // Get specific type of supervisor's own requests
             requestData = supervisor.getDataAllRequests();
         }
         
-        // Update supervisor object's table data
         supervisor.setTableData(requestData);
-        supervisor.setTableSize(7); // Personal requests have 7 columns
-        
-        // Display in the PERSONAL REQUEST table (jTableAllRequest)
+        supervisor.setTableSize(7); 
+
         supervisor.displayDataTable(jTableAllRequest);
         
-        System.out.println("✅ Personal request table refreshed with " + requestData.size() + " requests");
-        
-        // Clear selection
+        System.out.println("Personal request table refreshed with " + requestData.size() + " requests");
+
         jTableAllRequest.clearSelection();
         
     } catch (Exception e) {
-        System.err.println("❌ Error refreshing personal request table: " + e.getMessage());
+        System.err.println("Error refreshing personal request table: " + e.getMessage());
         e.printStackTrace();
     }
 }
     private void setupTableSelection() {
-       // Ensure single row selection mode for both tables
        jTableAllRequest.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
        jTableAllRequest1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-
-       // Add mouse listener to the employee request table (jTableAllRequest1)
        jTableAllRequest1.addMouseListener(new java.awt.event.MouseAdapter() {
            @Override
            public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -2885,8 +2841,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
             if (row >= 0) {
                 jTableAllRequest1.setRowSelectionInterval(row, row);
                 System.out.println("Employee request row " + row + " selected via mouse click");
-                
-                // Debug: Show selected data including both display and real IDs
+
                 try {
                     String displayId = jTableAllRequest1.getValueAt(row, 0).toString();
                     String name = jTableAllRequest1.getValueAt(row, 1).toString();
@@ -2920,30 +2875,27 @@ public class SupervisorGUI extends javax.swing.JFrame {
         Object selectedItem = comboEmployeeName.getSelectedItem();
 
             if (selectedItem == null) {
-                System.out.println("⚠️ Selected item is null");
+                System.out.println("Selected item is null");
                 clearDTRTable();
                 return;
             }
 
             String selectedEmployee = selectedItem.toString().trim();
-            System.out.println("📋 Selected employee: '" + selectedEmployee + "'");
+            System.out.println("Selected employee: '" + selectedEmployee + "'");
 
-            // Skip empty selections, loading messages, or default option
             if (selectedEmployee.isEmpty() || 
                 selectedEmployee.contains("Loading") || 
                 selectedEmployee.contains("Select Employee") ||
                 selectedEmployee.startsWith("--")) {
-                System.out.println("⏭️ Skipping empty or default selection");
+                System.out.println("Skipping empty or default selection");
                 clearDTRTable();
                 return;
             }
 
-            System.out.println("🔄 Loading DTR for: " + selectedEmployee);
+            System.out.println("Loading DTR for: " + selectedEmployee);
 
-            // Store selected employee name
             supervisor.setSelectedEmployeeName(selectedEmployee);
 
-            // Get current pay period dates
             Calendar today = Calendar.getInstance();
             int currentDay = today.get(Calendar.DAY_OF_MONTH);
 
@@ -2958,22 +2910,20 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 endCal.set(Calendar.DAY_OF_MONTH, endCal.getActualMaximum(Calendar.DAY_OF_MONTH));
             }
 
-            // Load DTR data for selected employee
             ArrayList<ArrayList<String>> dtrData = supervisor.getEmployeeDTR(
                 selectedEmployee, 
                 startCal.getTime(), 
                 endCal.getTime()
             );
 
-            // Update table
             supervisor.setTableData(dtrData);
-            supervisor.setTableSize(8); // 8 columns for employee DTR
+            supervisor.setTableSize(8); 
             supervisor.displayDataTable(jTableDTR);
 
-            System.out.println("✅ Loaded " + dtrData.size() + " DTR records for " + selectedEmployee);
+            System.out.println("Loaded " + dtrData.size() + " DTR records for " + selectedEmployee);
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR in comboEmployeeNameActionPerformed: " + e.getMessage());
+            System.err.println("ERROR in comboEmployeeNameActionPerformed: " + e.getMessage());
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error loading employee DTR: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -2995,9 +2945,8 @@ public class SupervisorGUI extends javax.swing.JFrame {
 
             DefaultTableModel model = (DefaultTableModel) jTableDTR.getModel();
 
-            // Check if any already forwarded to payroll
             for (int row : selectedRows) {
-                String toPayrollStatus = model.getValueAt(row, 6).toString(); // Column 6 = "TO PAYROLL"
+                String toPayrollStatus = model.getValueAt(row, 6).toString(); 
                 if (toPayrollStatus.equals("Yes")) {
                     JOptionPane.showMessageDialog(this, 
                         "Some entries are already forwarded to payroll.", 
@@ -3006,8 +2955,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
                     return;
                 }
 
-                // Also check if submitted to supervisor
-                String toSupervisorStatus = model.getValueAt(row, 5).toString(); // Column 5 = "TO SUPERVISOR"
+                String toSupervisorStatus = model.getValueAt(row, 5).toString(); 
                 if (toSupervisorStatus.equals("No")) {
                     JOptionPane.showMessageDialog(this, 
                         "Some entries are not yet submitted to supervisor.\n" +
@@ -3018,7 +2966,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 }
             }
 
-            // Confirm forwarding
             String employeeName = supervisor.getSelectedEmployeeName();
             int choice = JOptionPane.showConfirmDialog(this,
                 "Forward " + selectedRows.length + " DTR entries to Payroll Staff?\n\n" +
@@ -3030,11 +2977,9 @@ public class SupervisorGUI extends javax.swing.JFrame {
 
             if (choice != JOptionPane.YES_OPTION) return;
 
-            // Prepare data for forwarding
             ArrayList<ArrayList<String>> forwardData = new ArrayList<>();
             for (int row : selectedRows) {
                 ArrayList<String> rowData = new ArrayList<>();
-                // Get all column data for the row
                 for (int col = 0; col < model.getColumnCount(); col++) {
                     Object value = model.getValueAt(row, col);
                     rowData.add(value != null ? value.toString() : "");
@@ -3042,61 +2987,56 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 forwardData.add(rowData);
             }
 
-            // Forward to payroll using supervisor method
             boolean success = supervisor.forwardDTRToPayroll(forwardData);
 
             if (success) {
                 JOptionPane.showMessageDialog(this, 
-                    "✅ DTR entries forwarded to Payroll Staff successfully!", 
+                    "DTR entries forwarded to Payroll Staff successfully!", 
                     "Forward Successful", 
                     JOptionPane.INFORMATION_MESSAGE);
 
-                // Refresh table to show updated status
                 refreshSupervisorDTRTable();
 
             } else {
                 JOptionPane.showMessageDialog(this, 
-                    "❌ Failed to forward DTR entries to payroll.", 
+                    "Failed to forward DTR entries to payroll.", 
                     "Forward Failed", 
                     JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR in DTR forwarding: " + e.getMessage());
+            System.err.println("ERROR in DTR forwarding: " + e.getMessage());
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, 
-                "❌ Error forwarding DTR: " + e.getMessage(), 
+                "Error forwarding DTR: " + e.getMessage(), 
                 "Forward Error", 
                 JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnForwardToPayrollActionPerformed
 
     private void refreshSupervisorDTRTable() {
-    try {
-        String selectedEmployee = supervisor.getSelectedEmployeeName();
-        if (selectedEmployee != null && !selectedEmployee.trim().isEmpty()) {
-            // Trigger the combo box action to refresh the table
-            comboEmployeeNameActionPerformed(null);
-            System.out.println("✅ Supervisor DTR table refreshed for: " + selectedEmployee);
+        try {
+            String selectedEmployee = supervisor.getSelectedEmployeeName();
+            if (selectedEmployee != null && !selectedEmployee.trim().isEmpty()) {
+                comboEmployeeNameActionPerformed(null);
+                System.out.println("Supervisor DTR table refreshed for: " + selectedEmployee);
+            }
+        } catch (Exception e) {
+            System.err.println("Error refreshing Supervisor DTR table: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.err.println("❌ Error refreshing Supervisor DTR table: " + e.getMessage());
     }
-}
     private void clearDTRTable() {
-    try {
-        DefaultTableModel model = (DefaultTableModel) jTableDTR.getModel();
-        model.setRowCount(0);
-        System.out.println("🧹 DTR table cleared");
-    } catch (Exception e) {
-        System.err.println("Error clearing DTR table: " + e.getMessage());
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTableDTR.getModel();
+            model.setRowCount(0);
+            System.out.println("DTR table cleared");
+        } catch (Exception e) {
+            System.err.println("Error clearing DTR table: " + e.getMessage());
+        }
     }
-}
 
-    // 5. FIX: Ensure proper table setup in constructor
     private void setupEmployeeDTRTable() {
         try {
-            // Create table model with proper columns for Employee DTR viewed by Supervisor
             DefaultTableModel model = new DefaultTableModel(
                 new Object[][]{},
                 new String[]{
@@ -3113,20 +3053,16 @@ public class SupervisorGUI extends javax.swing.JFrame {
             };
 
             jTableDTR.setModel(model);
-
-            // Hide the ATT_ID column (index 0) - contains attendance ID for database operations
             jTableDTR.getColumnModel().getColumn(0).setMinWidth(0);
             jTableDTR.getColumnModel().getColumn(0).setMaxWidth(0);
             jTableDTR.getColumnModel().getColumn(0).setWidth(0);
             jTableDTR.getColumnModel().getColumn(0).setPreferredWidth(0);
-
-            // Enable multiple row selection for forwarding
             jTableDTR.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
-            System.out.println("✅ Supervisor Employee DTR table setup completed");
+            System.out.println("Supervisor Employee DTR table setup completed");
 
         } catch (Exception e) {
-            System.err.println("❌ Error setting up Supervisor Employee DTR table: " + e.getMessage());
+            System.err.println("Error setting up Supervisor Employee DTR table: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -3169,11 +3105,9 @@ public class SupervisorGUI extends javax.swing.JFrame {
 
             System.out.println("Loading requests for supervisor: " + supervisor.getEmployeeID());
 
-            // Load supervisor's own requests
             ArrayList<ArrayList<String>> allRequests = supervisor.getDataAllRequests();
             System.out.println("Requests loaded: " + allRequests.size());
 
-            // Set data and display
             supervisor.setTableData(allRequests);
             supervisor.setTableSize(7);
             supervisor.displayDataTable(jTableAllRequest);
@@ -3195,7 +3129,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
         lblID2.setText(String.valueOf(supervisor.accountDetails.getEmployeeID()));
         lblMyName4.setText(supervisor.accountDetails.getEmployeeCompleteName());
 
-        // Get current date and set up period
         Calendar today = Calendar.getInstance();
         int currentDay = today.get(Calendar.DAY_OF_MONTH);
 
@@ -3213,7 +3146,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
         dateFrom2.setDate(startCal.getTime());
         dateTo2.setDate(endCal.getTime());
 
-        // Load and display supervisor's DTR
         supervisor.setTableData(supervisor.getDataAllDTR(startCal.getTime(), endCal.getTime()));
         supervisor.setTableSize(5);
         supervisor.displayDataTable(jTableAllDTR);
@@ -3221,15 +3153,11 @@ public class SupervisorGUI extends javax.swing.JFrame {
 
     private void btnLeaveLedgerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedgerActionPerformed
         // TODO add your handling code here:
-        // Switch to the Leave Ledger tab
         mainTabbed.setSelectedIndex(3);
 
-      // Set supervisor details in the Leave Ledger panel
         supervisor.viewPersonalDetails(lblIDSidebar.getText());
         lblID3.setText(String.valueOf(supervisor.accountDetails.getEmployeeID()));
         lblMyName5.setText(supervisor.accountDetails.getEmployeeCompleteName());
-
-        // Update leave balance labels
         supervisor.updateLeaveBalanceLabels(lblVLBalance1, lblSLBalance1);
         
         supervisor.setTableData(supervisor.allApprovedPersonalLeaveLedger());
@@ -3273,11 +3201,9 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 String selectedItem = comboTypeRequest.getSelectedItem().toString();
                 System.out.println("Request type changed to: " + selectedItem);
 
-                // Switch to the appropriate tab
                 if (selectedItem.equals("All Request")) {
                     tabbedInsideRequest.setSelectedIndex(0);
 
-                    // Display only pending requests
                     ArrayList<ArrayList<String>> requests = supervisor.getPendingRequestsOnly();
                     supervisor.setTableData(requests);
                     supervisor.setTableSize(9);
@@ -3286,7 +3212,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 } else if (selectedItem.equals("Leave Application")) {
                     tabbedInsideRequest.setSelectedIndex(1);
 
-                    // Set up leave application form (existing code)
                     supervisor.leaveBalancesInformation();
                     lblID.setText(String.valueOf(supervisor.accountDetails.getEmployeeID()));
                     lblMyName.setText(supervisor.accountDetails.getEmployeeCompleteName());
@@ -3296,10 +3221,8 @@ public class SupervisorGUI extends javax.swing.JFrame {
                 } else {
                     tabbedInsideRequest.setSelectedIndex(2);
 
-                    // Display filtered requests
                     ArrayList<ArrayList<String>> requests = supervisor.getAllRequestData(selectedItem);
 
-                    // Filter to show only pending
                     requests.removeIf(row -> {
                         if (row.size() > 8) {
                             String status = row.get(8);
@@ -3378,7 +3301,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDaysNumberActionPerformed
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-
+        // TODO add your handling code here:    
         if (comboLeaveType.getSelectedIndex() == 0 || dateFrom.getDate() == null || 
             dateTo.getDate() == null || txtReason.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please fill all required fields!", "Validation Error", JOptionPane.WARNING_MESSAGE);
@@ -3403,7 +3326,7 @@ public class SupervisorGUI extends javax.swing.JFrame {
             clearLeaveForm();
             JOptionPane.showMessageDialog(this, "Leave request submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-            // Refresh table
+
             ArrayList<ArrayList<String>> updatedRequests = supervisor.getDataAllRequests();
             supervisor.setTableData(updatedRequests);
             supervisor.setTableSize(7);
@@ -3490,8 +3413,8 @@ public class SupervisorGUI extends javax.swing.JFrame {
             }
             
             ArrayList<String> rowData = new ArrayList<>();
-            rowData.add(model.getValueAt(row, 0).toString()); // Date
-            rowData.add(submittedStatus); // Submitted status
+            rowData.add(model.getValueAt(row, 0).toString());
+            rowData.add(submittedStatus); 
             tempData.add(rowData);
         }
         
@@ -3499,7 +3422,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
             try {
                 supervisor.forwardDTRToSupervisor(tempData);
                 
-                // Refresh the DTR table
                 supervisor.setTableData(supervisor.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
                 supervisor.setTableSize(5);
                 supervisor.displayDataTable(jTableAllDTR);
@@ -3514,7 +3436,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
-
         supervisor.setTableData(supervisor.getDataAllDTR(dateFrom2.getDate(), dateTo2.getDate()));
         supervisor.setTableSize(5);
         supervisor.displayDataTable(jTableAllDTR);
@@ -3526,7 +3447,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
         if(tempData.isEmpty()){
             JOptionPane.showMessageDialog(null, "No Payroll Found!");
         } else {
-            // Display data in labels
             lblID4.setText(tempData.get(0).get(0));
             lblMyName6.setText(tempData.get(0).get(1));
             lblPayrollPeriod.setText(tempData.get(0).get(2));
@@ -3541,7 +3461,6 @@ public class SupervisorGUI extends javax.swing.JFrame {
             lblTax.setText(tempData.get(0).get(11));
             lblNetPay.setText(tempData.get(0).get(12));
 
-            // Ask if user wants to generate PDF
             int choice = JOptionPane.showConfirmDialog(null, 
                 "Would you like to save this payslip as a file?", 
                 "Save Payslip", 
@@ -3571,9 +3490,8 @@ public class SupervisorGUI extends javax.swing.JFrame {
         return supervisor.isDTRSubmittedToSupervisor(employeeId, date);
     }       
 
-// In SupervisorGUI.java - Update this method:
-private boolean submitDTRToSupervisor(int employeeId, List<String> dates) {
-        return supervisor.submitMultipleDTRToSupervisor(employeeId, dates);
+    private boolean submitDTRToSupervisor(int employeeId, List<String> dates) {
+            return supervisor.submitMultipleDTRToSupervisor(employeeId, dates);
     }
     /**
      * @param args the command line arguments

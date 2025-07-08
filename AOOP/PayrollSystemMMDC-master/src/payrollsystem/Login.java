@@ -24,7 +24,6 @@ public class Login {
         this.userPassword = userPassword;
     }
     
-    // Authenticate user against database
     public boolean authenticateDB(int employeeId, String password) {
         String sql = "SELECT lc.*, e.first_name, e.last_name FROM login_credentials lc " +
                     "JOIN employees e ON lc.employee_id = e.employee_id " +
@@ -36,7 +35,7 @@ public class Login {
             pstmt.setString(2, password);
             
             ResultSet rs = pstmt.executeQuery();
-            return rs.next(); // Returns true if user found
+            return rs.next();
             
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +43,6 @@ public class Login {
         }
     }
     
-    // Get user details for successful login
     public ArrayList<ArrayList<String>> getUserDetails(int employeeId, String password) {
         ArrayList<ArrayList<String>> userDetails = new ArrayList<>();
         

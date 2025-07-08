@@ -19,101 +19,99 @@ public class ReportGenerator {
         }
     }
     
-public File generatePayslipPDF(int employeeId, String payrollPeriod) {
-    try {
-        // Use direct employee data since payroll table might not exist or have data
-        String sql = "SELECT e.*, " +
-                    "COALESCE(sup.first_name, 'N/A') as supervisor_first_name, " +
-                    "COALESCE(sup.last_name, '') as supervisor_last_name " +
-                    "FROM employees e " +
-                    "LEFT JOIN employees sup ON e.supervisor_id = sup.employee_id " +
-                    "WHERE e.employee_id = ?";
-        
-        PreparedStatement pstmt = connection.prepareStatement(sql);
-        pstmt.setInt(1, employeeId);
-        ResultSet rs = pstmt.executeQuery();
-        
-        if (rs.next()) {
-            File reportDir = new File("reports/payslips");
-            reportDir.mkdirs();
-            
-            String filename = "Payslip_" + employeeId + "_" + payrollPeriod.replace("/", "-").replace(" ", "_") + ".txt";
-            File file = new File(reportDir, filename);
-            
-            PrintWriter writer = new PrintWriter(file);
-            
-            writer.println("=========================================");
-            writer.println("           MOTORPH PAYSLIP               ");
-            writer.println("=========================================");
-            writer.println("Employee ID    : " + rs.getInt("employee_id"));
-            writer.println("Name          : " + rs.getString("first_name") + " " + rs.getString("last_name"));
-            writer.println("Position      : " + rs.getString("position"));
-            
-            String supervisorName = rs.getString("supervisor_first_name");
-            if (!"N/A".equals(supervisorName)) {
-                supervisorName += " " + rs.getString("supervisor_last_name");
-            }
-            writer.println("Supervisor    : " + supervisorName);
-            writer.println("Payroll Period: " + payrollPeriod);
-            writer.println("-----------------------------------------");
-            writer.println("EARNINGS:");
-            writer.println("  Basic Salary    : ₱ " + String.format("%,10.2f", rs.getDouble("basic_salary")));
-            writer.println("  Rice Subsidy    : ₱ " + String.format("%,10.2f", rs.getDouble("rice_subsidy")));
-            writer.println("  Phone Allowance : ₱ " + String.format("%,10.2f", rs.getDouble("phone_allowance")));
-            writer.println("  Clothing Allow. : ₱ " + String.format("%,10.2f", rs.getDouble("clothing_allowance")));
-            writer.println("-----------------------------------------");
-            writer.println("DEDUCTIONS:");
-            writer.println("  SSS            : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
-            writer.println("  PhilHealth     : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
-            writer.println("  Pag-IBIG       : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
-            writer.println("  Income Tax     : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
-            writer.println("-----------------------------------------");
-            
-            double grossPay = rs.getDouble("basic_salary") + rs.getDouble("rice_subsidy") + 
-                             rs.getDouble("phone_allowance") + rs.getDouble("clothing_allowance");
-            double netPay = grossPay; // For now, until deductions are calculated
-            
-            writer.println("GROSS PAY      : ₱ " + String.format("%,10.2f", grossPay));
-            writer.println("NET PAY        : ₱ " + String.format("%,10.2f", netPay));
-            writer.println("=========================================");
-            
-            writer.close();
-            
-            System.out.println("✅ Payslip PDF generated successfully: " + file.getAbsolutePath());
-            
-            // Show success message and ask if user wants to open
-            int choice = JOptionPane.showConfirmDialog(null,
-                "Payslip saved successfully!\nLocation: " + file.getAbsolutePath() + 
-                "\n\nWould you like to open the file?",
-                "Payslip Generated", 
-                JOptionPane.YES_NO_OPTION);
-                
-            if (choice == JOptionPane.YES_OPTION) {
-                try {
-                    java.awt.Desktop.getDesktop().open(file);
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, 
-                        "File saved but could not open automatically.\nPlease open: " + file.getAbsolutePath());
+    public File generatePayslipPDF(int employeeId, String payrollPeriod) {
+        try {
+            String sql = "SELECT e.*, " +
+                        "COALESCE(sup.first_name, 'N/A') as supervisor_first_name, " +
+                        "COALESCE(sup.last_name, '') as supervisor_last_name " +
+                        "FROM employees e " +
+                        "LEFT JOIN employees sup ON e.supervisor_id = sup.employee_id " +
+                        "WHERE e.employee_id = ?";
+
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, employeeId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                File reportDir = new File("reports/payslips");
+                reportDir.mkdirs();
+
+                String filename = "Payslip_" + employeeId + "_" + payrollPeriod.replace("/", "-").replace(" ", "_") + ".txt";
+                File file = new File(reportDir, filename);
+
+                PrintWriter writer = new PrintWriter(file);
+
+                writer.println("=========================================");
+                writer.println("           MOTORPH PAYSLIP               ");
+                writer.println("=========================================");
+                writer.println("Employee ID    : " + rs.getInt("employee_id"));
+                writer.println("Name          : " + rs.getString("first_name") + " " + rs.getString("last_name"));
+                writer.println("Position      : " + rs.getString("position"));
+
+                String supervisorName = rs.getString("supervisor_first_name");
+                if (!"N/A".equals(supervisorName)) {
+                    supervisorName += " " + rs.getString("supervisor_last_name");
                 }
+                writer.println("Supervisor    : " + supervisorName);
+                writer.println("Payroll Period: " + payrollPeriod);
+                writer.println("-----------------------------------------");
+                writer.println("EARNINGS:");
+                writer.println("  Basic Salary    : ₱ " + String.format("%,10.2f", rs.getDouble("basic_salary")));
+                writer.println("  Rice Subsidy    : ₱ " + String.format("%,10.2f", rs.getDouble("rice_subsidy")));
+                writer.println("  Phone Allowance : ₱ " + String.format("%,10.2f", rs.getDouble("phone_allowance")));
+                writer.println("  Clothing Allow. : ₱ " + String.format("%,10.2f", rs.getDouble("clothing_allowance")));
+                writer.println("-----------------------------------------");
+                writer.println("DEDUCTIONS:");
+                writer.println("  SSS            : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
+                writer.println("  PhilHealth     : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
+                writer.println("  Pag-IBIG       : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
+                writer.println("  Income Tax     : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
+                writer.println("-----------------------------------------");
+
+                double grossPay = rs.getDouble("basic_salary") + rs.getDouble("rice_subsidy") + 
+                                 rs.getDouble("phone_allowance") + rs.getDouble("clothing_allowance");
+                double netPay = grossPay; 
+
+                writer.println("GROSS PAY      : ₱ " + String.format("%,10.2f", grossPay));
+                writer.println("NET PAY        : ₱ " + String.format("%,10.2f", netPay));
+                writer.println("=========================================");
+
+                writer.close();
+
+                System.out.println("Payslip PDF generated successfully: " + file.getAbsolutePath());
+
+                // Show success message and ask if user wants to open
+                int choice = JOptionPane.showConfirmDialog(null,
+                    "Payslip saved successfully!\nLocation: " + file.getAbsolutePath() + 
+                    "\n\nWould you like to open the file?",
+                    "Payslip Generated", 
+                    JOptionPane.YES_NO_OPTION);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    try {
+                        java.awt.Desktop.getDesktop().open(file);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, 
+                            "File saved but could not open automatically.\nPlease open: " + file.getAbsolutePath());
+                    }
+                }
+
+                return file;
+
+            } else {
+                System.err.println("Employee not found: " + employeeId);
+                JOptionPane.showMessageDialog(null, "Employee data not found!");
+                return null;
             }
-            
-            return file;
-            
-        } else {
-            System.err.println("❌ Employee not found: " + employeeId);
-            JOptionPane.showMessageDialog(null, "Employee data not found!");
+
+        } catch (Exception e) {
+            System.err.println("Error generating payslip PDF: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error generating PDF: " + e.getMessage());
             return null;
         }
-        
-    } catch (Exception e) {
-        System.err.println("❌ Error generating payslip PDF: " + e.getMessage());
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error generating PDF: " + e.getMessage());
-        return null;
     }
-}
-    
-    // Generate Monthly Report
+
     public File generateMonthlyReport(String month, int year) {
         try {
             File reportDir = new File("reports/monthly");
@@ -149,7 +147,7 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
                     rs.getString("first_name"),
                     rs.getString("last_name"),
                     rs.getString("position"),
-                    15, // Assuming 15 days per period
+                    15,
                     rs.getDouble("gross_income"),
                     deductions,
                     rs.getDouble("net_pay"),
@@ -180,7 +178,6 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
         return null;
     }
     
-    // Export to Excel (CSV format)
     public File exportToExcel(List<Map<String, Object>> data, String filename) {
         try {
             JFileChooser fileChooser = new JFileChooser();
@@ -191,11 +188,10 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
                 PrintWriter writer = new PrintWriter(file);
                 
                 if (!data.isEmpty()) {
-                    // Write headers
+
                     Map<String, Object> firstRow = data.get(0);
                     writer.println(String.join(",", firstRow.keySet()));
-                    
-                    // Write data
+
                     for (Map<String, Object> row : data) {
                         List<String> values = new ArrayList<>();
                         for (Object value : row.values()) {
@@ -214,8 +210,7 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
         }
         return null;
     }
-    
-    // Generate Government Reports (SSS, PhilHealth, Pag-IBIG)
+
     public File generateGovReports(String type, String period) {
         try {
             File reportDir = new File("reports/government");
@@ -265,7 +260,7 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
         
         while (rs.next()) {
             double employeeShare = rs.getDouble("sss");
-            double employerShare = employeeShare * 2; // Assuming employer pays double
+            double employerShare = employeeShare * 2; 
             
             writer.println(String.format("%s,\"%s %s\",%.2f,%.2f,%.2f,%.2f",
                 rs.getString("sss_number"),
@@ -287,11 +282,9 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
     }
     
     private void generatePhilHealthReport(PrintWriter writer, String period) throws SQLException {
-        // Similar implementation for PhilHealth
     }
     
     private void generatePagIbigReport(PrintWriter writer, String period) throws SQLException {
-        // Similar implementation for Pag-IBIG
     }
 
     public File generateAllPayslips() {
@@ -336,7 +329,6 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
         }
     }
 
-// Generate Tax Report
     public File generateTaxReport() {
         try {
             File reportDir = new File("reports/tax");
@@ -347,7 +339,6 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
 
-            // Header
             writer.println("MOTORPH TAX WITHHOLDING REPORT");
             writer.println("Period: " + now.getMonthValue() + "/" + now.getYear());
             writer.println("");
@@ -466,7 +457,6 @@ public File generatePayslipPDF(int employeeId, String payrollPeriod) {
         }
     }
 
-    // Helper method to generate payslip content
     private void generatePayslipContent(PrintWriter writer, PayrollRecord payroll) throws SQLException {
         String empSql = "SELECT * FROM employees WHERE employee_id = ?";
         PreparedStatement empStmt = connection.prepareStatement(empSql);

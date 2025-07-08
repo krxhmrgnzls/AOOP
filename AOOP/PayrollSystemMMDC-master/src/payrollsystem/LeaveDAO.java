@@ -13,16 +13,14 @@ public class LeaveDAO {
     public LeaveDAO() {
         try {
             this.connection = DatabaseConnection.getInstance().getConnection();
-            
-            // Test the connection
+
             if (connection == null) {
                 System.err.println("ERROR: LeaveDAO connection is NULL!");
             } else if (connection.isClosed()) {
                 System.err.println("ERROR: LeaveDAO connection is CLOSED!");
             } else {
                 System.out.println("LeaveDAO initialized successfully with valid connection");
-                
-                // Test query
+
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM leave_requests");
                 if (rs.next()) {
@@ -65,7 +63,6 @@ public class LeaveDAO {
     public List<ArrayList<String>> getLeaveRequestsByEmployee(int employeeId) {
         List<ArrayList<String>> leaveRequests = new ArrayList<>();
         
-        // FIXED: Changed table name from 'leaves' to 'leave_requests'
         String query = "SELECT l.*, e.first_name, e.last_name " +
                        "FROM leave_requests l " +
                        "JOIN employees e ON l.employee_id = e.employee_id " +
@@ -154,8 +151,7 @@ public class LeaveDAO {
             pstmt.setInt(2, leaveId);
             
             int result = pstmt.executeUpdate();
-            
-            // If approved, update leave balance
+
             if (result > 0 && status.equals("Approved")) {
                 updateLeaveBalance(leaveId);
             }

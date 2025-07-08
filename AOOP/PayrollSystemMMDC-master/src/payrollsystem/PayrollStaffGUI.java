@@ -45,7 +45,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     }
 
     private void setupEventListeners() {
-    // ADD these lines in your constructor after initComponents()
     jDateFrom.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
     jDateTo.addPropertyChangeListener("date", evt -> onPayrollDateRangeChanged());
 }
@@ -2062,7 +2061,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         jSeparator16.setBackground(new java.awt.Color(255, 204, 153));
 
-        btnReleased.setText("RELEASED");
+        btnReleased.setText("Released");
         btnReleased.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnReleasedActionPerformed(evt);
@@ -2109,10 +2108,10 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(searchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
+                                .addComponent(searchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblAllRequest3)
-                                .addGap(0, 889, Short.MAX_VALUE))
+                                .addGap(0, 853, Short.MAX_VALUE))
                             .addComponent(jSeparator16)
                             .addComponent(jScrollPane5)))
                     .addGroup(panelAllRequest1Layout.createSequentialGroup()
@@ -2124,7 +2123,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addGap(24, 24, 24)
                                 .addComponent(btnReleased, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnGeneratePayrollReport, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnGeneratePayrollReport, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -2348,7 +2347,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                     "Time Out Success", JOptionPane.INFORMATION_MESSAGE);
                 updateAttendanceButtonStates();
 
-                // Refresh DTR if viewing
                 if (mainTabbed.getSelectedIndex() == 2) {
                     refreshDTRTable();
                 }
@@ -2378,7 +2376,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                     "Time In Success", JOptionPane.INFORMATION_MESSAGE);
                 updateAttendanceButtonStates();
 
-                // Refresh DTR if viewing
                 if (mainTabbed.getSelectedIndex() == 2) {
                     refreshDTRTable();
                 }
@@ -2431,10 +2428,8 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private void btnemployeeDTRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnemployeeDTRActionPerformed
         // TODO add your handling code here:
         try {
-            // Switch to Employee DTR tab
-            mainTabbed.setSelectedIndex(6); // Replace with correct tab index
+            mainTabbed.setSelectedIndex(6); 
 
-            // Load employee dropdown when tab opens
             loadEmployeeDropdown();
 
         } catch (Exception e) {
@@ -2455,17 +2450,15 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Prepare data for release using database format
             for(int r : row){
                 ArrayList <String> rowData = new ArrayList<>();
-                rowData.add(model.getValueAt(r, 0).toString());  //ID
-                rowData.add(model.getValueAt(r, 1).toString());  //NAME
-                rowData.add(model.getValueAt(r, 2).toString());  //PAYROLL PERIOD
-                rowData.add(model.getValueAt(r, 13).toString()); //STATUS
+                rowData.add(model.getValueAt(r, 0).toString());  
+                rowData.add(model.getValueAt(r, 1).toString());  
+                rowData.add(model.getValueAt(r, 2).toString());  
+                rowData.add(model.getValueAt(r, 13).toString()); 
                 tempData.add(rowData);
             }
 
-            // Confirm the release action
             int choice = JOptionPane.showConfirmDialog(this,
                 "Are you sure you want to release " + tempData.size() + " selected payroll record(s)?\n" +
                 "This action will mark them as 'Approved' in the database and they cannot be modified.",
@@ -2477,10 +2470,8 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Release the payrolls using database method
             payrollStaff.releasedPayrollDB(tempData);
 
-            // Refresh the table with updated database data
             if (jDateFrom.getDate() != null && jDateTo.getDate() != null) {
                 ArrayList<ArrayList<String>> refreshedData = payrollStaff.getPayrollDataForDateRange(
                     jDateFrom.getDate(), jDateTo.getDate());
@@ -2514,20 +2505,17 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
        try {
         System.out.println("=== DEBUG: Employee Selection Event ===");
-        
-        // NULL-SAFE way to get selected item
+
         Object selectedItem = comboEmployeeName.getSelectedItem();
-        
-        // Check if something is actually selected
+
         if (selectedItem == null) {
             System.out.println("DEBUG: No item selected (selectedItem is null)");
-            return; // Exit early if nothing selected
+            return; 
         }
         
         String selectedEmployee = selectedItem.toString();
         System.out.println("DEBUG: Selected employee: " + selectedEmployee);
-        
-            // Skip if empty or default selection
+
             if (selectedEmployee.trim().isEmpty() || 
                 selectedEmployee.equals("Select Employee") ||
                 selectedEmployee.equals("")) {
@@ -2535,13 +2523,11 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Check if combo box is still being populated
             if (comboEmployeeName.getItemCount() <= 1) {
                 System.out.println("DEBUG: Combo box not fully loaded yet");
                 return;
             }
 
-            // Get date range for DTR
             Date[] periodDates = payrollStaff.getCurrentPayrollPeriodDates();
             Date fromDate = periodDates[0];
             Date toDate = periodDates[1];
@@ -2549,7 +2535,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             System.out.println("DEBUG: Loading DTR for " + selectedEmployee + 
                               " from " + fromDate + " to " + toDate);
 
-            // Load DTR data
             ArrayList<ArrayList<String>> dtrData = payrollStaff.getEmployeeDTR(selectedEmployee, fromDate, toDate);
 
             // Update table
@@ -2557,13 +2542,12 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             payrollStaff.setTableSize(7);
             payrollStaff.displayDataTable(jTableAllDTR);
 
-            System.out.println("✅ Successfully loaded " + dtrData.size() + " DTR records");
+            System.out.println("Successfully loaded " + dtrData.size() + " DTR records");
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR in employee selection: " + e.getMessage());
+            System.err.println("ERROR in employee selection: " + e.getMessage());
             e.printStackTrace();
 
-            // Show user-friendly error
             javax.swing.JOptionPane.showMessageDialog(this, 
                 "Error loading employee data. Please try again.", 
                 "Loading Error", 
@@ -2575,45 +2559,37 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
        try {
             System.out.println("=== Loading Employee Dropdown ===");
 
-            // Temporarily remove the action listener to prevent events during loading
             java.awt.event.ActionListener[] listeners = comboEmployeeName.getActionListeners();
             for (java.awt.event.ActionListener listener : listeners) {
                 comboEmployeeName.removeActionListener(listener);
             }
 
-            // Clear and populate combo box
             comboEmployeeName.removeAllItems();
-            comboEmployeeName.addItem("Select Employee"); // Default item
+            comboEmployeeName.addItem("Select Employee"); 
 
-            // Get employee names
             ArrayList<String> employeeNames = payrollStaff.getAllEmployeeNames();
 
-            // Add each employee to combo box
             for (String employeeName : employeeNames) {
                 comboEmployeeName.addItem(employeeName);
             }
 
-            // Re-add the action listeners
             for (java.awt.event.ActionListener listener : listeners) {
                 comboEmployeeName.addActionListener(listener);
             }
 
-            System.out.println("✅ Loaded " + employeeNames.size() + " employees in dropdown");
+            System.out.println("Loaded " + employeeNames.size() + " employees in dropdown");
 
         } catch (Exception e) {
-            System.err.println("❌ ERROR loading employee dropdown: " + e.getMessage());
+            System.err.println("ERROR loading employee dropdown: " + e.getMessage());
             e.printStackTrace();
         }
     }
-
-    // CALL this method in your constructor or when the DTR tab is opened:
-    // Add this to your constructor or DTR button action:
+    
     public void initializeDTRTab() {
         loadEmployeeDropdown();
 
-        // Set default date range to current payroll period
         Date[] periodDates = payrollStaff.getCurrentPayrollPeriodDates();
-        if (dateFrom != null && dateTo != null) { // Replace with your actual date picker names
+        if (dateFrom != null && dateTo != null) { 
             dateFrom.setDate(periodDates[0]);
             dateTo.setDate(periodDates[1]);
         }
@@ -2673,7 +2649,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                         "Report generated successfully!\nSaved to: " + report.getAbsolutePath(),
                         "Report Generated", JOptionPane.INFORMATION_MESSAGE);
 
-                    // Option to open the file
                     int choice = JOptionPane.showConfirmDialog(this, 
                         "Would you like to open the report now?", 
                         "Open Report", JOptionPane.YES_NO_OPTION);
@@ -2724,11 +2699,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         // TODO add your handling code here:.
         mainTabbed.setSelectedIndex(1);
 
-        // Set the combo box to "All Request" (index 0) and display the "All Request" panel
         comboTypeRequest.setSelectedIndex(0);
         tabbedInsideRequest.setSelectedIndex(0);
 
-        // Display all requests in the table
         payrollStaff.setTableData(payrollStaff.getDataAllRequests());
         payrollStaff.setTableSize(7);
         payrollStaff.displayDataTable(jTableAllRequest);
@@ -2773,16 +2746,13 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDTRActionPerformed
 
     private void btnLeaveLedgerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLeaveLedgerActionPerformed
-        // TODO add your handling code here:
-        // Switch to the Leave Ledger tab
+        // TODO add your handling code here:b
         mainTabbed.setSelectedIndex(3);
 
-        // Set employee details in the Leave Ledger panel
         payrollStaff.viewPersonalDetails(lblIDSidebar.getText());
         lblID3.setText(String.valueOf(payrollStaff.accountDetails.getEmployeeID()));
         lblMyName5.setText(payrollStaff.accountDetails.getEmployeeCompleteName());
 
-        // Update leave balance labels
         payrollStaff.updateLeaveBalanceLabels(lblVLBalance1, lblSLBalance1);
 
         payrollStaff.setTableData(payrollStaff.allApprovedPersonalLeaveLedger());
@@ -2871,7 +2841,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
             if (tempData.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No Payroll Found!");
-                // Reset all labels to default values
                 lblID4.setText("N/A");
                 lblMyName6.setText("N/A");
                 lblPayrollPeriod.setText("N/A");
@@ -2886,7 +2855,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 lblTax.setText("0.00");
                 lblNetPay.setText("0.00");
             } else {
-                // Populate labels with data
                 ArrayList<String> payslipData = tempData.get(0);
                 lblID4.setText(payslipData.get(0));           // Employee ID
                 lblMyName6.setText(payslipData.get(1));       // Name
@@ -2990,7 +2958,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                  return;
              }
 
-             // Force calculate days
              int calculatedDays = payrollStaff.calculateDaysFromDates(dateFrom.getDate(), dateTo.getDate());
              txtDaysNumber.setText(String.valueOf(calculatedDays));
 
@@ -3070,7 +3037,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Force calculate days
             int calculatedDays = payrollStaff.calculateDaysFromDates(dateFromOvertime.getDate(), dateToOvertime.getDate());
             txtDaysNumber1.setText(String.valueOf(calculatedDays));
 
@@ -3121,23 +3087,23 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
     private void searchDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchDateActionPerformed
         // TODO add your handling code here:
-     if (!validatePayrollDates()) return;
+        if (!validatePayrollDates()) return;
 
-        String message = String.format(
-            "Do you want to compute payroll for the period:\n%s to %s?\n\n" +
-            "This will calculate payroll for all active employees using database records.",
-            dateFormat.format(jDateFrom.getDate()), dateFormat.format(jDateTo.getDate())
-        );
+           String message = String.format(
+               "Do you want to compute payroll for the period:\n%s to %s?\n\n" +
+               "This will calculate payroll for all active employees using database records.",
+               dateFormat.format(jDateFrom.getDate()), dateFormat.format(jDateTo.getDate())
+           );
 
-        int choice = JOptionPane.showConfirmDialog(this, message, "Confirm Payroll Computation", 
-            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+           int choice = JOptionPane.showConfirmDialog(this, message, "Confirm Payroll Computation", 
+               JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
-        if (choice != JOptionPane.YES_OPTION) {
-            showExistingPayrollData();
-            return;
-        }
+           if (choice != JOptionPane.YES_OPTION) {
+               showExistingPayrollData();
+               return;
+           }
 
-        computePayrollInBackground();
+           computePayrollInBackground();
     }//GEN-LAST:event_searchDateActionPerformed
     
     private boolean validatePayrollDates() {

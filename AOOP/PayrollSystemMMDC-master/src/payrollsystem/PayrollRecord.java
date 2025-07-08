@@ -38,7 +38,6 @@ public class PayrollRecord {
         this.status = status;
     }
     
-    // Getters and Setters
     public int getPayrollId() { return payrollId; }
     public void setPayrollId(int payrollId) { this.payrollId = payrollId; }
     
@@ -84,7 +83,6 @@ public class PayrollRecord {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     
-    // Calculate total deductions
     public double getTotalDeductions() {
         return sss + philhealth + pagibig + tax + undertime;
     }

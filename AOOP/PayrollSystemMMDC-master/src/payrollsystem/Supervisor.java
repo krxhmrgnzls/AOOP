@@ -23,10 +23,9 @@ public class Supervisor extends Employee {
         this.attendanceDAO = new AttendanceDAO();
         this.leaveDAO = new LeaveDAO();
     }
-    
-    // Constructor that GUI expects
+
     public Supervisor(String employeeId) {
-        super(employeeId);  // Call Employee constructor with string
+        super(employeeId);  
         this.teamMembers = new ArrayList<>();
         this.employeeDAO = new EmployeeDAO();
         this.attendanceDAO = new AttendanceDAO();
@@ -58,9 +57,6 @@ public class Supervisor extends Employee {
         this.teamMembers = teamMembers;
     }
     
-    // ===== SUPERVISOR-SPECIFIC METHODS =====
-    
-    // Approve work schedule/attendance
     public void approveWorkSchedule() {
         try {
             List<AttendanceRecord> pendingAttendance = attendanceDAO.getAttendanceForPayroll("current");
@@ -86,7 +82,6 @@ public class Supervisor extends Employee {
         }
     }
     
-    // Generate team report
     public void generateTeamReport() {
         try {
             List<AccountDetails> team = getTeamData();
@@ -102,7 +97,6 @@ public class Supervisor extends Employee {
         }
     }
     
-    // Get team data
     public List<AccountDetails> getTeamData() {
         try {
             return employeeDAO.findAll();
@@ -111,8 +105,7 @@ public class Supervisor extends Employee {
             return new ArrayList<>();
         }
     }
-    
-    // Get team attendance summary
+
     public void getTeamAttendanceSummary() {
         try {
             List<AccountDetails> team = getTeamData();
@@ -132,8 +125,7 @@ public class Supervisor extends Employee {
             e.printStackTrace();
         }
     }
-    
-    // Bulk approve attendance
+
     public boolean bulkApproveAttendance(List<Integer> attendanceIds) {
         try {
             return attendanceDAO.bulkSubmitToPayroll(attendanceIds);
@@ -143,25 +135,18 @@ public class Supervisor extends Employee {
         }
     }
     
-    // ===== CLEAN OOP DTR METHODS =====
-    
-    // All-in-one method to load employee dropdown
     public void loadEmployeeDropdown(javax.swing.JComboBox<String> comboBox) {
     try {
         System.out.println("=== Loading Employee Dropdown ===");
-        
-        // Get employee names using existing method
         getEmployeeNames(); 
-        
-        // Get the loaded employee names
+
         ArrayList<ArrayList<String>> employeeData = getNewData();
         
         if (employeeData.isEmpty()) {
-            System.out.println("⚠️ No employee data found");
+            System.out.println(" No employee data found");
             return;
         }
-        
-        // Add employees to combo box
+
         for (ArrayList<String> row : employeeData) {
             for (String employeeName : row) {
                 if (employeeName != null && !employeeName.trim().isEmpty()) {
@@ -170,14 +155,13 @@ public class Supervisor extends Employee {
             }
         }
         
-        System.out.println("✅ Loaded " + (comboBox.getItemCount() - 1) + " employees into dropdown");
+        System.out.println("Loaded " + (comboBox.getItemCount() - 1) + " employees into dropdown");
         
     } catch (Exception e) {
-        System.err.println("❌ Error loading employee dropdown: " + e.getMessage());
+        System.err.println("Error loading employee dropdown: " + e.getMessage());
         e.printStackTrace();
     }
 }
-    // All-in-one method to handle employee selection and load DTR
     public void handleEmployeeSelection(String employeeName, javax.swing.JTable table) {
     if (employeeName == null || employeeName.trim().isEmpty()) {
         clearTable(table);
@@ -185,32 +169,28 @@ public class Supervisor extends Employee {
     }
     
     setSelectedEmployeeName(employeeName);
-    
-    // Get current pay period dates
     Calendar[] period = getCurrentPayPeriod();
     
-    // Load and display DTR
     ArrayList<ArrayList<String>> dtrData = getEmployeeDTR(employeeName, period[0].getTime(), period[1].getTime());
     setTableData(dtrData);
     setTableSize(8);
     displayDataTable(table);
     
-    System.out.println("✅ Handled employee selection for " + employeeName + " - loaded " + dtrData.size() + " records");
+    System.out.println("Handled employee selection for " + employeeName + " - loaded " + dtrData.size() + " records");
 }
-    // All-in-one method to handle DTR forwarding
+
     public boolean handleDTRForwarding(javax.swing.JTable table, int[] selectedRows) {
         if (selectedRows.length == 0) {
-            return false; // Let GUI show error message
+            return false; 
         }
         
-        // Validate selection
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         ArrayList<ArrayList<String>> selectedData = new ArrayList<>();
         
         for (int row : selectedRows) {
             String toPayrollStatus = model.getValueAt(row, 6).toString();
             if (toPayrollStatus.equals("Yes")) {
-                return false; // Already forwarded
+                return false; 
             }
             
             ArrayList<String> rowData = new ArrayList<>();
@@ -220,12 +200,9 @@ public class Supervisor extends Employee {
             }
             selectedData.add(rowData);
         }
-        
-        // Forward to payroll
         return forwardDTRToPayroll(selectedData);
     }
     
-    // Utility method to get current pay period
     private Calendar[] getCurrentPayPeriod() {
     Calendar today = Calendar.getInstance();
     int currentDay = today.get(Calendar.DAY_OF_MONTH);
@@ -243,15 +220,13 @@ public class Supervisor extends Employee {
     
     return new Calendar[]{start, end};
 }
-    
-    // Utility method to clear table
+
     private void clearTable(javax.swing.JTable table) {
       setTableData(new ArrayList<>());
       displayDataTable(table);
       System.out.println("🧹 Table cleared");
   }
-    // ===== SUPERVISOR REQUEST APPROVAL METHODS =====
-    
+
     public ArrayList<ArrayList<String>> getAllRequestData(String requestType) {
         ArrayList<ArrayList<String>> requests = new ArrayList<>();
         
@@ -288,15 +263,13 @@ public class Supervisor extends Employee {
         try (PreparedStatement pstmt = connection.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             
-            int displayId = 1; // Clean sequential counter starting from 1
+            int displayId = 1;
             
             while (rs.next()) {
                 ArrayList<String> row = new ArrayList<>();
-                
-                // Store the real database ID
+
                 int realId = rs.getInt("id");
-                
-                // Build the row data in the correct order
+
                 row.add(String.valueOf(displayId));                       // 0: DISPLAY ID (1, 2, 3, 4...)
                 row.add(rs.getString("employee_name"));                   // 1: NAME
                 row.add(rs.getDate("date_filed").toString());             // 2: DATE FILED
@@ -309,7 +282,7 @@ public class Supervisor extends Employee {
                 row.add(String.valueOf(realId));                          // 9: HIDDEN REAL ID (for operations)
                 
                 requests.add(row);
-                displayId++; // Increment for next row
+                displayId++; 
             }
             
             System.out.println("Found " + requests.size() + " requests with clean display IDs");
@@ -322,9 +295,6 @@ public class Supervisor extends Employee {
         return requests;
     }
     
-    /**
-     * Get pending requests only (for display in supervisor table)
-     */
     public ArrayList<ArrayList<String>> getPendingRequestsOnly() {
         ArrayList<ArrayList<String>> requests = new ArrayList<>();
 
@@ -347,12 +317,11 @@ public class Supervisor extends Employee {
             try (PreparedStatement pstmt = connection.prepareStatement(sql);
                  ResultSet rs = pstmt.executeQuery()) {
 
-                int displayId = 1; // Clean sequential counter starting from 1
+                int displayId = 1; 
 
                 while (rs.next()) {
                     ArrayList<String> row = new ArrayList<>();
 
-                    // Store the real database ID for operations
                     int realId = rs.getInt("id");
 
                     row.add(String.valueOf(displayId));                       // DISPLAY ID (1, 2, 3, 4...)
@@ -367,7 +336,7 @@ public class Supervisor extends Employee {
                     row.add(String.valueOf(realId));                          // HIDDEN REAL ID (for operations)
 
                     requests.add(row);
-                    displayId++; // Increment for next row
+                    displayId++; 
                 }
             }
 
@@ -383,51 +352,43 @@ public class Supervisor extends Employee {
     
     public int getRealIdFromDisplayRow(javax.swing.JTable table, int selectedRow) {
         try {
-            // Check if the table has enough columns
+
             if (table.getColumnCount() < 10) {
-                System.err.println("❌ Table doesn't have enough columns. Expected 10, got " + table.getColumnCount());
+                System.err.println("Table doesn't have enough columns. Expected 10, got " + table.getColumnCount());
                 return -1;
             }
             
-            // Check if the selected row is valid
             if (selectedRow < 0 || selectedRow >= table.getRowCount()) {
-                System.err.println("❌ Invalid row selection: " + selectedRow);
+                System.err.println("Invalid row selection: " + selectedRow);
                 return -1;
             }
-            
-            // The real ID is stored in column 9 (last column)
             Object realIdValue = table.getValueAt(selectedRow, 9);
             
             if (realIdValue == null) {
-                System.err.println("❌ Real ID value is null for row " + selectedRow);
+                System.err.println("Real ID value is null for row " + selectedRow);
                 return -1;
             }
             
             String realIdStr = realIdValue.toString().trim();
             if (realIdStr.isEmpty()) {
-                System.err.println("❌ Real ID value is empty for row " + selectedRow);
+                System.err.println("Real ID value is empty for row " + selectedRow);
                 return -1;
             }
             
             int realId = Integer.parseInt(realIdStr);
-            System.out.println("✅ Retrieved Real ID: " + realId + " for display row " + selectedRow);
+            System.out.println("Retrieved Real ID: " + realId + " for display row " + selectedRow);
             return realId;
             
         } catch (NumberFormatException e) {
-            System.err.println("❌ Error parsing Real ID from row " + selectedRow + ": " + e.getMessage());
+            System.err.println("Error parsing Real ID from row " + selectedRow + ": " + e.getMessage());
             return -1;
         } catch (Exception e) {
-            System.err.println("❌ Unexpected error getting real ID from row " + selectedRow + ": " + e.getMessage());
+            System.err.println("Unexpected error getting real ID from row " + selectedRow + ": " + e.getMessage());
             e.printStackTrace();
             return -1;
         }
     }
     
-    // ===== APPROVAL METHODS =====
-    
-    /**
-     * Approve or disapprove a leave request
-     */
     public boolean approveLeaveRequest(int leaveId, boolean approve) {
         try {
             System.out.println("=== Processing Leave Request ===");
@@ -444,109 +405,102 @@ public class Supervisor extends Employee {
                 int rowsUpdated = pstmt.executeUpdate();
                 
                 if (rowsUpdated > 0) {
-                    System.out.println("✅ Leave request " + leaveId + " " + status.toLowerCase());
+                    System.out.println("Leave request " + leaveId + " " + status.toLowerCase());
                     return true;
                 } else {
-                    System.out.println("❌ No leave request found with ID: " + leaveId);
+                    System.out.println("No leave request found with ID: " + leaveId);
                     return false;
                 }
             }
             
         } catch (SQLException e) {
-            System.err.println("❌ Error updating leave request: " + e.getMessage());
+            System.err.println("Error updating leave request: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
 
     public String getBalanceVL() {
-    try {
-        // CORRECT: Use leave_balances table with vacation_leave column
-        String sql = "SELECT vacation_leave FROM leave_balances WHERE employee_id = ?";
-        
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, this.employeeID);
-            ResultSet rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
-                double vlBalance = rs.getDouble("vacation_leave");
-                System.out.println("✅ VL Balance for employee " + this.employeeID + ": " + vlBalance);
-                return String.valueOf(vlBalance);
-            } else {
-                System.err.println("⚠️ No leave balance record found for employee ID: " + this.employeeID);
-                // Try to create default balance
-                createDefaultLeaveBalance();
-                return "24.0"; // Default balance
-            }
-        }
-        
-    } catch (SQLException e) {
-        System.err.println("❌ Error getting VL balance: " + e.getMessage());
-        e.printStackTrace();
-        return "0.0";
-    }
-}
+        try {
+            String sql = "SELECT vacation_leave FROM leave_balances WHERE employee_id = ?";
 
-public String getBalanceSL() {
-    try {
-        // CORRECT: Use leave_balances table with sick_leave column
-        String sql = "SELECT sick_leave FROM leave_balances WHERE employee_id = ?";
-        
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, this.employeeID);
-            ResultSet rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
-                double slBalance = rs.getDouble("sick_leave");
-                System.out.println("✅ SL Balance for employee " + this.employeeID + ": " + slBalance);
-                return String.valueOf(slBalance);
-            } else {
-                System.err.println("⚠️ No leave balance record found for employee ID: " + this.employeeID);
-                // Try to create default balance
-                createDefaultLeaveBalance();
-                return "24.0"; // Default balance
-            }
-        }
-        
-    } catch (SQLException e) {
-        System.err.println("❌ Error getting SL balance: " + e.getMessage());
-        e.printStackTrace();
-        return "0.0";
-    }
-}
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, this.employeeID);
+                ResultSet rs = pstmt.executeQuery();
 
-// 2. REPLACE in Employee.java
-public void leaveBalancesInformation() {
-    try {
-        System.out.println("=== Loading leave balance information for employee: " + this.employeeID + " ===");
-        
-        String sql = "SELECT vacation_leave, sick_leave FROM leave_balances WHERE employee_id = ?";
-        
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, this.employeeID);
-            ResultSet rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
-                double vlBalance = rs.getDouble("vacation_leave");
-                double slBalance = rs.getDouble("sick_leave");
-                
-                System.out.println("✅ Leave balances loaded:");
-                System.out.println("   - Vacation Leave: " + vlBalance);
-                System.out.println("   - Sick Leave: " + slBalance);
-            } else {
-                System.err.println("⚠️ No leave balance record found. Creating default balance...");
-                createDefaultLeaveBalance();
+                if (rs.next()) {
+                    double vlBalance = rs.getDouble("vacation_leave");
+                    System.out.println("VL Balance for employee " + this.employeeID + ": " + vlBalance);
+                    return String.valueOf(vlBalance);
+                } else {
+                    System.err.println("No leave balance record found for employee ID: " + this.employeeID);
+                    createDefaultLeaveBalance();
+                    return "24.0";
+                }
             }
+
+        } catch (SQLException e) {
+            System.err.println("Error getting VL balance: " + e.getMessage());
+            e.printStackTrace();
+            return "0.0";
         }
-        
-    } catch (SQLException e) {
-        System.err.println("❌ Error loading leave balances information: " + e.getMessage());
-        e.printStackTrace();
     }
-}
-    /**
-     * Approve or disapprove an overtime request
-     */
+
+    public String getBalanceSL() {
+        try {
+            String sql = "SELECT sick_leave FROM leave_balances WHERE employee_id = ?";
+
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, this.employeeID);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    double slBalance = rs.getDouble("sick_leave");
+                    System.out.println("SL Balance for employee " + this.employeeID + ": " + slBalance);
+                    return String.valueOf(slBalance);
+                } else {
+                    System.err.println("No leave balance record found for employee ID: " + this.employeeID);
+                    createDefaultLeaveBalance();
+                    return "24.0"; 
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error getting SL balance: " + e.getMessage());
+            e.printStackTrace();
+            return "0.0";
+        }
+    }
+    
+    public void leaveBalancesInformation() {
+        try {
+            System.out.println("=== Loading leave balance information for employee: " + this.employeeID + " ===");
+
+            String sql = "SELECT vacation_leave, sick_leave FROM leave_balances WHERE employee_id = ?";
+
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setInt(1, this.employeeID);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    double vlBalance = rs.getDouble("vacation_leave");
+                    double slBalance = rs.getDouble("sick_leave");
+
+                    System.out.println("Leave balances loaded:");
+                    System.out.println("   - Vacation Leave: " + vlBalance);
+                    System.out.println("   - Sick Leave: " + slBalance);
+                } else {
+                    System.err.println(" No leave balance record found. Creating default balance...");
+                    createDefaultLeaveBalance();
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error loading leave balances information: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
     public boolean approveOvertimeRequest(int overtimeId, boolean approve) {
         try {
             System.out.println("=== Processing Overtime Request ===");
@@ -563,46 +517,36 @@ public void leaveBalancesInformation() {
                 int rowsUpdated = pstmt.executeUpdate();
                 
                 if (rowsUpdated > 0) {
-                    System.out.println("✅ Overtime request " + overtimeId + " " + status.toLowerCase());
+                    System.out.println("Overtime request " + overtimeId + " " + status.toLowerCase());
                     return true;
                 } else {
-                    System.out.println("❌ No overtime request found with ID: " + overtimeId);
+                    System.out.println("No overtime request found with ID: " + overtimeId);
                     return false;
                 }
             }
             
         } catch (SQLException e) {
-            System.err.println("❌ Error updating overtime request: " + e.getMessage());
+            System.err.println("Error updating overtime request: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
 
-    /**
-     * Generic approval method (tries both leave and overtime)
-     */
     public boolean approveRequest(int requestId, boolean approve) {
-        // Try leave request first
         if (approveLeaveRequest(requestId, approve)) {
             return true;
         }
 
-        // Try overtime request
         if (approveOvertimeRequest(requestId, approve)) {
             return true;
         }
 
-        System.out.println("❌ Request ID " + requestId + " not found in any table");
+        System.out.println("Request ID " + requestId + " not found in any table");
         return false;
     }
-    
-    // ===== INHERITED METHOD OVERRIDES =====
-    
     @Override
     public ArrayList<ArrayList<String>> getDataAllRequests() {
         try {
-            // For supervisor, show their own requests
-            
             return super.loadAllRequestsForEmployee();
         } catch (Exception e) {
             e.printStackTrace();
@@ -612,7 +556,6 @@ public void leaveBalancesInformation() {
     
     @Override
     public ArrayList<ArrayList<String>> getDataAllDTR(java.util.Date startDate, java.util.Date endDate) {
-        // Return supervisor's own DTR data
         return super.getDataAllDTR(startDate, endDate);
     }
 
@@ -636,8 +579,6 @@ public void leaveBalancesInformation() {
         return super.isValidDateRange(startDate, endDate);
     }
     
-    // ===== EMPLOYEE NAME MANAGEMENT =====
-    
     public void getEmployeeNames() {
         try {
             newData.clear();
@@ -646,11 +587,11 @@ public void leaveBalancesInformation() {
 
             String sql = "SELECT employee_id, CONCAT(first_name, ' ', last_name) as full_name " +
                          "FROM employees " +
-                         "WHERE employee_id != ? " + // Exclude current supervisor
+                         "WHERE employee_id != ? " + 
                          "ORDER BY first_name, last_name";
 
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-                pstmt.setInt(1, this.employeeID); // Exclude current supervisor
+                pstmt.setInt(1, this.employeeID); 
 
                 ResultSet rs = pstmt.executeQuery();
 
@@ -663,11 +604,11 @@ public void leaveBalancesInformation() {
                 }
 
                 newData.add(employeeNames);
-                System.out.println("✅ Loaded " + employeeNames.size() + " employee names");
+                System.out.println("Loaded " + employeeNames.size() + " employee names");
             }
 
         } catch (SQLException e) {
-            System.err.println("❌ Error getting employee names: " + e.getMessage());
+            System.err.println("Error getting employee names: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -680,7 +621,6 @@ public void leaveBalancesInformation() {
     }
 
     public void setData() {
-        // Initialize or reset data
         if (newData == null) {
             newData = new ArrayList<>();
         }
@@ -688,63 +628,51 @@ public void leaveBalancesInformation() {
     }
     
     private java.sql.Date convertStringToSqlDate(String dateStr) {
-    try {
-        // Handle different date formats
-        if (dateStr.contains("-") && dateStr.length() == 10) {
-            // Already in SQL format (yyyy-MM-dd)
+        try {
+            if (dateStr.contains("-") && dateStr.length() == 10) {
+                return java.sql.Date.valueOf(dateStr);
+            } else if (dateStr.contains("/")) {
+                String[] parts = dateStr.split("/");
+                if (parts.length == 3) {
+                    String month, day, year;
+
+                    month = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
+                    day = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
+                    year = parts[2];
+
+                    String sqlDateStr = year + "-" + month + "-" + day;
+                    return java.sql.Date.valueOf(sqlDateStr);
+                }
+            } else if (dateStr.contains("-") && dateStr.length() != 10) {
+                String[] parts = dateStr.split("-");
+                if (parts.length == 3) {
+                    String year = parts[0];
+                    String month = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
+                    String day = parts[2].length() == 1 ? "0" + parts[2] : parts[2];
+
+                    String sqlDateStr = year + "-" + month + "-" + day;
+                    return java.sql.Date.valueOf(sqlDateStr);
+                }
+            }
             return java.sql.Date.valueOf(dateStr);
-        } else if (dateStr.contains("/")) {
-            // Convert from MM/dd/yyyy to yyyy-MM-dd
-            String[] parts = dateStr.split("/");
-            if (parts.length == 3) {
-                String month, day, year;
-                
-                // Assume MM/dd/yyyy format
-                month = parts[0].length() == 1 ? "0" + parts[0] : parts[0];
-                day = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
-                year = parts[2];
-                
-                String sqlDateStr = year + "-" + month + "-" + day;
-                return java.sql.Date.valueOf(sqlDateStr);
-            }
-        } else if (dateStr.contains("-") && dateStr.length() != 10) {
-            // Handle other date formats like yyyy-M-d
-            String[] parts = dateStr.split("-");
-            if (parts.length == 3) {
-                String year = parts[0];
-                String month = parts[1].length() == 1 ? "0" + parts[1] : parts[1];
-                String day = parts[2].length() == 1 ? "0" + parts[2] : parts[2];
-                
-                String sqlDateStr = year + "-" + month + "-" + day;
-                return java.sql.Date.valueOf(sqlDateStr);
-            }
+
+        } catch (Exception e) {
+            System.err.println("Error converting date string '" + dateStr + "': " + e.getMessage());
+            return new java.sql.Date(System.currentTimeMillis());
         }
-        
-        // Try to parse as-is if all else fails
-        return java.sql.Date.valueOf(dateStr);
-        
-    } catch (Exception e) {
-        System.err.println("❌ Error converting date string '" + dateStr + "': " + e.getMessage());
-        // Return current date as fallback
-        return new java.sql.Date(System.currentTimeMillis());
     }
-}
 
     @Override
     public ArrayList<ArrayList<String>> getAllApprovedPersonalLeaveLedger() {
-        // Return supervisor's own approved leave ledger
         return super.getAllApprovedPersonalLeaveLedger();
     }
     
     public ArrayList<ArrayList<String>> allApprovedPersonalLeaveLedger() {
         return getAllApprovedPersonalLeaveLedger();
     }
-
-    // ===== DTR FORWARDING METHODS =====
     
     public void forwardDTR(ArrayList<ArrayList<String>> dtrData) {
         System.out.println("DTR forwarded by supervisor to payroll");
-        // In a real implementation, update DTR status to forwarded to payroll
     }
 
     public void forwardDTRToSupervisor(ArrayList<ArrayList<String>> dtrData) {
@@ -752,7 +680,7 @@ public void leaveBalancesInformation() {
         System.out.println("=== Supervisor submitting DTR to higher authority ===");
         
         if (dtrData == null || dtrData.isEmpty()) {
-            System.err.println("❌ No DTR data to submit");
+            System.err.println("No DTR data to submit");
             return;
         }
         
@@ -766,47 +694,42 @@ public void leaveBalancesInformation() {
                     try {
                         String dateStr = row.get(0);
                         
-                        // Use the helper method to convert date
                         java.sql.Date sqlDate = convertStringToSqlDate(dateStr);
                         
                         pstmt.setDate(1, sqlDate);
-                        pstmt.setInt(2, this.employeeID); // Supervisor's own employee ID
+                        pstmt.setInt(2, this.employeeID);
                         
                         int result = pstmt.executeUpdate();
                         if (result > 0) {
                             successCount++;
-                            System.out.println("✅ Submitted DTR for date: " + dateStr);
+                            System.out.println("Submitted DTR for date: " + dateStr);
                         }
                         
                     } catch (Exception e) {
-                        System.err.println("❌ Error processing DTR row: " + e.getMessage());
+                        System.err.println("Error processing DTR row: " + e.getMessage());
                     }
                 }
             }
         }
         
-        System.out.println("✅ Successfully submitted " + successCount + " DTR entries");
+        System.out.println("Successfully submitted " + successCount + " DTR entries");
         
     } catch (SQLException e) {
-        System.err.println("❌ Error submitting DTR: " + e.getMessage());
+        System.err.println("Error submitting DTR: " + e.getMessage());
         e.printStackTrace();
     }
 }
     
-    // ===== EMPLOYEE DTR MANAGEMENT =====
-    
     public void setSelectedName(String selectedName) {
         System.out.println("Selected employee: " + selectedName);
-        // Store selected employee for DTR viewing
     }
     
     public ArrayList<ArrayList<String>> getDataForDTRTable() {
     if (selectedEmployeeName == null || selectedEmployeeName.trim().isEmpty()) {
-        System.err.println("⚠️ No employee selected for DTR");
+        System.err.println("No employee selected for DTR");
         return new ArrayList<>();
     }
 
-    // Get current pay period
     Calendar today = Calendar.getInstance();
     int currentDay = today.get(Calendar.DAY_OF_MONTH);
     
@@ -824,22 +747,17 @@ public void leaveBalancesInformation() {
     return getEmployeeDTR(selectedEmployeeName, startCal.getTime(), endCal.getTime());
 }
 
-    
-    /**
-     * Get DTR data for a specific employee
-     */
     public ArrayList<ArrayList<String>> getEmployeeDTR(String employeeName, java.util.Date startDate, java.util.Date endDate) {
     ArrayList<ArrayList<String>> dtrData = new ArrayList<>();
 
     if (employeeName == null || employeeName.trim().isEmpty()) {
-        System.err.println("❌ Employee name is null or empty");
+        System.err.println("Employee name is null or empty");
         return dtrData;
     }
 
-    // Find employee ID from the name
     int employeeId = getEmployeeIdByName(employeeName.trim());
     if (employeeId == -1) {
-        System.err.println("❌ Employee not found: " + employeeName);
+        System.err.println("Employee not found: " + employeeName);
         return dtrData;
     }
 
@@ -871,36 +789,31 @@ public void leaveBalancesInformation() {
             dtrData.add(row);
         }
 
-        System.out.println("✅ Loaded " + dtrData.size() + " DTR records for " + employeeName + " (ID: " + employeeId + ")");
+        System.out.println("Loaded " + dtrData.size() + " DTR records for " + employeeName + " (ID: " + employeeId + ")");
 
     } catch (SQLException e) {
-        System.err.println("❌ Error getting employee DTR: " + e.getMessage());
+        System.err.println("Error getting employee DTR: " + e.getMessage());
         e.printStackTrace();
     }
 
     return dtrData;
 }
 
-    /**
-     * Get employee ID by name
-     */
    private int getEmployeeIdByName(String employeeName) {
     if (employeeName == null || employeeName.trim().isEmpty()) {
         return -1;
     }
 
-    // Search in the idAndNames list first (more efficient)
     for (ArrayList<String> idName : idAndNames) {
         if (idName.size() >= 2 && idName.get(1).equals(employeeName)) {
             try {
                 return Integer.parseInt(idName.get(0));
             } catch (NumberFormatException e) {
-                System.err.println("❌ Invalid employee ID format: " + idName.get(0));
+                System.err.println("Invalid employee ID format: " + idName.get(0));
             }
         }
     }
 
-    // If not found in cache, search database directly
     String sql = "SELECT employee_id FROM employees WHERE CONCAT(first_name, ' ', last_name) = ?";
 
     try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -909,23 +822,21 @@ public void leaveBalancesInformation() {
 
         if (rs.next()) {
             int empId = rs.getInt("employee_id");
-            System.out.println("✅ Found employee ID " + empId + " for: " + employeeName);
+            System.out.println("Found employee ID " + empId + " for: " + employeeName);
             return empId;
         }
     } catch (SQLException e) {
-        System.err.println("❌ Error finding employee ID: " + e.getMessage());
+        System.err.println("Error finding employee ID: " + e.getMessage());
         e.printStackTrace();
     }
 
-    System.err.println("❌ Employee not found in database: " + employeeName);
+    System.err.println("Employee not found in database: " + employeeName);
     return -1;
 }
-    /**
-     * Forward DTR records to payroll staff
-     */
+
    public boolean forwardDTRToPayroll(ArrayList<ArrayList<String>> selectedDTRData) {
     if (selectedDTRData == null || selectedDTRData.isEmpty()) {
-        System.err.println("❌ No DTR data to forward");
+        System.err.println("No DTR data to forward");
         return false;
     }
 
@@ -943,37 +854,35 @@ public void leaveBalancesInformation() {
                     int result = pstmt.executeUpdate();
                     if (result > 0) {
                         successCount++;
-                        System.out.println("✅ Forwarded DTR ID: " + attendanceId + " to payroll");
+                        System.out.println("Forwarded DTR ID: " + attendanceId + " to payroll");
                     } else {
-                        System.err.println("❌ Failed to forward DTR ID: " + attendanceId);
+                        System.err.println("Failed to forward DTR ID: " + attendanceId);
                     }
                 } catch (NumberFormatException e) {
-                    System.err.println("❌ Invalid attendance ID: " + row.get(0));
+                    System.err.println("Invalid attendance ID: " + row.get(0));
                 }
             }
         }
 
-        System.out.println("✅ Successfully forwarded " + successCount + " DTR records to payroll");
+        System.out.println("Successfully forwarded " + successCount + " DTR records to payroll");
         return successCount > 0;
 
     } catch (SQLException e) {
-        System.err.println("❌ Error forwarding DTR to payroll: " + e.getMessage());
+        System.err.println("Error forwarding DTR to payroll: " + e.getMessage());
         e.printStackTrace();
         return false;
     }
 }
 
-  public void setSelectedEmployeeName(String employeeName) {
-    this.selectedEmployeeName = employeeName != null ? employeeName.trim() : "";
-    System.out.println("📝 Selected employee for DTR: " + this.selectedEmployeeName);
-}
+    public void setSelectedEmployeeName(String employeeName) {
+        this.selectedEmployeeName = employeeName != null ? employeeName.trim() : "";
+        System.out.println("Selected employee for DTR: " + this.selectedEmployeeName);
+    }
+    
     public String getSelectedEmployeeName() {
         return selectedEmployeeName;
     }
 
-    /**
-     * Get DTR data for currently selected employee
-     */
     public ArrayList<ArrayList<String>> getSelectedEmployeeDTRData(java.util.Date startDate, java.util.Date endDate) {
         if (selectedEmployeeName == null || selectedEmployeeName.trim().isEmpty()) {
             System.err.println("No employee selected for DTR");
@@ -982,16 +891,13 @@ public void leaveBalancesInformation() {
 
         return getEmployeeDTR(selectedEmployeeName, startDate, endDate);
     }
-    
-    // ===== TABLE DISPLAY METHODS =====
-    
+
     @Override
     public void setTableData(ArrayList<ArrayList<String>> data) {
         this.newData = data;
     }
     
     public void setTableData() {
-        // Load default data
         setTableData(getDataAllRequests());
     }
     
@@ -1004,68 +910,54 @@ public void leaveBalancesInformation() {
     public void displayDataTable(javax.swing.JTable table) {
         if (newData != null && !newData.isEmpty()) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.setRowCount(0); // Clear existing data
+            model.setRowCount(0); 
             
-            // Check how many columns the table model has
             int tableColumns = model.getColumnCount();
             System.out.println("DEBUG: Table model has " + tableColumns + " columns");
             
             for (ArrayList<String> row : newData) {
-                // Create row data array matching the table's column count
                 Object[] rowData = new Object[tableColumns];
                 
-                // Fill the row data with available data
                 for (int i = 0; i < tableColumns; i++) {
                     if (i < row.size()) {
                         rowData[i] = row.get(i);
                     } else {
-                        rowData[i] = ""; // Fill missing columns with empty string
+                        rowData[i] = ""; 
                     }
                 }
                 model.addRow(rowData);
             }
             
-            // Only hide the Real ID column if the table has 10 columns
-            // This check prevents the error you're seeing
             if (tableColumns >= 10) {
                 try {
-                    // Hide the last column (Real ID column)
                     int lastColumnIndex = tableColumns - 1;
                     table.getColumnModel().getColumn(lastColumnIndex).setMinWidth(0);
                     table.getColumnModel().getColumn(lastColumnIndex).setMaxWidth(0);
                     table.getColumnModel().getColumn(lastColumnIndex).setWidth(0);
-                    System.out.println("✅ Hidden Real ID column at index " + lastColumnIndex);
+                    System.out.println("Hidden Real ID column at index " + lastColumnIndex);
                 } catch (Exception e) {
-                    System.err.println("❌ Error hiding Real ID column: " + e.getMessage());
+                    System.err.println("Error hiding Real ID column: " + e.getMessage());
                 }
             }
             
-            System.out.println("✅ Table populated with " + newData.size() + " rows and " + tableColumns + " columns");
+            System.out.println("Table populated with " + newData.size() + " rows and " + tableColumns + " columns");
         } else {
-            System.out.println("⚠️ No data to display in table");
+            System.out.println("No data to display in table");
         }
     }
-    
-    // ===== LEAVE REQUEST FILING =====
-    
+
     @Override
     public boolean fileLeaveRequest(ArrayList<String> leaveData) {
-        // Supervisor can also file leave requests
         return super.fileLeaveRequest(leaveData);
     }
     
     public boolean fileOvertimeRequest(ArrayList<String> overtimeData) {
-        // Supervisor can also file overtime requests
         return super.fileOvertimeRequest(overtimeData);
     }
-    
-    // ===== DATA RETRIEVAL METHODS =====
     
     public ArrayList<ArrayList<String>> getDataList() {
         return newData;
     }
-    
-    // ===== UTILITY METHODS =====
     
     private String convertToSqlDate(String dateStr) {
         try {
@@ -1078,8 +970,6 @@ public void leaveBalancesInformation() {
             return dateStr;
         }
     }
-    
-    // ===== AUTHENTICATION METHODS =====
     
     public void userLogin() {
         System.out.println("Supervisor login: " + employeeID);
@@ -1112,14 +1002,14 @@ public void leaveBalancesInformation() {
             int result = insertStmt.executeUpdate();
             
             if (result > 0) {
-                System.out.println("✅ Created default leave balance (24 VL, 24 SL) for employee: " + this.employeeID);
+                System.out.println("Created default leave balance (24 VL, 24 SL) for employee: " + this.employeeID);
             } else {
-                System.err.println("❌ Failed to create leave balance for employee: " + this.employeeID);
+                System.err.println("Failed to create leave balance for employee: " + this.employeeID);
             }
         }
         
     } catch (SQLException e) {
-        System.err.println("❌ Error creating default leave balance for employee " + this.employeeID + ": " + e.getMessage());
+        System.err.println("Error creating default leave balance for employee " + this.employeeID + ": " + e.getMessage());
         e.printStackTrace();
     }
 }
@@ -1134,7 +1024,6 @@ public void leaveBalancesInformation() {
                 for (String dateStr : dates) {
                     pstmt.setInt(1, employeeId);
 
-                    // Use the helper method to convert date
                     java.sql.Date sqlDate = convertStringToSqlDate(dateStr);
                     pstmt.setDate(2, sqlDate);
 
@@ -1145,18 +1034,16 @@ public void leaveBalancesInformation() {
                 }
             }
 
-            System.out.println("✅ Successfully submitted " + successCount + " DTR entries to supervisor");
+            System.out.println("Successfully submitted " + successCount + " DTR entries to supervisor");
             return successCount > 0;
 
         } catch (SQLException e) {
-            System.err.println("❌ Error in bulk DTR submission: " + e.getMessage());
+            System.err.println("Error in bulk DTR submission: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
-
-    // 5. FIX: Add isDTRSubmittedToSupervisor to Supervisor.java
-    // Add this method to your Supervisor.java class:
+    
     public boolean isDTRSubmittedToSupervisor(String employeeId, String date) {
         try {
             String sql = "SELECT submitted_to_supervisor FROM attendance WHERE employee_id = ? AND log_date = ?";
@@ -1173,7 +1060,7 @@ public void leaveBalancesInformation() {
             }
 
         } catch (Exception e) {
-            System.err.println("❌ Error checking DTR submission status: " + e.getMessage());
+            System.err.println("Error checking DTR submission status: " + e.getMessage());
         }
 
         return false;

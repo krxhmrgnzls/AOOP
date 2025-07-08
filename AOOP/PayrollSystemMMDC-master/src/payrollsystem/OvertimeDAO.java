@@ -13,7 +13,6 @@ public class OvertimeDAO {
         try {
             this.connection = DatabaseConnection.getInstance().getConnection();
             
-            // Test the connection
             if (connection == null) {
                 System.err.println("ERROR: OvertimeDAO connection is NULL!");
             } else if (connection.isClosed()) {
@@ -21,7 +20,6 @@ public class OvertimeDAO {
             } else {
                 System.out.println("OvertimeDAO initialized successfully with valid connection");
                 
-                // Test query
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM overtime_requests");
                 if (rs.next()) {
@@ -35,10 +33,7 @@ public class OvertimeDAO {
             e.printStackTrace();
         }
     }
-    
-    /**
-     * Get all overtime requests for a specific employee - FIXED to use correct connection
-     */
+ 
     public List<ArrayList<String>> getOvertimeRequestsByEmployee(int employeeId) {
         List<ArrayList<String>> overtimeRequests = new ArrayList<>();
         
@@ -86,9 +81,6 @@ public class OvertimeDAO {
         return overtimeRequests;
     }
     
-    /**
-     * Submit a new overtime request to the database
-     */
     public boolean submitOvertimeRequest(int employeeId, LocalDateTime fromTime, 
                                        LocalDateTime toTime, double numberOfDays, String reason) {
         String sql = "INSERT INTO overtime_requests (employee_id, date_filed, type_request, from_time, " +
@@ -154,9 +146,6 @@ public class OvertimeDAO {
         return requests;
     }
     
-    /**
-     * Update overtime request status (Approve/Reject)
-     */
     public boolean updateOvertimeRequestStatus(int overtimeId, String status) {
         String sql = "UPDATE overtime_requests SET status = ? WHERE overtime_id = ?";
         
@@ -174,9 +163,6 @@ public class OvertimeDAO {
         }
     }
     
-    /**
-     * Cancel overtime request (only if pending)
-     */
     public boolean cancelOvertimeRequest(int overtimeId) {
         String sql = "DELETE FROM overtime_requests WHERE overtime_id = ? AND status = 'Pending'";
         
@@ -193,18 +179,11 @@ public class OvertimeDAO {
         }
     }
     
-    /**
-     * Get approved overtime for payroll processing
-     */
     public List<ArrayList<String>> getApprovedOvertimeForPayroll(String payrollPeriod) {
         List<ArrayList<String>> approvedOvertime = new ArrayList<>();
-        // Implementation for getting approved overtime within payroll period
         return approvedOvertime;
     }
-    
-    /**
-     * Get overtime hours by employee for a date range
-     */
+
     public double getOvertimeHours(int employeeId, Date startDate, Date endDate) {
         String sql = "SELECT SUM(number_of_days * 8) as total_hours FROM overtime_requests " +
                     "WHERE employee_id = ? AND status = 'Approved' " +

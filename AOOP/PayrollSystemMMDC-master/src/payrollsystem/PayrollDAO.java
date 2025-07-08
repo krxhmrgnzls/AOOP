@@ -198,15 +198,14 @@ public class PayrollDAO {
         }
     }
     
-    // BULK INSERT - Process payroll for all employees
     public boolean processPayrollForAllEmployees(String payrollPeriod) {
         try {
-            // Get all employees
+
             EmployeeDAO empDAO = new EmployeeDAO();
             List<AccountDetails> employees = empDAO.findAll();
             
             for (AccountDetails emp : employees) {
-                // Calculate payroll for each employee
+
                 PayrollRecord payroll = calculatePayrollForEmployee(emp, payrollPeriod);
                 if (payroll != null) {
                     savePayroll(payroll);
@@ -220,25 +219,21 @@ public class PayrollDAO {
         }
     }
     
-    // HELPER - Calculate payroll for individual employee
     private PayrollRecord calculatePayrollForEmployee(AccountDetails employee, String payrollPeriod) {
         try {
             PayrollRecord payroll = new PayrollRecord();
             payroll.setEmployeeId(employee.getEmployeeID());
             payroll.setPayrollPeriod(payrollPeriod);
             payroll.setPosition(employee.getPosition());
-            
-            // Calculate basic earnings
+
             double basicSalary = employee.getBasicSalary();
             double benefits = employee.getRiceSubsidy() + employee.getPhoneAllowance() + employee.getClothingAllowance();
-            
-            // Get attendance data for overtime/undertime calculation
+
             double overtime = getOvertimeHours(employee.getEmployeeID(), payrollPeriod) * employee.getHourlyRate() * 1.25;
             double undertime = getUndertimeHours(employee.getEmployeeID(), payrollPeriod) * employee.getHourlyRate();
             
             double grossIncome = basicSalary + benefits + overtime;
-            
-            // Calculate deductions
+
             double sss = grossIncome * 0.045;  // 4.5%
             double philhealth = grossIncome * 0.03;  // 3%
             double pagibig = Math.min(grossIncome * 0.02, 100);  // 2% max 100
@@ -265,9 +260,7 @@ public class PayrollDAO {
         }
     }
 
-    // HELPER - Get overtime hours for employee
     private double getOvertimeHours(int employeeId, String period) {
-        // Query overtime_requests table for approved overtime
         String sql = "SELECT COALESCE(SUM(number_of_days * 8), 0) FROM overtime_requests " +
                     "WHERE employee_id = ? AND status = 'Approved'";
         try {
@@ -283,32 +276,23 @@ public class PayrollDAO {
         return 0.0;
     }
 
-    // HELPER - Get undertime hours for employee
     private double getUndertimeHours(int employeeId, String period) {
-        // Simplified - return 0 for now, implement based on attendance
         return 0.0;
     }
 
-    // HELPER - Calculate tax based on brackets
     private double calculateTax(double taxableIncome) {
-        // Simplified tax calculation - implement proper tax brackets
         if (taxableIncome <= 20000) return 0;
         else if (taxableIncome <= 33000) return (taxableIncome - 20000) * 0.15;
         else if (taxableIncome <= 66000) return 1950 + (taxableIncome - 33000) * 0.20;
         else return 8550 + (taxableIncome - 66000) * 0.25;
     }
 
-    /**
-     * Helper method to create PayrollRecord from ResultSet
-     */
     private PayrollRecord createPayrollFromResultSet(ResultSet rs) throws SQLException {
         PayrollRecord payroll = new PayrollRecord();
 
-        // Check if payroll_id column exists
         try {
             payroll.setPayrollId(rs.getInt("payroll_id"));
         } catch (SQLException e) {
-            // Column might not exist, set default value
             payroll.setPayrollId(0);
         }
 
@@ -326,7 +310,6 @@ public class PayrollDAO {
         payroll.setNetPay(rs.getDouble("net_pay"));
         payroll.setStatus(rs.getString("status"));
 
-        // Set employee name if available
         try {
             String firstName = rs.getString("first_name");
             String lastName = rs.getString("last_name");
@@ -334,13 +317,11 @@ public class PayrollDAO {
                 payroll.setEmployeeName(firstName + " " + lastName);
             }
         } catch (SQLException e) {
-            // Columns might not be available
         }
 
         return payroll;
     }
-    
-    // UTILITY - Check if payroll exists for period
+
     public boolean payrollExistsForPeriod(int employeeId, String payrollPeriod) {
         String sql = "SELECT COUNT(*) FROM payroll WHERE employee_id = ? AND payroll_period = ?";
         try {
@@ -357,8 +338,7 @@ public class PayrollDAO {
         }
         return false;
     }
-    
-    // UTILITY - Get existing payroll ID
+
     public int getExistingPayrollId(int employeeId, String payrollPeriod) {
         String sql = "SELECT payroll_id FROM payroll WHERE employee_id = ? AND payroll_period = ?";
         try {
@@ -375,8 +355,7 @@ public class PayrollDAO {
         }
         return -1;
     }
-    
-    // ANALYTICS - Get total payroll cost for period
+
     public double getTotalPayrollCost(String payrollPeriod) {
         String sql = "SELECT COALESCE(SUM(net_pay), 0) FROM payroll WHERE payroll_period = ?";
         try {
@@ -392,12 +371,10 @@ public class PayrollDAO {
         }
         return 0.0;
     }
-    
-    // BULK UPDATE - Release multiple payrolls
+
     public boolean bulkReleasePayrolls(List<Integer> payrollIds) {
         String sql = "UPDATE payroll SET status = 'Approved' WHERE payroll_id IN (";
-        
-        // Build IN clause
+
         for (int i = 0; i < payrollIds.size(); i++) {
             sql += "?";
             if (i < payrollIds.size() - 1) sql += ",";

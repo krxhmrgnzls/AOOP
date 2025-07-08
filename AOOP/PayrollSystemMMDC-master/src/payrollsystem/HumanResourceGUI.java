@@ -2678,11 +2678,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         try {
             System.out.println("=== DEBUG: Button clicked ===");
 
-            // Switch to the All Employees tab
-            mainTabbed.setSelectedIndex(5); // Try different numbers if this doesn't work: 4, 5, 6
+            mainTabbed.setSelectedIndex(5); 
             System.out.println("DEBUG: Switched to tab index 5");
 
-            // Test database connection first
             if (humanResource.connection == null) {
                 System.out.println("ERROR: HumanResource connection is NULL!");
                 return;
@@ -2748,7 +2746,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                     "Time Out Success", JOptionPane.INFORMATION_MESSAGE);
                 updateAttendanceButtonStates();
 
-                // Refresh DTR table if currently viewing DTR tab
                 if (mainTabbed.getSelectedIndex() == 3) { // DTR tab index
                     refreshDTRTable();
                 }
@@ -2779,15 +2776,12 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         txtPhoneNum.setText(humanResource.accountDetails.getPhoneNumber());
         textAreaAddress.setText(humanResource.accountDetails.getAddress());
 
-        // FIX: Remove ₱ symbol and format properly
         txtBasicSalary.setText(String.format("%.2f", humanResource.accountDetails.getBasicSalary()));
         txtBiMonthlyRate.setText(String.format("%.2f", humanResource.accountDetails.getSemiBasicSalary()));
         txtHourlyRate.setText(String.format("%.2f", humanResource.accountDetails.getHourlyRate()));
         txtRiceSubsidy.setText(String.format("%.2f", humanResource.accountDetails.getRiceSubsidy()));
         txtPhoneAllowance.setText(String.format("%.2f", humanResource.accountDetails.getPhoneAllowance()));
         txtClothingAllowance.setText(String.format("%.2f", humanResource.accountDetails.getClothingAllowance()));
-
-        // FIX: Format government IDs properly
         txtPhilNum.setText(formatGovernmentID(humanResource.accountDetails.getPhilHealthNumber()));
         txtSSSNum.setText(formatGovernmentID(humanResource.accountDetails.getSSSNumber()));
         txtTINNum.setText(formatGovernmentID(humanResource.accountDetails.getTinNumber()));
@@ -2802,11 +2796,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         // TODO add your handling code here:.
         mainTabbed.setSelectedIndex(1);
 
-        // Set the combo box to "All Request" and display the panel
         comboTypeRequest.setSelectedIndex(0);
         tabbedInsideRequest.setSelectedIndex(0);
 
-        // *** FIX: Load actual request data instead of employee data ***
         ArrayList<ArrayList<String>> requestData = humanResource.loadAllRequestsForEmployee();
         humanResource.setTableData(requestData);
         humanResource.setTableSize(7);
@@ -2819,12 +2811,10 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         mainTabbed.setSelectedIndex(2);
 
-        // Set employee details
         humanResource.viewPersonalDetails(lblIDSidebar.getText());
         lblID2.setText(String.valueOf(humanResource.accountDetails.getEmployeeID()));
         lblMyName4.setText(humanResource.accountDetails.getEmployeeCompleteName());
 
-        // Get current date and set up period
         Calendar today = Calendar.getInstance();
         int currentDay = today.get(Calendar.DAY_OF_MONTH);
 
@@ -2842,13 +2832,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         dateFrom2.setDate(startCal.getTime());
         dateTo2.setDate(endCal.getTime());
 
-        // *** FIX: Load actual DTR data instead of employee data ***
         ArrayList<ArrayList<String>> dtrData = humanResource.getDTRData(startCal.getTime(), endCal.getTime());
         humanResource.setTableData(dtrData);
         humanResource.setTableSize(5);
         humanResource.displayDataTable(jTableAllDTR);
 
-        // Update attendance button states
         updateAttendanceButtonStates();
 
         System.out.println("DEBUG: Loaded " + dtrData.size() + " DTR records");
@@ -2858,14 +2846,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         mainTabbed.setSelectedIndex(3);
 
-        // Set employee details in the Leave Ledger panel
         lblID3.setText(String.valueOf(humanResource.accountDetails.getEmployeeID()));
         lblMyName5.setText(humanResource.accountDetails.getEmployeeCompleteName());
 
-        // Update leave balance labels
         humanResource.updateLeaveBalanceLabels(lblVLBalance1, lblSLBalance1);
 
-        // *** FIX: Load actual leave ledger data instead of employee data ***
         ArrayList<ArrayList<String>> ledgerData = humanResource.getLeaveBalancesLedger();
         humanResource.setTableData(ledgerData);
         humanResource.setTableSize(7);
@@ -2878,14 +2863,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         mainTabbed.setSelectedIndex(4);
 
-        // Set employee details
         lblID3.setText(String.valueOf(humanResource.accountDetails.getEmployeeID()));
         lblMyName5.setText(humanResource.accountDetails.getEmployeeCompleteName());
 
-        // Update leave balance labels from database
         humanResource.updateLeaveBalanceLabels(lblVLBalance1, lblSLBalance1);
 
-        // *** FIX: Load actual leave ledger data instead of employee data ***
         ArrayList<ArrayList<String>> ledgerData = humanResource.getLeaveBalancesLedger();
         humanResource.setTableData(ledgerData);
         humanResource.setTableSize(7);
@@ -2924,7 +2906,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         if(selectedItem.equals("All Request")) {
             tabbedInsideRequest.setSelectedIndex(0);
-            // *** FIX: Load actual request data ***
             ArrayList<ArrayList<String>> requestData = humanResource.loadAllRequestsForEmployee();
             humanResource.setTableData(requestData);
             humanResource.setTableSize(7);
@@ -2933,7 +2914,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         } else if(selectedItem.equals("Leave Application")) {
             tabbedInsideRequest.setSelectedIndex(1);
 
-            // Load leave balances from database
             humanResource.leaveBalancesInformation();
             lblID.setText(String.valueOf(humanResource.accountDetails.getEmployeeID()));
             lblMyName.setText(humanResource.accountDetails.getEmployeeCompleteName());
@@ -2969,7 +2949,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         try {
-            // Validate all required fields
             if (comboLeaveType.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(this, "Please select a leave type!", "Validation Error", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -2990,13 +2969,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Validate date range
             if (dateTo.getDate().before(dateFrom.getDate())) {
                 JOptionPane.showMessageDialog(this, "TO date cannot be before FROM date!", "Date Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // Recalculate days to ensure accuracy
             updateLeaveDaysCalculation();
 
             String daysText = txtDaysNumber.getText().trim();
@@ -3005,7 +2982,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 return;
             }
 
-            // Clear and rebuild the data array
             data.clear();
             data.add(String.valueOf(humanResource.accountDetails.getEmployeeID()));
             data.add(humanResource.accountDetails.getEmployeeCompleteName());
@@ -3018,7 +2994,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             System.out.println("DEBUG: Submitting leave request with data: " + data);
 
             if (humanResource.fileLeaveRequest(data)) {
-                // Clear form
                 txtDaysNumber.setText("0");
                 comboLeaveType.setSelectedIndex(0);
                 dateFrom.setDate(null);
@@ -3101,13 +3076,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 return;
             }
 
-            String dateStr = model.getValueAt(row, 0).toString(); // date column
+            String dateStr = model.getValueAt(row, 0).toString(); 
             selectedDates.add(dateStr);
         }
 
-        // Submit using the method from HumanResource
         if (humanResource.submitDTRToSupervisor(selectedDates)) {
-            // Refresh the table
             refreshDTRTable();
             JOptionPane.showMessageDialog(null, "Successfully submitted " + selectedRows.length + " DTR records to supervisor!");
         } else {
@@ -3116,9 +3089,8 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSubmitToSepervisorActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+
         if (dateFrom2.getDate() != null && dateTo2.getDate() != null) {
-                // *** FIX: Load DTR data for selected date range ***
                 ArrayList<ArrayList<String>> dtrData = humanResource.getDTRData(dateFrom2.getDate(), dateTo2.getDate());
                 humanResource.setTableData(dtrData);
                 humanResource.setTableSize(5);
@@ -3134,13 +3106,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     try {
             System.out.println("=== GENERATE BUTTON CLICKED ===");
 
-            // Check if dates are selected
             if (dateFrom3.getDate() == null || dateTo3.getDate() == null) {
                 JOptionPane.showMessageDialog(this, "Please select both FROM and TO dates!", "Missing Dates", JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
-            // Check if employee ID is valid
             String empId = lblIDSidebar.getText();
             if (empId == null || empId.trim().isEmpty() || empId.equals("N/A")) {
                 JOptionPane.showMessageDialog(this, "Employee ID not found! Please login again.", "Invalid Employee", JOptionPane.ERROR_MESSAGE);
@@ -3151,13 +3121,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             System.out.println("From Date: " + dateFrom3.getDate());
             System.out.println("To Date: " + dateTo3.getDate());
 
-            // Make sure humanResource is properly initialized
             if (humanResource == null) {
                 JOptionPane.showMessageDialog(this, "System error: Employee object not initialized!", "System Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            // Call the payslip method
             ArrayList<ArrayList<String>> tempData = humanResource.viewPersonalPayslip(
                 dateFrom3.getDate(), 
                 dateTo3.getDate(), 
@@ -3173,7 +3141,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             } else {
                 populatePayslipLabels(tempData);
 
-                // Ask if user wants to generate PDF
                 int choice = JOptionPane.showConfirmDialog(null, 
                     "Payslip generated successfully!\nWould you like to save this as a PDF file?", 
                     "Save Payslip", 
@@ -3214,7 +3181,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     lblNetPay.setText("0.00");
 }
 
-    // Helper method to populate payslip labels
     private void populatePayslipLabels(ArrayList<ArrayList<String>> tempData) {
         try {
             ArrayList<String> data = tempData.get(0);
@@ -3233,10 +3199,10 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             lblTax.setText(data.get(11));             // Tax
             lblNetPay.setText(data.get(12));          // Net Pay
 
-            System.out.println("✅ Payslip labels populated successfully");
+            System.out.println("Payslip labels populated successfully");
 
         } catch (Exception e) {
-            System.err.println("❌ Error populating payslip labels: " + e.getMessage());
+            System.err.println("Error populating payslip labels: " + e.getMessage());
             resetPayslipLabels();
         }
     }
@@ -3270,7 +3236,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
     private void txtFName2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFName2KeyTyped
         // TODO add your handling code here:
-        commaConstraints(evt);   //To call method for comma constraints
+        commaConstraints(evt);   
     }//GEN-LAST:event_txtFName2KeyTyped
 
     private void txtFName2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFName2ActionPerformed
@@ -3279,77 +3245,77 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
     private void txtLName2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtLName2KeyTyped
         // TODO add your handling code here:
-        commaConstraints(evt);   //To call method for comma constraints
+        commaConstraints(evt);   
     }//GEN-LAST:event_txtLName2KeyTyped
 
     private void txtPhoneNum2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneNum2KeyTyped
         // TODO add your handling code here: 
-        letterDashConstraints(evt);   //To call method for comma constraints 
+        letterDashConstraints(evt);   
     }//GEN-LAST:event_txtPhoneNum2KeyTyped
 
     private void textAreaAddress2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textAreaAddress2KeyTyped
         // TODO add your handling code here:
-        commaConstraints(evt);   //To call method for comma constraints
+        commaConstraints(evt);  
     }//GEN-LAST:event_textAreaAddress2KeyTyped
 
     private void txtBasicSalary1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBasicSalary1KeyTyped
         // TODO add your handling code here:
-        numberDotOnly(evt);   //To call method for comma constraints
+        numberDotOnly(evt);   
     }//GEN-LAST:event_txtBasicSalary1KeyTyped
 
     private void txtBiMonthlyRate1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBiMonthlyRate1KeyTyped
         // TODO add your handling code here:
-        commaConstraints(evt);   //To call method for comma constraints
+        commaConstraints(evt);  
     }//GEN-LAST:event_txtBiMonthlyRate1KeyTyped
 
     private void txtHourlyRate1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtHourlyRate1KeyTyped
         // TODO add your handling code here:
-        commaConstraints(evt);   //To call method for comma constraints
+        commaConstraints(evt);   
     }//GEN-LAST:event_txtHourlyRate1KeyTyped
 
     private void txtRiceSubsidy1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRiceSubsidy1KeyTyped
         // TODO add your handling code here:
-        numberDotOnly(evt);   //To call method for comma constraints
+        numberDotOnly(evt);  
     }//GEN-LAST:event_txtRiceSubsidy1KeyTyped
 
     private void txtPhoneAllowance1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhoneAllowance1KeyTyped
         // TODO add your handling code here:
-        numberDotOnly(evt);   //To call method for comma constraints
+        numberDotOnly(evt);   
     }//GEN-LAST:event_txtPhoneAllowance1KeyTyped
 
     private void txtClothingAllowance1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClothingAllowance1KeyTyped
         // TODO add your handling code here:
-        numberDotOnly(evt);   //To call method for comma constraints
+        numberDotOnly(evt);   
     }//GEN-LAST:event_txtClothingAllowance1KeyTyped
 
     private void txtPhilNum1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPhilNum1KeyTyped
         // TODO add your handling code here:
-         numberOnly(evt);   //To call method for comma constraints
+         numberOnly(evt);  
     }//GEN-LAST:event_txtPhilNum1KeyTyped
 
     private void txtSSSNum1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSSSNum1KeyTyped
         // TODO add your handling code here:
-         letterDashConstraints(evt);   //To call method for comma constraints
+         letterDashConstraints(evt);  
     }//GEN-LAST:event_txtSSSNum1KeyTyped
 
     private void txtTINNum1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTINNum1KeyTyped
         // TODO add your handling code here:
-          letterDashConstraints(evt);   //To call method for comma constraints
+          letterDashConstraints(evt);   
     }//GEN-LAST:event_txtTINNum1KeyTyped
 
     private void txtPagIbigNum1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagIbigNum1KeyTyped
         // TODO add your handling code here:
-        numberOnly(evt);   //To call method for comma constraints
+        numberOnly(evt);   
     }//GEN-LAST:event_txtPagIbigNum1KeyTyped
 
     private void txtPosition1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPosition1KeyTyped
         // TODO add your handling code here:
-        commaConstraints(evt);   //To call method for comma constraints
+        commaConstraints(evt);   
     }//GEN-LAST:event_txtPosition1KeyTyped
 
     private void txtSupervisor1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSupervisor1KeyTyped
         // TODO add your handling code here:
-        commaConstraints(evt);   //To call method for comma constraints
+        commaConstraints(evt);  
     }//GEN-LAST:event_txtSupervisor1KeyTyped
 
     private void txtBasicSalary1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBasicSalary1FocusLost
@@ -3423,12 +3389,12 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
                     if (report != null) {
                         JOptionPane.showMessageDialog(this, 
-                            "✅ Employee report generated!\nSaved to: " + report.getAbsolutePath());
+                            "Employee report generated!\nSaved to: " + report.getAbsolutePath());
                     }
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, 
-                    "❌ Error generating employee report: " + e.getMessage());
+                    "Error generating employee report: " + e.getMessage());
                 e.printStackTrace();
             }      
     }//GEN-LAST:event_btnGenerateEmployeeReportActionPerformed
@@ -3442,25 +3408,20 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                int employeeId = Integer.parseInt(lblIDSidebar.getText());
                AttendanceStatus status = attendanceService.getAttendanceStatus(employeeId);
 
-               // Enable/disable buttons based on status
                btnLogin.setEnabled(status.canTimeIn());
                btnLogout.setEnabled(status.canTimeOut());
 
-               // Optional: Display status message somewhere in your GUI
                System.out.println("Attendance Status: " + status.getStatusMessage());
 
            } catch (Exception e) {
-               // Default state if there's an error
                btnLogin.setEnabled(true);
                btnLogout.setEnabled(false);
                System.err.println("Error updating attendance button states: " + e.getMessage());
            }
        }
 
-       // Refresh DTR table with new attendance data
        private void refreshDTRTable() {
            if (dateFrom2.getDate() != null && dateTo2.getDate() != null) {
-               // Use the new attendance method that works with AttendanceDAO
                humanResource.setTableData(humanResource.getAttendanceRecords(dateFrom2.getDate(), dateTo2.getDate()));
                humanResource.setTableSize(5);
                humanResource.displayDataTable(jTableAllDTR);
@@ -3473,7 +3434,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         }
 
         try {
-            // Check if it's in scientific notation
             if (id.toUpperCase().contains("E")) {
                 double scientificNumber = Double.parseDouble(id);
                 return String.format("%.0f", scientificNumber);
@@ -3481,7 +3441,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 return id;
             }
         } catch (NumberFormatException e) {
-            return id; // Return as-is if not a number
+            return id; 
         }
     }
        
@@ -3489,8 +3449,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     try {
         if (dateFrom.getDate() != null && dateTo.getDate() != null) {
             System.out.println("DEBUG: Calculating days - From: " + dateFrom.getDate() + ", To: " + dateTo.getDate());
-            
-            // Ensure the date range is valid (to date is not before from date)
+
             if (dateTo.getDate().before(dateFrom.getDate())) {
                 txtDaysNumber.setText("0");
                 System.out.println("DEBUG: Invalid date range - To date is before From date");
@@ -3515,7 +3474,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             if (dateFromOvertime.getDate() != null && dateToOvertime.getDate() != null) {
                 System.out.println("DEBUG: Calculating overtime days - From: " + dateFromOvertime.getDate() + ", To: " + dateToOvertime.getDate());
 
-                // Ensure the date range is valid (to date is not before from date)
                 if (dateToOvertime.getDate().before(dateFromOvertime.getDate())) {
                     txtDaysNumber1.setText("0");
                     System.out.println("DEBUG: Invalid overtime date range - To date is before From date");
@@ -3562,8 +3520,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(HumanResourceGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new HumanResourceGUI().setVisible(true);

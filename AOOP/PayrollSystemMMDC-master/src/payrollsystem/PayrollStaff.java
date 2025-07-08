@@ -166,7 +166,6 @@ public class PayrollStaff extends Employee implements Payroll {
         return days;
     }
 
-    // *** DATA RETRIEVAL METHODS ***
     public ArrayList<ArrayList<String>> getDataAllRequests() {
         ArrayList<ArrayList<String>> requests = new ArrayList<>();
         
@@ -256,7 +255,6 @@ public class PayrollStaff extends Employee implements Payroll {
         return leaveData;
     }
 
-    // *** LEAVE BALANCE METHODS ***
     public void leaveBalancesInformation() {
         String sql = "SELECT vacation_leave, sick_leave FROM leave_balances WHERE employee_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -319,7 +317,6 @@ public class PayrollStaff extends Employee implements Payroll {
         slLabel.setText(getBalanceSL());
     }
 
-    // *** REQUEST FILING METHODS ***
     public boolean fileLeaveRequest(ArrayList<String> data) {
         String sql = "INSERT INTO leave_requests (employee_id, date_filed, leave_type, from_date, to_date, number_of_days, reason, status) " +
                     "VALUES (?, CURDATE(), ?, ?, ?, ?, ?, 'Pending')";
@@ -363,42 +360,40 @@ public class PayrollStaff extends Employee implements Payroll {
         }
     }
 
-    // *** ATTENDANCE METHODS ***
-public void userLogin() {
-    try {
-        AttendanceService attendanceService = new AttendanceService();
-        int employeeId = accountDetails.getEmployeeID();
-        AttendanceResult result = attendanceService.processTimeIn(employeeId);
-        
-        if (result.isSuccess()) {
-            System.out.println("Time In successful: " + result.getMessage());
-        } else {
-            System.out.println("Time In failed: " + result.getMessage());
-        }
-    } catch (Exception e) {
-        System.err.println("Error during time in: " + e.getMessage());
-    }
-}
+    public void userLogin() {
+        try {
+            AttendanceService attendanceService = new AttendanceService();
+            int employeeId = accountDetails.getEmployeeID();
+            AttendanceResult result = attendanceService.processTimeIn(employeeId);
 
-public void userLogout() {
-    try {
-        AttendanceService attendanceService = new AttendanceService();
-        int employeeId = accountDetails.getEmployeeID();
-        AttendanceResult result = attendanceService.processTimeOut(employeeId);
-        
-        if (result.isSuccess()) {
-            System.out.println("Time Out successful: " + result.getMessage());
-        } else {
-            System.out.println("Time Out failed: " + result.getMessage());
+            if (result.isSuccess()) {
+                System.out.println("Time In successful: " + result.getMessage());
+            } else {
+                System.out.println("Time In failed: " + result.getMessage());
+            }
+        } catch (Exception e) {
+            System.err.println("Error during time in: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.err.println("Error during time out: " + e.getMessage());
     }
-}
+
+    public void userLogout() {
+        try {
+            AttendanceService attendanceService = new AttendanceService();
+            int employeeId = accountDetails.getEmployeeID();
+            AttendanceResult result = attendanceService.processTimeOut(employeeId);
+
+            if (result.isSuccess()) {
+                System.out.println("Time Out successful: " + result.getMessage());
+            } else {
+                System.out.println("Time Out failed: " + result.getMessage());
+            }
+        } catch (Exception e) {
+            System.err.println("Error during time out: " + e.getMessage());
+        }
+    }
     public ArrayList<ArrayList<String>> getEmployeeDTR(String employeeName, Date fromDate, Date toDate) {
     ArrayList<ArrayList<String>> dtrData = new ArrayList<>();
-    
-    // First, get the employee ID from the name
+ 
     String sql = "SELECT e.employee_id FROM employees e " +
                 "WHERE CONCAT(e.first_name, ' ', e.last_name) = ? " +
                 "OR CONCAT(e.last_name, ', ', e.first_name) = ?";
@@ -411,7 +406,6 @@ public void userLogout() {
             if (rs.next()) {
                 int employeeId = rs.getInt("employee_id");
 
-                // Now get the DTR data for this employee
                 dtrData = getDTRDataByEmployeeId(employeeId, fromDate, toDate);
 
                 System.out.println("DEBUG: Loaded DTR for employee: " + employeeName + " (ID: " + employeeId + ")");
@@ -449,13 +443,13 @@ public void userLogout() {
         ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 ArrayList<String> row = new ArrayList<>();
-                row.add(String.valueOf(employeeId)); // Employee ID
-                row.add(rs.getString("first_name") + " " + rs.getString("last_name")); // Employee Name
-                row.add(rs.getDate("log_date").toString()); // Date
-                row.add(rs.getTime("login_time") != null ? rs.getTime("login_time").toString() : ""); // Login Time
-                row.add(rs.getTime("logout_time") != null ? rs.getTime("logout_time").toString() : ""); // Logout Time
-                row.add(rs.getString("submitted")); // Submitted to Supervisor
-                row.add(rs.getString("remarks")); // Remarks
+                row.add(String.valueOf(employeeId)); 
+                row.add(rs.getString("first_name") + " " + rs.getString("last_name")); 
+                row.add(rs.getDate("log_date").toString()); 
+                row.add(rs.getTime("login_time") != null ? rs.getTime("login_time").toString() : ""); 
+                row.add(rs.getTime("logout_time") != null ? rs.getTime("logout_time").toString() : ""); 
+                row.add(rs.getString("submitted")); 
+                row.add(rs.getString("remarks")); 
                 dtrData.add(row);
             }
 
@@ -498,13 +492,11 @@ public void userLogout() {
         Date startDate, endDate;
 
         if (day <= 15) {
-            // First half of month (1-15)
             cal.set(Calendar.DAY_OF_MONTH, 1);
             startDate = cal.getTime();
             cal.set(Calendar.DAY_OF_MONTH, 15);
             endDate = cal.getTime();
         } else {
-            // Second half of month (16-end)
             cal.set(Calendar.DAY_OF_MONTH, 16);
             startDate = cal.getTime();
             cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
@@ -569,7 +561,6 @@ public void userLogout() {
         this.numberOfDaysLeave = 0;
     }
 
-    // *** PAYROLL METHODS ***
     public String processPayrollDB() {
         try {
             String payrollPeriod = getCurrentPayrollPeriod();
@@ -639,7 +630,7 @@ public void userLogout() {
                     if (payroll.getPayrollPeriod().equals(payrollPeriod)) {
                         payroll.setStatus("Released");
                         payrollDAO.updatePayroll(payroll);
-                        System.out.println("✅ Released payroll for Employee ID: " + employeeId);
+                        System.out.println("Released payroll for Employee ID: " + employeeId);
                         break;
                     }
                 }
@@ -649,7 +640,6 @@ public void userLogout() {
         }
     }
 
-    // *** TABLE MANAGEMENT METHODS ***
     public void setTableData(ArrayList<ArrayList<String>> data) {
         this.tableData = data;
         this.newData = data;
@@ -691,7 +681,6 @@ public void userLogout() {
         }
     }
 
-    // *** UTILITY METHODS ***
     public void getEmployeeNames() {
         if (newData == null) {
             newData = new ArrayList<>();
@@ -717,23 +706,21 @@ public void userLogout() {
     }
 
     public boolean computePayrollForDateRange(Date fromDate, Date toDate) {
-        System.out.println("🔄 Starting payroll computation...");
+        System.out.println("Starting payroll computation...");
         
         try {
-            // Validate inputs
             if (fromDate == null || toDate == null) {
-                System.err.println("❌ Invalid date range: fromDate or toDate is null");
+                System.err.println("Invalid date range: fromDate or toDate is null");
                 return false;
             }
             
             if (fromDate.after(toDate)) {
-                System.err.println("❌ Invalid date range: fromDate is after toDate");
+                System.err.println("Invalid date range: fromDate is after toDate");
                 return false;
             }
             
-            // Check database connection
             if (connection == null || connection.isClosed()) {
-                System.err.println("❌ Database connection is not available");
+                System.err.println("Database connection is not available");
                 initializeConnection();
                 
                 if (connection == null || connection.isClosed()) {
@@ -744,13 +731,12 @@ public void userLogout() {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             String payrollPeriod = sdf.format(fromDate) + " to " + sdf.format(toDate);
             
-            System.out.println("📊 Computing payroll for period: " + payrollPeriod);
-            
-            // Get all employees
+            System.out.println("Computing payroll for period: " + payrollPeriod);
+
             List<AccountDetails> employees = employeeDAO.findAll();
             
             if (employees == null || employees.isEmpty()) {
-                System.err.println("❌ No employees found in database");
+                System.err.println("No employees found in database");
                 javax.swing.JOptionPane.showMessageDialog(null,
                     "No employees found in database.\nPlease ensure employee records exist before computing payroll.",
                     "No Employees Found",
@@ -758,7 +744,7 @@ public void userLogout() {
                 return false;
             }
             
-            System.out.println("👥 Found " + employees.size() + " employees to process");
+            System.out.println("Found " + employees.size() + " employees to process");
             
             int processedCount = 0;
             int skippedCount = 0;
@@ -768,14 +754,13 @@ public void userLogout() {
                 try {
                     if (employee == null || employee.getEmployeeID() <= 0) {
                         skippedCount++;
-                        System.out.println("⏭️ Skipping invalid employee record");
+                        System.out.println("Skipping invalid employee record");
                         continue;
                     }
                     
-                    System.out.println("👤 Processing employee: " + employee.getEmployeeID() + " - " + 
+                    System.out.println("Processing employee: " + employee.getEmployeeID() + " - " + 
                                      employee.getFirstName() + " " + employee.getLastName());
                     
-                    // Get attendance records (empty list is OK for salary-based employees)
                     List<AttendanceRecord> attendanceRecords = new ArrayList<>();
                     try {
                         attendanceRecords = attendanceDAO.getAttendanceByEmployee(
@@ -785,46 +770,43 @@ public void userLogout() {
                             attendanceRecords = new ArrayList<>();
                         }
                         
-                        System.out.println("   📋 Found " + attendanceRecords.size() + " attendance records");
+                        System.out.println("Found " + attendanceRecords.size() + " attendance records");
                         
                     } catch (Exception e) {
-                        System.err.println("   ⚠️ Could not get attendance for employee " + employee.getEmployeeID() + ": " + e.getMessage());
-                        // Continue with empty attendance list
+                        System.err.println("Could not get attendance for employee " + employee.getEmployeeID() + ": " + e.getMessage());
                         attendanceRecords = new ArrayList<>();
                     }
-                    
-                    // Calculate payroll even with no attendance (for salary-based employees)
+ 
                     PayrollRecord payroll = calculatePayrollForEmployee(employee, attendanceRecords, payrollPeriod);
                     
                     if (payroll != null) {
-                        // Check if payroll already exists for this period
                         if (payrollExistsForPeriod(employee.getEmployeeID(), payrollPeriod)) {
                             int existingPayrollId = getExistingPayrollId(employee.getEmployeeID(), payrollPeriod);
                             payroll.setPayrollId(existingPayrollId);
                             payrollDAO.updatePayroll(payroll);
-                            System.out.println("   📝 Updated existing payroll");
+                            System.out.println("Updated existing payroll");
                         } else {
                             payrollDAO.savePayroll(payroll);
-                            System.out.println("   ✅ Created new payroll record");
+                            System.out.println("Created new payroll record");
                         }
                         processedCount++;
                     } else {
                         errorCount++;
-                        System.err.println("   ❌ Failed to calculate payroll for Employee ID: " + employee.getEmployeeID());
+                        System.err.println("Failed to calculate payroll for Employee ID: " + employee.getEmployeeID());
                     }
                     
                 } catch (Exception e) {
                     errorCount++;
-                    System.err.println("❌ Error processing employee " + 
+                    System.err.println("Error processing employee " + 
                                      (employee != null ? employee.getEmployeeID() : "null") + ": " + e.getMessage());
                     e.printStackTrace();
                 }
             }
             
-            System.out.println("📈 Payroll computation completed:");
-            System.out.println("   ✅ Processed: " + processedCount);
-            System.out.println("   ⏭️ Skipped: " + skippedCount);
-            System.out.println("   ❌ Errors: " + errorCount);
+            System.out.println("Payroll computation completed:");
+            System.out.println("   Processed: " + processedCount);
+            System.out.println("   Skipped: " + skippedCount);
+            System.out.println("   Errors: " + errorCount);
             
             boolean success = processedCount > 0;
             
@@ -848,7 +830,7 @@ public void userLogout() {
             return success;
             
         } catch (SQLException e) {
-            System.err.println("❌ Database error during payroll computation: " + e.getMessage());
+            System.err.println("Database error during payroll computation: " + e.getMessage());
             e.printStackTrace();
             
             javax.swing.JOptionPane.showMessageDialog(null,
@@ -860,7 +842,7 @@ public void userLogout() {
             
             return false;
         } catch (Exception e) {
-            System.err.println("❌ Unexpected error during payroll computation: " + e.getMessage());
+            System.err.println("Unexpected error during payroll computation: " + e.getMessage());
             e.printStackTrace();
             
             javax.swing.JOptionPane.showMessageDialog(null,
@@ -999,29 +981,28 @@ public void userLogout() {
         ArrayList<ArrayList<String>> data = new ArrayList<>();
         
         try {
-            // Check if payrollDAO is initialized
             if (payrollDAO == null) {
                 System.err.println("WARNING: PayrollDAO is not initialized");
-                return data; // Return empty list
+                return data; 
             }
             
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             String fromDateStr = sdf.format(fromDate);
             String toDateStr = sdf.format(toDate);
             
-            System.out.println("🔍 Searching for payroll data from " + fromDateStr + " to " + toDateStr);
+            System.out.println("Searching for payroll data from " + fromDateStr + " to " + toDateStr);
             
             List<PayrollRecord> payrolls = payrollDAO.getPayrollByDateRange(fromDate, toDate);
             
             if (payrolls == null) {
-                System.out.println("⚠️ PayrollDAO returned null - using empty list");
+                System.out.println("PayrollDAO returned null - using empty list");
                 payrolls = new ArrayList<>();
             }
             
             if (payrolls.isEmpty()) {
                 System.out.println("ℹ️ No payroll records found for the selected date range");
                 System.out.println("   This is normal if payroll hasn't been computed for this period yet");
-                return data; // Return empty list - this is OK
+                return data; 
             }
             
             // Convert PayrollRecord objects to ArrayList format
@@ -1044,12 +1025,11 @@ public void userLogout() {
                 data.add(row);
             }
             
-            System.out.println("✅ Successfully retrieved " + data.size() + " payroll records");
+            System.out.println("Successfully retrieved " + data.size() + " payroll records");
             
         } catch (Exception e) {
-            System.err.println("❌ Error getting payroll data for date range: " + e.getMessage());
+            System.err.println("Error getting payroll data for date range: " + e.getMessage());
             e.printStackTrace();
-            // Return empty list instead of throwing exception
         }
         
         return data;
@@ -1152,12 +1132,9 @@ public void userLogout() {
 
     public ArrayList<ArrayList<String>> viewPersonalPayslip(Date fromDate, Date toDate, String empId) {
         ArrayList<ArrayList<String>> payslip = new ArrayList<>();
-        // Implementation for personal payslip view
         return payslip;
     }
 
-    // *** PAYROLL INTERFACE IMPLEMENTATIONS ***
-    
     @Override
     public double deductionCalculation(ArrayList<ArrayList<String>> perEmployeeAttendance) {
         return sssCalculation() + philhealthCalculation() + pagibigCalculation();
@@ -1176,17 +1153,17 @@ public void userLogout() {
     
     @Override
     public double sssCalculation() {
-        return this.perMonth * 0.045; // 4.5%
+        return this.perMonth * 0.045;
     }
 
     @Override
     public double philhealthCalculation() {
-        return this.perMonth * 0.03; // 3%
+        return this.perMonth * 0.03; 
     }
 
     @Override
     public double pagibigCalculation() {
-        return Math.min(this.perMonth * 0.02, 100); // 2% max 100
+        return Math.min(this.perMonth * 0.02, 100); 
     }
 
     @Override
@@ -1211,8 +1188,7 @@ public void userLogout() {
         
         for (ArrayList<String> attendance : perEmployeeAttendance) {
             if (attendance.size() > 7 && "With Approved Overtime".equals(attendance.get(7))) {
-                // Calculate overtime pay - 1.25x regular rate for first 2 hours, 1.5x for excess
-                overtimePay += this.perHour * 1.25 * 2; // Simplified calculation
+                overtimePay += this.perHour * 1.25 * 2; 
             }
         }
         
@@ -1227,9 +1203,7 @@ public void userLogout() {
             if (attendance.size() > 4) {
                 String loginTime = attendance.get(3);
                 String logoutTime = attendance.get(4);
-                
-                // Calculate if employee worked less than 8 hours
-                // This is a simplified calculation - you may need to enhance based on your business rules
+
                 if (!loginTime.isEmpty() && !logoutTime.isEmpty()) {
                     try {
                         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -1262,10 +1236,7 @@ public void userLogout() {
             System.err.println("Error clearing payroll table: " + e.getMessage());
         }
     }
-    
-    /**
-     * Update payroll period label with custom message
-     */
+
     public void updatePayrollPeriodLabel(javax.swing.JLabel label, String customMessage) {
         try {
             if (label != null) {
@@ -1276,17 +1247,13 @@ public void userLogout() {
         }
     }
     
-    /**
-     * Update payroll period label with date range
-     */
     public void updatePayrollPeriodLabel(javax.swing.JLabel label, Date fromDate, Date toDate, javax.swing.JTable table) {
         try {
             if (fromDate != null && toDate != null) {
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM d");
                 String dateRange = sdf.format(fromDate) + "-" + 
                                  sdf.format(toDate) + ", 2025";
-                
-                // Get current table row count
+
                 int recordCount = 0;
                 if (table != null) {
                     recordCount = table.getRowCount();
@@ -1304,14 +1271,11 @@ public void userLogout() {
         }
     }
     
-    /**
-     * Show existing payroll data with proper error handling
-     */
     public void showExistingPayrollData(Date fromDate, Date toDate, javax.swing.JTable table, 
                                        javax.swing.JLabel periodLabel, javax.swing.JButton releasedButton,
                                        javax.swing.JFrame parentFrame) {
         try {
-            System.out.println("📋 Loading existing payroll data...");
+            System.out.println("Loading existing payroll data...");
             
             releasedButton.setEnabled(false);
             
@@ -1324,7 +1288,6 @@ public void userLogout() {
             if (existingData.isEmpty()) {
                 updatePayrollPeriodLabel(periodLabel, "No existing payroll records found");
                 
-                // Show informative message to user
                 javax.swing.JOptionPane.showMessageDialog(parentFrame,
                     "No payroll records found for the selected date range.\n\n" +
                     "This is normal if payroll hasn't been computed for this period yet.\n" +
@@ -1337,7 +1300,7 @@ public void userLogout() {
             }
             
         } catch (Exception e) {
-            System.err.println("❌ Error showing existing payroll data: " + e.getMessage());
+            System.err.println("Error showing existing payroll data: " + e.getMessage());
             e.printStackTrace();
             
             updatePayrollPeriodLabel(periodLabel, "Error loading data");
@@ -1348,10 +1311,7 @@ public void userLogout() {
                 javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    /**
-     * Validate payroll date inputs
-     */
+
     public boolean validatePayrollDates(Date fromDate, Date toDate, javax.swing.JFrame parentFrame) {
         if (fromDate == null || toDate == null) {
             javax.swing.JOptionPane.showMessageDialog(parentFrame, 
@@ -1368,8 +1328,7 @@ public void userLogout() {
                 javax.swing.JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
-        // Check if date range is reasonable (not too large)
+
         long daysDiff = (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24);
         if (daysDiff > 365) {
             int choice = javax.swing.JOptionPane.showConfirmDialog(parentFrame,
@@ -1385,14 +1344,10 @@ public void userLogout() {
 
         return true;
     }
-    
-    /**
-     * Handle date range changes for payroll
-     */
+
     public void handleDateRangeChange(Date fromDate, Date toDate, javax.swing.JTable table, 
                                      javax.swing.JLabel periodLabel, javax.swing.JButton releasedButton) {
         try {
-            // Validate date inputs
             if (fromDate == null || toDate == null) {
                 System.out.println("ℹ️ Date range incomplete - clearing table");
                 clearPayrollTable(table);
@@ -1402,22 +1357,19 @@ public void userLogout() {
             }
             
             if (fromDate.after(toDate)) {
-                System.out.println("⚠️ Invalid date range - From date is after To date");
+                System.out.println("Invalid date range - From date is after To date");
                 clearPayrollTable(table);
                 updatePayrollPeriodLabel(periodLabel, "Invalid date range");
                 releasedButton.setEnabled(false);
                 return;
             }
-            
-            // Get existing payroll data for the date range
+
             ArrayList<ArrayList<String>> existingData = getPayrollDataForDateRange(fromDate, toDate);
-            
-            // Handle the data (empty is OK)
+
             setTableData(existingData);
             setTableSize(14);
             displayDataTable(table);
-            
-            // Update UI based on data availability
+
             if (existingData.isEmpty()) {
                 SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
                 String message = "No payroll records found for " + 
@@ -1426,19 +1378,18 @@ public void userLogout() {
                 updatePayrollPeriodLabel(periodLabel, message);
                 releasedButton.setEnabled(false);
                 
-                System.out.println("ℹ️ No existing payroll data - user can compute new payroll");
+                System.out.println("No existing payroll data - user can compute new payroll");
             } else {
                 updatePayrollPeriodLabel(periodLabel, fromDate, toDate, table);
                 releasedButton.setEnabled(true);
                 
-                System.out.println("✅ Loaded " + existingData.size() + " existing payroll records");
+                System.out.println("Loaded " + existingData.size() + " existing payroll records");
             }
             
         } catch (Exception e) {
-            System.err.println("❌ Error in handleDateRangeChange: " + e.getMessage());
+            System.err.println("Error in handleDateRangeChange: " + e.getMessage());
             e.printStackTrace();
-            
-            // Graceful fallback
+
             clearPayrollTable(table);
             updatePayrollPeriodLabel(periodLabel, "Error loading data");
             releasedButton.setEnabled(false);

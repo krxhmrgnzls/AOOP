@@ -1,0 +1,235 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="PayrollSlip" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9d625476-c259-4d13-a786-5d3a47c43a00">
+	<parameter name="EMPLOYEE_ID" class="java.lang.Integer"/>
+	<parameter name="EMPLOYEE_NAME" class="java.lang.String"/>
+	<parameter name="POSITION" class="java.lang.String"/>
+	<parameter name="GROSS_INCOME" class="java.lang.Double"/>
+	<parameter name="TOTAL_BENEFITS" class="java.lang.Double"/>
+	<parameter name="OVERTIME" class="java.lang.Double"/>
+	<parameter name="UNDERTIME" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SSS" class="java.lang.Double"/>
+	<parameter name="PHILHEALTH" class="java.lang.Double"/>
+	<parameter name="PAG_IBIG" class="java.lang.Double"/>
+	<parameter name="TAX" class="java.lang.Double"/>
+	<parameter name="TOTAL_NET_INCOME" class="java.lang.Double"/>
+	<parameter name="MONTHLY_RATE" class="java.lang.Double"/>
+	<parameter name="DAYS_WORKED" class="java.lang.Integer"/>
+	<parameter name="DAILY_RATE" class="java.lang.Double"/>
+	<parameter name="RICE_SUBSIDY" class="java.lang.Double"/>
+	<parameter name="PHONE_ALLOWANCE" class="java.lang.Double"/>
+	<parameter name="CLOTHING_ALLOWANCE" class="java.lang.Double"/>
+	<parameter name="TOTAL_DEDUCTIONS" class="java.lang.Double"/>
+	<parameter name="PERIOD_FROM" class="java.sql.Date"/>
+	<parameter name="PERIOD_TO" class="java.sql.Date"/>
+	<parameter name="IMAGE_DIRECTORY" class="java.lang.String"/>
+	<query language="sql"><![CDATA[]]></query>
+	<background splitType="Stretch"/>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<element kind="rectangle" uuid="fd7f5da7-a715-4f8a-be8a-bfd4780e6118" x="-3" y="0" width="560" height="802" radius="5">
+				<pen lineWidth="2.0" lineColor="#CFCFCF"/>
+			</element>
+			<element kind="image" uuid="b74440b9-383e-4473-953e-b391891ff0d2" x="10" y="10" width="530" height="89">
+				<expression><![CDATA[$P{IMAGE_DIRECTORY}]]></expression>
+			</element>
+			<element kind="line" uuid="8cd9200d-fe2b-4f2e-92d1-ceb6d88abb17" x="31" y="150" width="489" height="1">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<pen lineColor="#CFCFCF"/>
+			</element>
+			<element kind="staticText" uuid="64bb23e4-b485-4d12-9ca7-2508542af1bf" x="149" y="104" width="257" height="40" fontName="Segoe UI" fontSize="25.0" bold="true">
+				<text><![CDATA[Employee Payroll Slip]]></text>
+			</element>
+			<element kind="staticText" uuid="a9a703e4-fdc6-411f-9f13-0b6e78cf89a3" x="33" y="202" width="47" height="20" fontName="Segoe UI Light" fontSize="15.0">
+				<text><![CDATA[Name:]]></text>
+			</element>
+			<element kind="staticText" uuid="2d35ce99-9e7d-4e9a-9cc9-54a8f97e3312" x="33" y="180" width="97" height="20" fontName="Segoe UI Light" fontSize="15.0">
+				<text><![CDATA[Employee ID:]]></text>
+			</element>
+			<element kind="staticText" uuid="e2967f93-7c4a-4bcd-bf26-1ceb5afc4dfe" x="33" y="224" width="65" height="20" fontName="Segoe UI Light" fontSize="15.0">
+				<text><![CDATA[Position:]]></text>
+			</element>
+			<element kind="staticText" uuid="d7fbe9ad-ad3e-474d-a27b-053c88505b51" x="277" y="180" width="143" height="20" fontName="Segoe UI Light" fontSize="15.0">
+				<text><![CDATA[Payroll Period Start:]]></text>
+			</element>
+			<element kind="rectangle" uuid="5ad7b43e-0b1c-41fc-ad90-adc670f58841" x="32" y="270" width="492" height="489">
+				<pen lineColor="#BDBDBD"/>
+			</element>
+			<element kind="staticText" uuid="646adeb2-1b11-43ec-99b5-b56845448ff3" x="81" y="443" width="80" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Gross Income:]]></text>
+			</element>
+			<element kind="staticText" uuid="9826af68-1a65-44d5-b80f-bef07de7c69d" x="187" y="285" width="192" height="30" fontName="Segoe UI" fontSize="22.0" bold="false">
+				<text><![CDATA[Payroll Breakdown]]></text>
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+			</element>
+			<element kind="line" uuid="305ff7c9-5661-4d47-8593-0f87f36ae0a7" x="32" y="330" width="491" height="1">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<pen lineColor="#CFCFCF"/>
+			</element>
+			<element kind="line" uuid="4cdde595-cd07-46a5-9789-ca445e6926d0" x="278" y="340" width="1" height="249">
+				<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				<pen lineColor="#EDEDED"/>
+			</element>
+			<element kind="textField" uuid="44dec920-52a1-497a-b40d-468e6d2b7e6f" x="90" y="202" width="170" height="20" fontName="Segoe UI Light" fontSize="14.0" textAdjust="ScaleFont">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{EMPLOYEE_NAME}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="bcc5440f-650f-4071-a770-917ff4b158c0" x="100" y="224" width="160" height="20" fontName="Segoe UI Light" fontSize="14.0" textAdjust="ScaleFont">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{POSITION}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="9955a04e-733f-4573-8657-16717e9c6ebf" x="310" y="443" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="true" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{GROSS_INCOME}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="staticText" uuid="2d802ece-befe-484d-8e9d-9c1038d5a4d3" x="55" y="463" width="48" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Benefits:]]></text>
+			</element>
+			<element kind="staticText" uuid="54a868c3-7e51-4b9a-a5b3-6f33c0fddc41" x="86" y="483" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Rice Subsidy:]]></text>
+			</element>
+			<element kind="staticText" uuid="b6ca8f84-608d-4f2d-8840-cd73bb0a365f" x="81" y="423" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Overtime:]]></text>
+			</element>
+			<element kind="staticText" uuid="c32ee7be-9454-4f9b-8db3-50166a6b49f4" x="51" y="563" width="79" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Deductions:]]></text>
+			</element>
+			<element kind="staticText" uuid="ed2e772e-70d7-45a9-b43d-2b3ee1f6b962" x="81" y="583" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Social Security System:]]></text>
+			</element>
+			<element kind="staticText" uuid="2c68f532-fe72-450b-bf54-0872aaceb153" x="81" y="603" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Philhealth:]]></text>
+			</element>
+			<element kind="staticText" uuid="1f31df40-74d4-4e71-a9b7-1c25ebb5bcc3" x="81" y="623" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Pag-Ibig:]]></text>
+			</element>
+			<element kind="staticText" uuid="31a2cf85-caaf-494b-b635-8c144ff474a4" x="81" y="643" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Withholding Tax:]]></text>
+			</element>
+			<element kind="textField" uuid="2e6aa9fd-f3d3-4088-99c3-2d94eaba061b" x="310" y="543" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="true" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{TOTAL_BENEFITS}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="16e8f86b-1763-4007-bc3d-aefc666a205b" x="310" y="423" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.0#;¤-#,##0.0#" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{OVERTIME}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="27be3bcf-4ca1-4031-8840-ba2eed58d1bc" x="310" y="583" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{SSS}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="dabf1367-c439-4370-843a-90ef34ea7c95" x="310" y="603" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{PHILHEALTH}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="45222c97-b009-4ebb-ba6b-bd678f37c959" x="310" y="623" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{PAG_IBIG}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="34ecac8b-2d40-4240-b8f0-da2d9576404e" x="310" y="643" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{TAX}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="line" uuid="050295a6-4dfa-4b1e-8ba8-a3acb5b40b39" x="33" y="720" width="491" height="1">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<pen lineColor="#CFCFCF"/>
+			</element>
+			<element kind="staticText" uuid="4710668d-da2b-4d5c-b642-2178d6082e1b" x="50" y="730" width="170" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Total Net Income:]]></text>
+			</element>
+			<element kind="textField" uuid="d91ab8b3-be61-44d4-afec-01fc194f338f" x="310" y="730" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="true" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{TOTAL_NET_INCOME}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="staticText" uuid="6f1dc045-10f6-4be0-b133-584dede4ad35" x="277" y="200" width="133" height="20" fontName="Segoe UI Light" fontSize="15.0">
+				<text><![CDATA[Payroll Period End:]]></text>
+			</element>
+			<element kind="staticText" uuid="542781c1-cb32-4d53-bc4b-bc28acd2743a" x="81" y="363" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Monthly Rate:]]></text>
+			</element>
+			<element kind="staticText" uuid="75cb4e93-e430-4ff5-af63-74fbc69f6cf0" x="81" y="383" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Daily Rate:]]></text>
+			</element>
+			<element kind="staticText" uuid="03713b2e-3ce2-40a5-88c1-a6c276407948" x="81" y="403" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Days Worked:]]></text>
+			</element>
+			<element kind="staticText" uuid="6ab5df59-34fc-402d-80b7-4d4e091d3dbc" x="50" y="343" width="48" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Earnings:]]></text>
+			</element>
+			<element kind="staticText" uuid="49daec54-fbfc-4722-b314-29a2a32c2901" x="86" y="503" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Phone Allowance:]]></text>
+			</element>
+			<element kind="staticText" uuid="b06f3bad-ab42-4cb0-9c51-164bfb713fff" x="86" y="523" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Clothing Allowance:]]></text>
+			</element>
+			<element kind="staticText" uuid="69e9cac3-26cf-410c-875e-8bf7ecc7a263" x="86" y="543" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Total:]]></text>
+			</element>
+			<element kind="staticText" uuid="cacdb433-2cd4-41f8-9fe9-767afa0bcad5" x="81" y="663" width="140" height="20" fontName="Segoe UI Light" fontSize="11.0">
+				<text><![CDATA[Total Deductions:]]></text>
+			</element>
+			<element kind="textField" uuid="95224990-dafd-44f9-9480-5291d273c906" x="310" y="483" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{RICE_SUBSIDY}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="6e84c7a3-3d61-41c1-844b-4ea2d61cbd21" x="310" y="403" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{DAYS_WORKED}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="3346f36c-148a-447f-8640-2977c4f6e31c" x="310" y="383" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{DAILY_RATE}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="bbb25a76-98b8-4303-aa6a-d8c2ff4416c9" stretchType="NoStretch" x="310" y="363" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" linkType="None" linkTarget="Self" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{MONTHLY_RATE}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="774f6f6c-8f96-4196-aad2-2b0b80b691a7" x="310" y="663" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="true" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{TOTAL_DEDUCTIONS}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="e4beb5b9-0318-41c5-aeb2-4852ba041256" x="310" y="503" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{PHONE_ALLOWANCE}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="c97e9b13-5057-4a11-80ed-d11d3e6d3558" x="310" y="523" width="206" height="20" fontName="Segoe UI Light" fontSize="11.0" textAdjust="ScaleFont" pattern="¤#,##0.00;¤-#,##0.00" bold="false" hTextAlign="Right">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{CLOTHING_ALLOWANCE}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="eacaa22d-6ef7-4993-a8eb-14afa2773e44" x="420" y="180" width="118" height="20" fontName="Segoe UI Light" fontSize="14.0" textAdjust="ScaleFont">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{PERIOD_FROM}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="87989d36-5554-455d-8ff5-26c910859f28" x="420" y="200" width="118" height="20" fontName="Segoe UI Light" fontSize="14.0" textAdjust="ScaleFont">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{PERIOD_TO}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<element kind="textField" uuid="0a98e46f-0aa8-4ca7-a739-a57c7a8e3b3c" x="130" y="180" width="118" height="20" fontName="Segoe UI Light" fontSize="14.0" textAdjust="ScaleFont">
+				<paragraph leftIndent="2"/>
+				<expression><![CDATA[$P{EMPLOYEE_ID}]]></expression>
+				<property name="com.jaspersoft.studio.unit.leftIndent" value="px"/>
+			</element>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+</jasperReport>

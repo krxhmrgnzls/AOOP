@@ -19,7 +19,7 @@ public class EmployeeDAO {
     
     // CREATE - Add new employee
     public boolean create(AccountDetails employee) {
-        String sql = "INSERT INTO employees (employee_id, last_name, first_name, birthday, address, " +
+        String sql = "INSERT INTO employee_profile_view (employee_id, last_name, first_name, birthday, address, " +
                     "phone_number, sss_number, philhealth_number, tin_number, pagibig_number, " +
                     "status, position, supervisor_id, basic_salary, rice_subsidy, phone_allowance, " +
                     "clothing_allowance, gross_rate, hourly_rate) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -56,7 +56,7 @@ public class EmployeeDAO {
     
     // READ - Get employee by ID
     public AccountDetails read(int employeeId) {
-        String sql = "SELECT * FROM employees WHERE employee_id = ?";
+        String sql = "SELECT * FROM employee_profile_view WHERE employee_id = ?";
         
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -96,7 +96,7 @@ public class EmployeeDAO {
     
     // UPDATE - Update employee information
     public boolean update(AccountDetails employee) {
-        String sql = "UPDATE employees SET last_name=?, first_name=?, birthday=?, address=?, " +
+        String sql = "UPDATE employee_profile_view SET last_name=?, first_name=?, birthday=?, address=?, " +
                     "phone_number=?, sss_number=?, philhealth_number=?, tin_number=?, " +
                     "pagibig_number=?, status=?, position=?, basic_salary=?, rice_subsidy=?, " +
                     "phone_allowance=?, clothing_allowance=?, gross_rate=?, hourly_rate=? " +
@@ -134,7 +134,7 @@ public class EmployeeDAO {
     
     // DELETE - Delete employee
     public boolean delete(int employeeId) {
-        String sql = "DELETE FROM employees WHERE employee_id = ?";
+        String sql = "DELETE FROM employee_profile_view WHERE employee_id = ?";
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, employeeId);
@@ -148,7 +148,7 @@ public class EmployeeDAO {
     
     public List<AccountDetails> findAll() {
         List<AccountDetails> employees = new ArrayList<>();
-        String sql = "SELECT * FROM employees ORDER BY employee_id";
+        String sql = "SELECT * FROM employee_profile_view ORDER BY employee_id";
         
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -186,7 +186,7 @@ public class EmployeeDAO {
     }
 
     public AccountDetails findById(int employeeId) {
-        String sql = "SELECT * FROM employees WHERE employee_id = ?";
+        String sql = "SELECT * FROM employee_profile_view WHERE employee_id = ?";
         
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -225,7 +225,7 @@ public class EmployeeDAO {
     }
     
     public boolean updateEmployee(AccountDetails employee) {
-        String sql = "UPDATE employees SET last_name=?, first_name=?, birthday=?, address=?, " +
+        String sql = "UPDATE employee_profile_view SET last_name=?, first_name=?, birthday=?, address=?, " +
                     "phone_number=?, sss_number=?, philhealth_number=?, tin_number=?, " +
                     "pagibig_number=?, status=?, position=?, basic_salary=?, rice_subsidy=?, " +
                     "phone_allowance=?, clothing_allowance=?, gross_rate=?, hourly_rate=? " +
@@ -263,7 +263,7 @@ public class EmployeeDAO {
     
     public ArrayList<String[]> getEmployeeList() {
         ArrayList<String[]> empList = new ArrayList<>();
-        String sql = "SELECT employee_id, first_name, last_name FROM employees ORDER BY last_name, first_name";
+        String sql = "SELECT employee_id, first_name, last_name FROM employee_profile_view ORDER BY last_name, first_name";
         
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);

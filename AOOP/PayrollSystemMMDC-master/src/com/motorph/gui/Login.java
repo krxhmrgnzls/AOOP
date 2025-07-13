@@ -47,10 +47,8 @@ public class Login {
     public ArrayList<ArrayList<String>> getUserDetails(int employeeId, String password) {
         ArrayList<ArrayList<String>> userDetails = new ArrayList<>();
         
-        String sql = "SELECT lc.employee_id, e.first_name, e.last_name, lc.role, lc.name " +
-                    "FROM login_credentials lc " +
-                    "JOIN employees e ON lc.employee_id = e.employee_id " +
-                    "WHERE lc.employee_id = ? AND lc.password = ?";
+        String sql = "SELECT employee_id, full_name, password, role FROM employee_credentials_view WHERE employee_id = ? AND password = ?";
+        
         
         try {
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -62,14 +60,14 @@ public class Login {
             if (rs.next()) {
                 ArrayList<String> details = new ArrayList<>();
                 details.add(String.valueOf(rs.getInt("employee_id")));  // ID
-                details.add(rs.getString("first_name"));                 // First Name
-                details.add(rs.getString("last_name"));                  // Last Name
-                details.add(rs.getString("role"));                       // Role
-                details.add(rs.getString("name"));                       // Full Name
+                details.add(rs.getString("full_name"));    // First Name (now combined)
+                details.add("");
+                details.add(rs.getString("role"));// Last Name (empty since we have full name)
+                details.add(rs.getString("full_name"));    // Full Name                    // Full Name
                 
                 userDetails.add(details);
                 
-                System.out.println("Login successful for: " + rs.getString("name") + " (" + rs.getString("role") + ")");
+                System.out.println("Login successful for: " + rs.getString("full_name") + " (" + rs.getString("role") + ")");
             }
             
         } catch (SQLException e) {

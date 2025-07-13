@@ -66,7 +66,7 @@ public class LeaveDAO {
         
         String query = "SELECT l.*, e.first_name, e.last_name " +
                        "FROM leave_requests l " +
-                       "JOIN employees e ON l.employee_id = e.employee_id " +
+                       "JOIN employee_profile_view e ON l.employee_id = e.employee_id " +
                        "WHERE l.employee_id = ? " +
                        "ORDER BY l.date_filed DESC";
         
@@ -113,7 +113,7 @@ public class LeaveDAO {
     public List<ArrayList<String>> getPendingLeaveRequests() {
         List<ArrayList<String>> requests = new ArrayList<>();
         String sql = "SELECT lr.*, e.first_name, e.last_name FROM leave_requests lr " +
-                    "JOIN employees e ON lr.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON lr.employee_id = e.employee_id " +
                     "WHERE lr.status = 'Pending' ORDER BY lr.date_filed ASC";
         
         try {

@@ -325,7 +325,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jSeparator18 = new javax.swing.JSeparator();
         jBDay2 = new com.toedter.calendar.JDateChooser();
         txtStatus1 = new javax.swing.JComboBox<>();
-        btnGenerateEmployeeReport = new javax.swing.JButton();
         panelMotorPH = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1443,7 +1442,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(panelTypeRequestLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTypeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE)
+                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 997, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -2338,13 +2337,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         txtStatus1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Regular", "Probationary" }));
 
-        btnGenerateEmployeeReport.setText("Generate Employee Reports");
-        btnGenerateEmployeeReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerateEmployeeReportActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout panelAllRequest1Layout = new javax.swing.GroupLayout(panelAllRequest1);
         panelAllRequest1.setLayout(panelAllRequest1Layout);
         panelAllRequest1Layout.setHorizontalGroup(
@@ -2355,8 +2347,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                     .addGroup(panelAllRequest1Layout.createSequentialGroup()
                         .addGap(1, 1, 1)
                         .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnGenerateEmployeeReport, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelAllRequest1Layout.createSequentialGroup()
                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2388,7 +2378,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                                 .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtBasicSalary1, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                                     .addComponent(txtBiMonthlyRate1))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
                                 .addComponent(lblClothingAllowanes1)
@@ -2556,9 +2546,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(jSeparator16, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGenerateEmployeeReport, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(14, 14, 14))
             .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
@@ -2602,7 +2590,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             tabbedAllEmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedAllEmployeesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelTypeRequest1, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
+                .addComponent(panelTypeRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 753, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -3325,7 +3313,8 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
     private void txtBasicSalary1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtBasicSalary1FocusLost
         // TODO add your handling code here:
-        double monthlySalary = Double.parseDouble(txtBasicSalary1.getText());
+        String salaryText = txtBasicSalary1.getText().trim();
+        double monthlySalary = salaryText.isEmpty() ? 0.0 : Double.parseDouble(salaryText);
         double secondHalf = monthlySalary/2;
         double hourly = (monthlySalary/21)/8;
         txtBiMonthlyRate1.setText(String.format("%.2f", secondHalf));
@@ -3351,58 +3340,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 jBDay2.setDate(null);
             }
     }//GEN-LAST:event_jBDay2PropertyChange
-
-    private void btnGenerateEmployeeReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateEmployeeReportActionPerformed
-        try {
-                String[] reportTypes = {
-                    "Employee Directory",
-                    "Employee Benefits Summary", 
-                    "Leave Balance Report",
-                    "Salary Analysis Report",
-                    "Department Statistics"
-                };
-
-                String selectedReport = (String) JOptionPane.showInputDialog(
-                    this, "Select Employee Report:", "Generate Report",
-                    JOptionPane.QUESTION_MESSAGE, null, reportTypes, reportTypes[0]);
-
-                if (selectedReport != null) {
-                    EmployeeReportGenerator empReportGen = new EmployeeReportGenerator();
-                    File report = null;
-
-                    switch (selectedReport) {
-                        case "Employee Directory":
-                            report = empReportGen.generateEmployeeDirectory();
-                            break;
-
-                        case "Employee Benefits Summary":
-                            report = empReportGen.generateBenefitsSummary();
-                            break;
-
-                        case "Leave Balance Report":
-                            report = empReportGen.generateLeaveBalanceReport();
-                            break;
-
-                        case "Salary Analysis Report":
-                            report = empReportGen.generateSalaryAnalysis();
-                            break;
-
-                        case "Department Statistics":
-                            report = empReportGen.generateDepartmentStats();
-                            break;
-                    }
-
-                    if (report != null) {
-                        JOptionPane.showMessageDialog(this, 
-                            "Employee report generated!\nSaved to: " + report.getAbsolutePath());
-                    }
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, 
-                    "Error generating employee report: " + e.getMessage());
-                e.printStackTrace();
-            }      
-    }//GEN-LAST:event_btnGenerateEmployeeReportActionPerformed
 
     private void comboLeaveTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboLeaveTypeActionPerformed
         // TODO add your handling code here:
@@ -3537,7 +3474,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnAllEmployees;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDTR;
-    private javax.swing.JButton btnGenerateEmployeeReport;
     private javax.swing.JButton btnLeaveLedger;
     private javax.swing.JButton btnLeaveLedger1;
     private javax.swing.JButton btnLogin;

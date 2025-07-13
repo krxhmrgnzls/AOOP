@@ -3311,8 +3311,6 @@
                                               <Group type="102" alignment="0" attributes="0">
                                                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                                   <Component id="btnAdd" min="-2" pref="162" max="-2" attributes="0"/>
-                                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                  <Component id="btnGenerateEmployeeReport" min="-2" pref="192" max="-2" attributes="0"/>
                                                   <EmptySpace max="32767" attributes="0"/>
                                               </Group>
                                               <Group type="102" alignment="0" attributes="0">
@@ -3354,7 +3352,7 @@
                                                           </Group>
                                                       </Group>
                                                   </Group>
-                                                  <EmptySpace max="32767" attributes="0"/>
+                                                  <EmptySpace pref="24" max="32767" attributes="0"/>
                                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                       <Group type="102" alignment="1" attributes="0">
                                                           <Component id="lblClothingAllowanes1" min="-2" max="-2" attributes="0"/>
@@ -3582,10 +3580,7 @@
                                           <EmptySpace min="19" pref="19" max="-2" attributes="0"/>
                                           <Component id="jSeparator16" min="-2" pref="3" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="3" attributes="0">
-                                              <Component id="btnAdd" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                                              <Component id="btnGenerateEmployeeReport" alignment="3" min="-2" pref="44" max="-2" attributes="0"/>
-                                          </Group>
+                                          <Component id="btnAdd" min="-2" pref="44" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
@@ -4146,14 +4141,6 @@
                                   <AuxValues>
                                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                                   </AuxValues>
-                                </Component>
-                                <Component class="javax.swing.JButton" name="btnGenerateEmployeeReport">
-                                  <Properties>
-                                    <Property name="text" type="java.lang.String" value="Generate Employee Reports"/>
-                                  </Properties>
-                                  <Events>
-                                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerateEmployeeReportActionPerformed"/>
-                                  </Events>
                                 </Component>
                               </SubComponents>
                             </Container>

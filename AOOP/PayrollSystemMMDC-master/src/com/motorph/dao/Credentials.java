@@ -44,7 +44,7 @@ public abstract class Credentials extends AccountDetails {
         
         String sql = "SELECT lc.employee_id, lc.employee_name, lc.password, lc.role, " +
                     "e.first_name, e.last_name FROM login_credentials lc " +
-                    "LEFT JOIN employees e ON lc.employee_id = e.employee_id " +
+                    "LEFT JOIN employee_profile_view e ON lc.employee_id = e.employee_id " +
                     "WHERE lc.employee_id = ? AND lc.password = ?";
         
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {

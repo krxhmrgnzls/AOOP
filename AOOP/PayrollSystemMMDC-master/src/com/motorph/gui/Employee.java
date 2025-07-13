@@ -323,7 +323,7 @@ public class Employee {
             
             String sql = "SELECT employee_id, first_name, last_name, position, basic_salary, birthday, address, phone_number, " +
                         "sss_number, philhealth_number, tin_number, pagibig_number, status, rice_subsidy, phone_allowance, " +
-                        "clothing_allowance, gross_rate, hourly_rate FROM employees WHERE employee_id = ?";
+                        "clothing_allowance, gross_rate, hourly_rate FROM employee_profile_view WHERE employee_id = ?";
             
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setInt(1, empID);
@@ -544,7 +544,7 @@ public class Employee {
             System.out.println("Employee ID: " + empId);
             System.out.println("Date Range: " + startDate + " to " + endDate);
             
-            String checkSql = "SELECT COUNT(*) FROM employees WHERE employee_id = ?";
+            String checkSql = "SELECT COUNT(*) FROM employee_profile_view WHERE employee_id = ?";
             try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
                 checkStmt.setInt(1, Integer.parseInt(empId));
                 ResultSet checkRs = checkStmt.executeQuery();
@@ -557,7 +557,7 @@ public class Employee {
             String sql = "SELECT employee_id, first_name, last_name, position, " +
                         "basic_salary, rice_subsidy, phone_allowance, clothing_allowance, " +
                         "gross_rate, hourly_rate " +
-                        "FROM employees WHERE employee_id = ?";
+                        "FROM employee_profile_view WHERE employee_id = ?";
             
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setInt(1, Integer.parseInt(empId));
@@ -811,7 +811,7 @@ public class Employee {
                 return false;
             }
             
-            String sql = "SELECT first_name, last_name FROM employees WHERE employee_id = ?";
+            String sql = "SELECT first_name, last_name FROM employee_profile_view WHERE employee_id = ?";
             try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
                 pstmt.setInt(1, this.employeeID);
                 ResultSet rs = pstmt.executeQuery();

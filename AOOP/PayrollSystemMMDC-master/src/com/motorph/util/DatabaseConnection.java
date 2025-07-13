@@ -9,7 +9,7 @@ public class DatabaseConnection {
     private Connection connection;
     
 
-    private static final String URL = "jdbc:mysql://localhost:3307/aoop"; 
+    private static final String URL = "jdbc:mysql://localhost:3307/aoop_db"; 
     private static final String USERNAME = "root"; 
     private static final String PASSWORD = "0914kmg@gnzls";
     

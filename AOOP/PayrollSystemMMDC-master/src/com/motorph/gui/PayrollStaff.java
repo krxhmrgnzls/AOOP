@@ -75,61 +75,67 @@ public class PayrollStaff extends Employee implements Payroll {
         return this.accountDetails;
     }
     
-    // *** VIEW PERSONAL DETAILS METHOD ***
-    public void viewPersonalDetails(String employeeId) {
-        String sql = "SELECT e.employee_id, e.last_name, e.first_name, e.birthday, e.address, e.phone_number, " +
-                    "e.sss_number, e.philhealth_number, e.tin_number, e.pagibig_number, e.status, e.position, " +
-                    "e.supervisor_id, " +
-                    "CONCAT(s.first_name, ' ', s.last_name) as supervisor_name, " +
-                    "e.basic_salary, e.rice_subsidy, e.phone_allowance, e.clothing_allowance, " +
-                    "e.gross_rate, e.hourly_rate " +
-                    "FROM employees e " +
-                    "LEFT JOIN employees s ON e.supervisor_id = s.employee_id " +
-                    "WHERE e.employee_id = ?";
+   public void viewPersonalDetails(String employeeId) {
+    String sql = "SELECT employee_id, last_name, first_name, birthday, address, phone_number, " +
+                "sss_number, philhealth_number, tin_number, pagibig_number, status, position, " +
+                "supervisor_id, basic_salary, rice_subsidy, phone_allowance, clothing_allowance, " +
+                "gross_rate, hourly_rate " +
+                "FROM employee_profile_view " +
+                "WHERE employee_id = ?";
+    
+    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+        pstmt.setInt(1, Integer.parseInt(employeeId));
+        ResultSet rs = pstmt.executeQuery();
         
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, Integer.parseInt(employeeId));
-            ResultSet rs = pstmt.executeQuery();
-            
-            if (rs.next()) {
-                if (accountDetails == null) {
-                    accountDetails = new AccountDetails();
-                }
-                
-                accountDetails.setEmployeeID(rs.getInt("employee_id"));
-                accountDetails.setLastName(rs.getString("last_name"));
-                accountDetails.setFirstName(rs.getString("first_name"));
-                accountDetails.setBirthday(rs.getDate("birthday"));
-                accountDetails.setAddress(rs.getString("address"));
-                accountDetails.setPhoneNumber(rs.getString("phone_number"));
-                
-                accountDetails.setSSSNumber(formatGovernmentNumber(rs.getString("sss_number")));
-                accountDetails.setPhilHealthNumber(formatGovernmentNumber(rs.getString("philhealth_number")));
-                accountDetails.setTinNumber(formatGovernmentNumber(rs.getString("tin_number")));
-                accountDetails.setPagibigNumber(formatGovernmentNumber(rs.getString("pagibig_number")));
-                
-                accountDetails.setStatus(rs.getString("status"));
-                accountDetails.setPosition(rs.getString("position"));
-                
-                String supervisorName = rs.getString("supervisor_name");
-                accountDetails.setSupervisor(supervisorName != null ? supervisorName : "");
-                
-                accountDetails.setBasicSalary(rs.getDouble("basic_salary"));
-                accountDetails.setRiceSubsidy(rs.getDouble("rice_subsidy"));
-                accountDetails.setPhoneAllowance(rs.getDouble("phone_allowance"));
-                accountDetails.setClothingAllowance(rs.getDouble("clothing_allowance"));
-                accountDetails.setSemiBasicSalary(rs.getDouble("gross_rate"));
-                accountDetails.setHourlyRate(rs.getDouble("hourly_rate"));
-                
-                System.out.println("DEBUG: Successfully loaded personal details for payroll staff " + employeeId);
-            } else {
-                System.err.println("ERROR: No employee found with ID " + employeeId);
+        if (rs.next()) {
+            if (accountDetails == null) {
+                accountDetails = new AccountDetails();
             }
-        } catch (SQLException e) {
-            System.err.println("Error loading personal details: " + e.getMessage());
-            e.printStackTrace();
+            
+            accountDetails.setEmployeeID(rs.getInt("employee_id"));
+            accountDetails.setLastName(rs.getString("last_name"));
+            accountDetails.setFirstName(rs.getString("first_name"));
+            accountDetails.setBirthday(rs.getDate("birthday"));
+            accountDetails.setAddress(rs.getString("address"));
+            accountDetails.setPhoneNumber(rs.getString("phone_number"));
+            
+            accountDetails.setSSSNumber(formatGovernmentNumber(rs.getString("sss_number")));
+            accountDetails.setPhilHealthNumber(formatGovernmentNumber(rs.getString("philhealth_number")));
+            accountDetails.setTinNumber(formatGovernmentNumber(rs.getString("tin_number")));
+            accountDetails.setPagibigNumber(formatGovernmentNumber(rs.getString("pagibig_number")));
+            
+            accountDetails.setStatus(rs.getString("status"));
+            accountDetails.setPosition(rs.getString("position"));
+
+            int supervisorId = rs.getInt("supervisor_id");
+            if (supervisorId > 0) {
+                String supervisorSql = "SELECT CONCAT(first_name, ' ', last_name) as supervisor_name " +
+                                     "FROM employee_profile_view WHERE employee_id = ?";
+                try (PreparedStatement supervisorStmt = connection.prepareStatement(supervisorSql)) {
+                    supervisorStmt.setInt(1, supervisorId);
+                    ResultSet supervisorRs = supervisorStmt.executeQuery();
+                    if (supervisorRs.next()) {
+                        accountDetails.setSupervisor(supervisorRs.getString("supervisor_name"));
+                    }
+                }
+            }
+            
+            accountDetails.setBasicSalary(rs.getDouble("basic_salary"));
+            accountDetails.setRiceSubsidy(rs.getDouble("rice_subsidy"));
+            accountDetails.setPhoneAllowance(rs.getDouble("phone_allowance"));
+            accountDetails.setClothingAllowance(rs.getDouble("clothing_allowance"));
+            accountDetails.setSemiBasicSalary(rs.getDouble("gross_rate"));
+            accountDetails.setHourlyRate(rs.getDouble("hourly_rate"));
+            
+            System.out.println("DEBUG: Successfully loaded personal details for payroll staff " + employeeId);
+        } else {
+            System.err.println("ERROR: No employee found with ID " + employeeId);
         }
+    } catch (SQLException e) {
+        System.err.println("Error loading personal details: " + e.getMessage());
+        e.printStackTrace();
     }
+}
 
     // *** HELPER METHODS ***
     private String formatGovernmentNumber(String numberStr) {
@@ -412,7 +418,7 @@ public class PayrollStaff extends Employee implements Payroll {
     public ArrayList<ArrayList<String>> getEmployeeDTR(String employeeName, Date fromDate, Date toDate) {
     ArrayList<ArrayList<String>> dtrData = new ArrayList<>();
  
-    String sql = "SELECT e.employee_id FROM employees e " +
+    String sql = "SELECT e.employee_id FROM employee_profile_view e " +
                 "WHERE CONCAT(e.first_name, ' ', e.last_name) = ? " +
                 "OR CONCAT(e.last_name, ', ', e.first_name) = ?";
     
@@ -442,23 +448,23 @@ public class PayrollStaff extends Employee implements Payroll {
     }
        
     public ArrayList<ArrayList<String>> getDTRDataByEmployeeId(int employeeId, Date fromDate, Date toDate) {
-    ArrayList<ArrayList<String>> dtrData = new ArrayList<>();
-    
-    String sql = "SELECT a.log_date, a.login_time, a.logout_time, " +
-                "CASE WHEN a.submitted_to_supervisor = 1 THEN 'Yes' ELSE 'No' END as submitted, " +
-                "COALESCE(a.remarks, '') as remarks, " +
-                "e.first_name, e.last_name " +
-                "FROM attendance a " +
-                "JOIN employees e ON a.employee_id = e.employee_id " +
-                "WHERE a.employee_id = ? AND a.log_date BETWEEN ? AND ? " +
-                "ORDER BY a.log_date DESC";
-    
-    try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-        pstmt.setInt(1, employeeId);
-        pstmt.setDate(2, new java.sql.Date(fromDate.getTime()));
-        pstmt.setDate(3, new java.sql.Date(toDate.getTime()));
-        
-        ResultSet rs = pstmt.executeQuery();
+        ArrayList<ArrayList<String>> dtrData = new ArrayList<>();
+
+        String sql = "SELECT a.log_date, a.login_time, a.logout_time, " +
+                    "CASE WHEN a.submitted_to_supervisor = 1 THEN 'Yes' ELSE 'No' END as submitted, " +
+                    "COALESCE(a.remarks, '') as remarks, " +
+                    "e.first_name, e.last_name " +
+                    "FROM attendance a " +
+                    "JOIN employee_profile_view e ON a.employee_id = e.employee_id " +
+                    "WHERE a.employee_id = ? AND a.log_date BETWEEN ? AND ? " +
+                    "ORDER BY a.log_date DESC";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, employeeId);
+            pstmt.setDate(2, new java.sql.Date(fromDate.getTime()));
+            pstmt.setDate(3, new java.sql.Date(toDate.getTime()));
+
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 ArrayList<String> row = new ArrayList<>();
                 row.add(String.valueOf(employeeId)); 
@@ -477,13 +483,13 @@ public class PayrollStaff extends Employee implements Payroll {
         }
 
         return dtrData;
-}
+    }
 
     public ArrayList<String> getAllEmployeeNames() {
         ArrayList<String> employeeNames = new ArrayList<>();
 
         String sql = "SELECT CONCAT(first_name, ' ', last_name) as full_name " +
-                    "FROM employees " +
+                    "FROM employee_profile_view " +
                     "ORDER BY last_name, first_name";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -1112,7 +1118,7 @@ public class PayrollStaff extends Employee implements Payroll {
                     if (payroll.getPayrollPeriod().equals(payrollPeriod)) {
                         payroll.setStatus("Approved");
                         payrollDAO.updatePayroll(payroll);
-                        System.out.println("✅ Released payroll for Employee ID: " + employeeId);
+                        System.out.println("Released payroll for Employee ID: " + employeeId);
                         break;
                     }
                 }

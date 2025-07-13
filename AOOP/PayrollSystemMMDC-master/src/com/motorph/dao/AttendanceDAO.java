@@ -47,7 +47,7 @@ public class AttendanceDAO {
     public List<AttendanceRecord> getAttendanceByEmployee(int employeeId, Date startDate, Date endDate) {
         List<AttendanceRecord> attendanceList = new ArrayList<>();
         String sql = "SELECT a.*, e.first_name, e.last_name FROM attendance a " +
-                    "JOIN employees e ON a.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON a.employee_id = e.employee_id " +
                     "WHERE a.employee_id = ? AND a.log_date BETWEEN ? AND ? " +
                     "ORDER BY a.log_date DESC";
         
@@ -82,7 +82,7 @@ public class AttendanceDAO {
     public List<AttendanceRecord> getAttendanceForPayroll(String payrollPeriod) {
         List<AttendanceRecord> attendanceList = new ArrayList<>();
         String sql = "SELECT a.*, e.first_name, e.last_name FROM attendance a " +
-                    "JOIN employees e ON a.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON a.employee_id = e.employee_id " +
                     "WHERE a.submitted_to_payroll = true ORDER BY a.employee_id, a.log_date";
         
         try {

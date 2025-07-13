@@ -75,10 +75,10 @@ public class ReportGenerator {
                 writer.println("  Clothing Allow. : ₱ " + String.format("%,10.2f", rs.getDouble("clothing_allowance")));
                 writer.println("-----------------------------------------");
                 writer.println("DEDUCTIONS:");
-                writer.println("  SSS            : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
-                writer.println("  PhilHealth     : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
-                writer.println("  Pag-IBIG       : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
-                writer.println("  Income Tax     : ₱ " + String.format("%,10.2f", 0.0)); // Calculate based on salary
+                writer.println("  SSS            : ₱ " + String.format("%,10.2f", 0.0)); 
+                writer.println("  PhilHealth     : ₱ " + String.format("%,10.2f", 0.0));
+                writer.println("  Pag-IBIG       : ₱ " + String.format("%,10.2f", 0.0));
+                writer.println("  Income Tax     : ₱ " + String.format("%,10.2f", 0.0)); 
                 writer.println("-----------------------------------------");
 
                 double grossPay = rs.getDouble("basic_salary") + rs.getDouble("rice_subsidy") + 
@@ -256,25 +256,25 @@ public class ReportGenerator {
     }
     
     private void generateSSSReport(PrintWriter writer, String period) throws SQLException {
-        writer.println("SSS CONTRIBUTION REPORT");
-        writer.println("Period: " + period);
-        writer.println("");
-        writer.println("SSS No.,Employee Name,Monthly Salary,Employee Share,Employer Share,Total Contribution");
-        
-        String sql = "SELECT e.sss_number, e.first_name, e.last_name, e.basic_salary, p.sss " +
-                    "FROM payroll p JOIN employees e ON p.employee_id = e.employee_id " +
-                    "WHERE p.payroll_period = ?";
-        
+        writer.println("SSS_NUMBER,EMPLOYEE_NAME,BASIC_SALARY,EMPLOYEE_SHARE,EMPLOYER_SHARE,TOTAL");
+
+        String sql = "SELECT e.sss_number, e.first_name, e.last_name, e.basic_salary, " +
+                    "p.sss as employee_sss " +
+                    "FROM payroll p " +
+                    "JOIN employee_profile_view e ON p.employee_id = e.employee_id " +
+                    "WHERE p.payroll_period = ? " +
+                    "ORDER BY e.last_name, e.first_name";
+
         PreparedStatement pstmt = connection.prepareStatement(sql);
         pstmt.setString(1, period);
         ResultSet rs = pstmt.executeQuery();
-        
+
         double totalEmployee = 0, totalEmployer = 0;
-        
+
         while (rs.next()) {
-            double employeeShare = rs.getDouble("sss");
+            double employeeShare = rs.getDouble("employee_sss");
             double employerShare = employeeShare * 2; 
-            
+
             writer.println(String.format("%s,\"%s %s\",%.2f,%.2f,%.2f,%.2f",
                 rs.getString("sss_number"),
                 rs.getString("first_name"),
@@ -284,20 +284,92 @@ public class ReportGenerator {
                 employerShare,
                 employeeShare + employerShare
             ));
-            
+
             totalEmployee += employeeShare;
             totalEmployer += employerShare;
         }
-        
+
         writer.println("");
         writer.println(String.format("TOTALS:,,,%.2f,%.2f,%.2f", 
             totalEmployee, totalEmployer, totalEmployee + totalEmployer));
     }
     
     private void generatePhilHealthReport(PrintWriter writer, String period) throws SQLException {
+        writer.println("PHILHEALTH_NUMBER,EMPLOYEE_NAME,BASIC_SALARY,EMPLOYEE_SHARE,EMPLOYER_SHARE,TOTAL");
+
+        String sql = "SELECT e.philhealth_number, e.first_name, e.last_name, e.basic_salary, " +
+                    "p.philhealth as employee_philhealth " +
+                    "FROM payroll p " +
+                    "JOIN employee_profile_view e ON p.employee_id = e.employee_id " +
+                    "WHERE p.payroll_period = ? " +
+                    "ORDER BY e.last_name, e.first_name";
+
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setString(1, period);
+        ResultSet rs = pstmt.executeQuery();
+
+        double totalEmployee = 0, totalEmployer = 0;
+
+        while (rs.next()) {
+            double employeeShare = rs.getDouble("employee_philhealth");
+            double employerShare = employeeShare;
+
+            writer.println(String.format("%s,\"%s %s\",%.2f,%.2f,%.2f,%.2f",
+                rs.getString("philhealth_number"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getDouble("basic_salary"),
+                employeeShare,
+                employerShare,
+                employeeShare + employerShare
+            ));
+
+            totalEmployee += employeeShare;
+            totalEmployer += employerShare;
+        }
+
+        writer.println("");
+        writer.println(String.format("TOTALS:,,,%.2f,%.2f,%.2f", 
+            totalEmployee, totalEmployer, totalEmployee + totalEmployer));
     }
     
     private void generatePagIbigReport(PrintWriter writer, String period) throws SQLException {
+        writer.println("PAGIBIG_NUMBER,EMPLOYEE_NAME,BASIC_SALARY,EMPLOYEE_SHARE,EMPLOYER_SHARE,TOTAL");
+
+        String sql = "SELECT e.pagibig_number, e.first_name, e.last_name, e.basic_salary, " +
+                    "p.pagibig as employee_pagibig " +
+                    "FROM payroll p " +
+                    "JOIN employee_profile_view e ON p.employee_id = e.employee_id " +
+                    "WHERE p.payroll_period = ? " +
+                    "ORDER BY e.last_name, e.first_name";
+
+        PreparedStatement pstmt = connection.prepareStatement(sql);
+        pstmt.setString(1, period);
+        ResultSet rs = pstmt.executeQuery();
+
+        double totalEmployee = 0, totalEmployer = 0;
+
+        while (rs.next()) {
+            double employeeShare = rs.getDouble("employee_pagibig");
+            double employerShare = employeeShare; 
+
+            writer.println(String.format("%s,\"%s %s\",%.2f,%.2f,%.2f,%.2f",
+                rs.getString("pagibig_number"),
+                rs.getString("first_name"),
+                rs.getString("last_name"),
+                rs.getDouble("basic_salary"),
+                employeeShare,
+                employerShare,
+                employeeShare + employerShare
+            ));
+
+            totalEmployee += employeeShare;
+            totalEmployer += employerShare;
+        }
+
+        writer.println("");
+        writer.println(String.format("TOTALS:,,,%.2f,%.2f,%.2f", 
+            totalEmployee, totalEmployer, totalEmployee + totalEmployer));
     }
 
     public File generateAllPayslips() {

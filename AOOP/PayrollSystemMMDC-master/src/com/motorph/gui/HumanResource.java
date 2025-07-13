@@ -309,7 +309,7 @@ public class HumanResource extends Employee {
     public String getSelectedName() { return selectedName; }
 
     public String nextID() {
-        String sql = "SELECT MAX(employee_id) FROM employees";
+        String sql = "SELECT MAX(employee_id) FROM employee_profile_view";
         try (PreparedStatement pstmt = connection.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
             if (rs.next()) {
@@ -323,70 +323,73 @@ public class HumanResource extends Employee {
     }
     
     public boolean addDetails(ArrayList<String> tempData) {
-        for (String info : tempData) {
-            if (info.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please Complete All The Details!");
-                return false;
-            }
-        }
-        
-        String checkSql = "SELECT COUNT(*) FROM employees WHERE first_name = ? AND last_name = ?";
-        try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
-            checkStmt.setString(1, tempData.get(1));
-            checkStmt.setString(2, tempData.get(2));
-            
-            ResultSet rs = checkStmt.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                JOptionPane.showMessageDialog(null, "Cannot Add New Employee - Employee Already Exists!");
-                return false;
-            }
-        } catch (SQLException e) {
-            System.err.println("Error checking existing employee: " + e.getMessage());
+    for (String info : tempData) {
+        if (info.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Complete All The Details!");
             return false;
         }
-        
-        String insertSql = "INSERT INTO employees (employee_id, last_name, first_name, birthday, address, " +
-                            "phone_number, sss_number, philhealth_number, tin_number, pagibig_number, " +
-                            "status, position, supervisor_id, basic_salary, rice_subsidy, " +
-                            "phone_allowance, clothing_allowance, gross_rate, hourly_rate) " +
-                            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
-        try (PreparedStatement pstmt = connection.prepareStatement(insertSql)) {
-            pstmt.setInt(1, Integer.parseInt(tempData.get(0)));
-            pstmt.setString(2, tempData.get(2));
-            pstmt.setString(3, tempData.get(1));
-            pstmt.setDate(4, java.sql.Date.valueOf(convertToSqlDate(tempData.get(3))));
-            pstmt.setString(5, tempData.get(4));
-            pstmt.setString(6, tempData.get(5));
-            pstmt.setString(7, tempData.get(6));
-            pstmt.setString(8, tempData.get(7));
-            pstmt.setString(9, tempData.get(8));
-            pstmt.setString(10, tempData.get(9));
-            pstmt.setString(11, tempData.get(10));
-            pstmt.setString(12, tempData.get(11));
-            pstmt.setString(13, tempData.get(12));
-            pstmt.setDouble(14, Double.parseDouble(tempData.get(13)));
-            pstmt.setDouble(15, Double.parseDouble(tempData.get(14)));
-            pstmt.setDouble(16, Double.parseDouble(tempData.get(15)));
-            pstmt.setDouble(17, Double.parseDouble(tempData.get(16)));
-            pstmt.setDouble(18, Double.parseDouble(tempData.get(17)));
-            pstmt.setDouble(19, Double.parseDouble(tempData.get(18)));
-            
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0) {
-                initializeLeaveBalances(Integer.parseInt(tempData.get(0)));
-                JOptionPane.showMessageDialog(null, "Successfully Added New Employee!");
-                return true;
-            }
-        } catch (SQLException e) {
-            System.err.println("Error adding employee: " + e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error adding employee: " + e.getMessage());
-        }
-        return false;
     }
     
+    String checkSql = "SELECT COUNT(*) FROM employee_profile_view WHERE first_name = ? AND last_name = ?";
+    try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
+        checkStmt.setString(1, tempData.get(1));
+        checkStmt.setString(2, tempData.get(2));
+        
+        ResultSet rs = checkStmt.executeQuery();
+        if (rs.next() && rs.getInt(1) > 0) {
+            JOptionPane.showMessageDialog(null, "Cannot Add New Employee - Employee Already Exists!");
+            return false;
+        }
+    } catch (SQLException e) {
+        System.err.println("Error checking existing employee: " + e.getMessage());
+        return false;
+    }
+
+    String insertSql = "CALL insert_new_employee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    try (PreparedStatement pstmt = connection.prepareStatement(insertSql)) {
+        pstmt.setString(1, tempData.get(2));   // last_name
+        pstmt.setString(2, tempData.get(1));   // first_name
+        pstmt.setDate(3, java.sql.Date.valueOf(convertToSqlDate(tempData.get(3))));
+        pstmt.setString(4, tempData.get(4));   // address
+        pstmt.setString(5, tempData.get(5));   // phone_number
+        pstmt.setString(6, tempData.get(6));   // sss_number
+        pstmt.setString(7, tempData.get(7));   // philhealth_number
+        pstmt.setString(8, tempData.get(8));   // tin_number
+        pstmt.setString(9, tempData.get(9));   // pagibig_number
+        pstmt.setString(10, tempData.get(10)); // status
+        pstmt.setString(11, tempData.get(11)); // position
+        pstmt.setInt(12, tempData.get(12).isEmpty() ? null : Integer.parseInt(tempData.get(12))); // supervisor_id
+        pstmt.setDouble(13, Double.parseDouble(tempData.get(13))); // basic_salary
+        pstmt.setDouble(14, Double.parseDouble(tempData.get(14))); // rice_subsidy
+        pstmt.setDouble(15, Double.parseDouble(tempData.get(15))); // phone_allowance
+        pstmt.setDouble(16, Double.parseDouble(tempData.get(16))); // clothing_allowance
+        pstmt.setDouble(17, Double.parseDouble(tempData.get(17))); // gross_rate
+        pstmt.setDouble(18, Double.parseDouble(tempData.get(18))); // hourly_rate
+        
+        pstmt.executeUpdate();
+
+        String getLastIdSql = "SELECT MAX(employee_id) FROM emp_info";
+        try (PreparedStatement lastIdStmt = connection.prepareStatement(getLastIdSql)) {
+            ResultSet lastIdRs = lastIdStmt.executeQuery();
+            if (lastIdRs.next()) {
+                int newEmployeeId = lastIdRs.getInt(1);
+                initializeLeaveBalances(newEmployeeId);
+            }
+        }
+        
+        JOptionPane.showMessageDialog(null, "Successfully Added New Employee!");
+        return true;
+        
+    } catch (SQLException e) {
+        System.err.println("Error adding employee: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error adding employee: " + e.getMessage());
+    }
+    return false;
+}
+    
     private void initializeLeaveBalances(int employeeId) {
-        String sql = "INSERT INTO leave_balances (employee_id, vacation_leave_balance, sick_leave_balance) VALUES (?, 24.00, 24.00)";
+        String sql = "INSERT INTO leave_balances (employee_id, vacation_leave_balance, sick_leave_balanace) VALUES (?,?,?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, employeeId);
             pstmt.executeUpdate();
@@ -425,8 +428,8 @@ public class HumanResource extends Employee {
                 "CONCAT(s.first_name, ' ', s.last_name) as supervisor_name, " +
                 "e.basic_salary, e.rice_subsidy, e.phone_allowance, " +
                 "e.clothing_allowance, e.gross_rate, e.hourly_rate " +
-                "FROM employees e " +
-                "LEFT JOIN employees s ON e.supervisor_id = s.employee_id " +
+                "FROM employee_profile_view e " +
+                "LEFT JOIN employee_profile_view s ON e.supervisor_id = s.employee_id " +
                 "ORDER BY e.employee_id";
     
     try (PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -473,7 +476,7 @@ public class HumanResource extends Employee {
         fullName.clear();
         
         String sql = "SELECT employee_id, CONCAT(first_name, ' ', last_name) as full_name " +
-                    "FROM employees ORDER BY first_name, last_name";
+                    "FROM employee_profile_view ORDER BY first_name, last_name";
         
         try (PreparedStatement pstmt = connection.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
@@ -801,8 +804,8 @@ public class HumanResource extends Employee {
                     "CONCAT(s.first_name, ' ', s.last_name) as supervisor_name, " +
                     "e.basic_salary, e.rice_subsidy, e.phone_allowance, e.clothing_allowance, " +
                     "e.gross_rate, e.hourly_rate " +
-                    "FROM employees e " +
-                    "LEFT JOIN employees s ON e.supervisor_id = s.employee_id " +
+                    "FROM employee_profile_view e " +
+                    "LEFT JOIN employee_profile_view s ON e.supervisor_id = s.employee_id " +
                     "WHERE e.employee_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {

@@ -116,7 +116,7 @@ public class OvertimeDAO {
     public List<ArrayList<String>> getPendingOvertimeRequests() {
         List<ArrayList<String>> requests = new ArrayList<>();
         String sql = "SELECT o.*, e.first_name, e.last_name FROM overtime_requests o " +
-                    "JOIN employees e ON o.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON o.employee_id = e.employee_id " +
                     "WHERE o.status = 'Pending' ORDER BY o.date_filed ASC";
         
         try {

@@ -243,27 +243,27 @@ public class Supervisor extends Employee {
             sql = "SELECT lr.leave_id as id, lr.date_filed, lr.leave_type as type_request, lr.from_date, lr.to_date, " +
                   "lr.number_of_days, lr.reason, lr.status, e.employee_id, CONCAT(e.first_name, ' ', e.last_name) as employee_name " +
                   "FROM leave_requests lr " +
-                  "JOIN employees e ON lr.employee_id = e.employee_id " +
+                  "JOIN employee_profile_view e ON lr.employee_id = e.employee_id " +
                   "WHERE lr.status = 'Pending' " +
                   "UNION ALL " +
                   "SELECT or_req.overtime_id as id, or_req.date_filed, or_req.type_request, DATE(or_req.from_time), DATE(or_req.to_time), " +
                   "or_req.number_of_days, or_req.reason, or_req.status, e.employee_id, CONCAT(e.first_name, ' ', e.last_name) as employee_name " +
                   "FROM overtime_requests or_req " +
-                  "JOIN employees e ON or_req.employee_id = e.employee_id " +
+                  "JOIN employee_profile_view e ON or_req.employee_id = e.employee_id " +
                   "WHERE or_req.status = 'Pending' " +
                   "ORDER BY date_filed DESC";
         } else if (requestType.equals("Leave Request")) {
             sql = "SELECT lr.leave_id as id, lr.date_filed, lr.leave_type as type_request, lr.from_date, lr.to_date, " +
                   "lr.number_of_days, lr.reason, lr.status, e.employee_id, CONCAT(e.first_name, ' ', e.last_name) as employee_name " +
                   "FROM leave_requests lr " +
-                  "JOIN employees e ON lr.employee_id = e.employee_id " +
+                  "JOIN employee_profile_view e ON lr.employee_id = e.employee_id " +
                   "WHERE lr.status = 'Pending' " +
                   "ORDER BY lr.date_filed DESC";
         } else if (requestType.equals("Overtime Request")) {
             sql = "SELECT or_req.overtime_id as id, or_req.date_filed, or_req.type_request, DATE(or_req.from_time), DATE(or_req.to_time), " +
                   "or_req.number_of_days, or_req.reason, or_req.status, e.employee_id, CONCAT(e.first_name, ' ', e.last_name) as employee_name " +
                   "FROM overtime_requests or_req " +
-                  "JOIN employees e ON or_req.employee_id = e.employee_id " +
+                  "JOIN employee_profile_view e ON or_req.employee_id = e.employee_id " +
                   "WHERE or_req.status = 'Pending' " +
                   "ORDER BY or_req.date_filed DESC";
         }
@@ -278,16 +278,16 @@ public class Supervisor extends Employee {
 
                 int realId = rs.getInt("id");
 
-                row.add(String.valueOf(displayId));                       // 0: DISPLAY ID (1, 2, 3, 4...)
-                row.add(rs.getString("employee_name"));                   // 1: NAME
-                row.add(rs.getDate("date_filed").toString());             // 2: DATE FILED
-                row.add(rs.getString("type_request"));                    // 3: TYPE OF REQUEST
-                row.add(rs.getDate(4).toString());                        // 4: PERIOD FROM
-                row.add(rs.getDate(5).toString());                        // 5: PERIOD TO
-                row.add(String.valueOf(rs.getDouble("number_of_days")));  // 6: NUMBER OF DAYS
-                row.add(rs.getString("reason"));                          // 7: REASON
-                row.add(rs.getString("status"));                          // 8: STATUS
-                row.add(String.valueOf(realId));                          // 9: HIDDEN REAL ID (for operations)
+                row.add(String.valueOf(displayId));                       
+                row.add(rs.getString("employee_name"));                 
+                row.add(rs.getDate("date_filed").toString());           
+                row.add(rs.getString("type_request"));                  
+                row.add(rs.getDate(4).toString());                        
+                row.add(rs.getDate(5).toString());                       
+                row.add(String.valueOf(rs.getDouble("number_of_days")));  
+                row.add(rs.getString("reason"));                          
+                row.add(rs.getString("status"));                          
+                row.add(String.valueOf(realId));                          
                 
                 requests.add(row);
                 displayId++; 
@@ -311,14 +311,14 @@ public class Supervisor extends Employee {
                          "lr.date_filed, lr.leave_type as type_request, lr.from_date, lr.to_date, " +
                          "lr.number_of_days, lr.reason, lr.status " +
                          "FROM leave_requests lr " +
-                         "JOIN employees e ON lr.employee_id = e.employee_id " +
+                         "JOIN employee_profile_view e ON lr.employee_id = e.employee_id " +
                          "WHERE lr.status = 'Pending' " +
                          "UNION ALL " +
                          "SELECT or_req.overtime_id as id, CONCAT(e.first_name, ' ', e.last_name) as name, " +
                          "or_req.date_filed, or_req.type_request, DATE(or_req.from_time), DATE(or_req.to_time), " +
                          "or_req.number_of_days, or_req.reason, or_req.status " +
                          "FROM overtime_requests or_req " +
-                         "JOIN employees e ON or_req.employee_id = e.employee_id " +
+                         "JOIN employee_profile_view e ON or_req.employee_id = e.employee_id " +
                          "WHERE or_req.status = 'Pending' " +
                          "ORDER BY date_filed DESC";
 
@@ -594,7 +594,7 @@ public class Supervisor extends Employee {
             ArrayList<String> employeeNames = new ArrayList<>();
 
             String sql = "SELECT employee_id, CONCAT(first_name, ' ', last_name) as full_name " +
-                         "FROM employees " +
+                         "FROM employee_profile_view " +
                          "WHERE employee_id != ? " + 
                          "ORDER BY first_name, last_name";
 
@@ -773,7 +773,7 @@ public class Supervisor extends Employee {
                  "a.submitted_to_supervisor, a.submitted_to_payroll, a.remarks, " +
                  "CONCAT(e.first_name, ' ', e.last_name) as employee_name " +
                  "FROM attendance a " +
-                 "JOIN employees e ON a.employee_id = e.employee_id " +
+                 "JOIN employee_profile_view e ON a.employee_id = e.employee_id " +
                  "WHERE a.employee_id = ? AND a.log_date BETWEEN ? AND ? " +
                  "ORDER BY a.log_date DESC";
 
@@ -822,7 +822,7 @@ public class Supervisor extends Employee {
         }
     }
 
-    String sql = "SELECT employee_id FROM employees WHERE CONCAT(first_name, ' ', last_name) = ?";
+    String sql = "SELECT employee_id FROM employee_profile_view WHERE CONCAT(first_name, ' ', last_name) = ?";
 
     try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
         pstmt.setString(1, employeeName);

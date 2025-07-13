@@ -53,7 +53,7 @@ public class PayrollDAO {
     public List<PayrollRecord> getPayrollByMonth(String month, int year) {
         List<PayrollRecord> payrolls = new ArrayList<>();
         String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
-                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON p.employee_id = e.employee_id " +
                     "WHERE p.payroll_period LIKE ?";
         
         try {
@@ -75,7 +75,7 @@ public class PayrollDAO {
     public List<PayrollRecord> getPayrollByEmployee(int employeeId) {
         List<PayrollRecord> payrolls = new ArrayList<>();
         String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
-                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON p.employee_id = e.employee_id " +
                     "WHERE p.employee_id = ? ORDER BY p.payroll_period DESC";
         
         try {
@@ -107,7 +107,7 @@ public class PayrollDAO {
         String toDateStr = sdf.format(toDate);
         
         String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
-                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON p.employee_id = e.employee_id " +
                     "WHERE p.payroll_period LIKE ? OR p.payroll_period LIKE ? " +
                     "ORDER BY p.payroll_id DESC";
         
@@ -138,7 +138,7 @@ public class PayrollDAO {
     public List<PayrollRecord> getPayrollByPeriod(String payrollPeriod) {
         List<PayrollRecord> payrolls = new ArrayList<>();
         String sql = "SELECT p.*, e.first_name, e.last_name FROM payroll p " +
-                    "JOIN employees e ON p.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON p.employee_id = e.employee_id " +
                     "WHERE p.payroll_period = ? ORDER BY p.employee_id";
 
         try {

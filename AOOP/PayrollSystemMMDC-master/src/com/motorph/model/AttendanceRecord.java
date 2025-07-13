@@ -28,7 +28,6 @@ public class AttendanceRecord {
         this.remarks = "";
     }
     
-    // Getters and Setters
     public int getAttendanceId() { return attendanceId; }
     public void setAttendanceId(int attendanceId) { this.attendanceId = attendanceId; }
     

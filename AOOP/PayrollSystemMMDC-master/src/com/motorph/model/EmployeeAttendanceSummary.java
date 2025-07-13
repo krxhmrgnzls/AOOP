@@ -8,10 +8,8 @@ public class EmployeeAttendanceSummary {
     private int presentDays;
     private int absentDays;
     
-    // Constructor
     public EmployeeAttendanceSummary() {}
     
-    // Getters and Setters
     public int getEmployeeId() { return employeeId; }
     public void setEmployeeId(int employeeId) { this.employeeId = employeeId; }
     

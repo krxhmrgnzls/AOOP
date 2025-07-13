@@ -51,7 +51,6 @@ public class DatabaseConnection {
         }
     }
     
-    // Test connection method
     public static boolean testConnection() {
         try {
             DatabaseConnection db = DatabaseConnection.getInstance();

@@ -93,6 +93,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
         sideBarPanel = new javax.swing.JPanel();
         jSeparator13 = new javax.swing.JSeparator();
         jSeparator14 = new javax.swing.JSeparator();
@@ -161,6 +162,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         txtStatus = new javax.swing.JTextField();
         txtSupervisor = new javax.swing.JTextField();
         tabbedRequest = new javax.swing.JPanel();
+        panelMotorPH = new javax.swing.JPanel();
         panelTypeRequest = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         lblRequestType = new javax.swing.JLabel();
@@ -208,6 +210,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         txtDaysNumber1 = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
         tabbedDTR = new javax.swing.JPanel();
         panelDTR = new javax.swing.JPanel();
         tableDTR = new javax.swing.JScrollPane();
@@ -325,7 +328,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jSeparator18 = new javax.swing.JSeparator();
         jBDay2 = new com.toedter.calendar.JDateChooser();
         txtStatus1 = new javax.swing.JComboBox<>();
-        panelMotorPH = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -337,6 +339,19 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 1)); // NOI18N
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/HRP.png"))); // NOI18N
         jPanel8.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 20, 500, 70));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
+        jPanel8.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 110, -1, 40));
 
         jPanel1.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1750, 100));
 
@@ -365,6 +380,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblIDSidebar.setText("10003");
 
         btnPersonalDetails.setBackground(new java.awt.Color(27, 49, 74));
+        btnPersonalDetails.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnPersonalDetails.setForeground(new java.awt.Color(255, 255, 255));
         btnPersonalDetails.setText("PERSONAL DETAILS");
         btnPersonalDetails.addActionListener(new java.awt.event.ActionListener() {
@@ -374,6 +390,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         });
 
         btnRequestPort.setBackground(new java.awt.Color(27, 49, 74));
+        btnRequestPort.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRequestPort.setForeground(new java.awt.Color(255, 255, 255));
         btnRequestPort.setText("EMPLOYEE REQUEST");
         btnRequestPort.addActionListener(new java.awt.event.ActionListener() {
@@ -383,6 +400,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         });
 
         btnDTR.setBackground(new java.awt.Color(27, 49, 74));
+        btnDTR.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDTR.setForeground(new java.awt.Color(255, 255, 255));
         btnDTR.setText("DTR");
         btnDTR.addActionListener(new java.awt.event.ActionListener() {
@@ -392,6 +410,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         });
 
         btnLeaveLedger.setBackground(new java.awt.Color(27, 49, 74));
+        btnLeaveLedger.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLeaveLedger.setForeground(new java.awt.Color(255, 255, 255));
         btnLeaveLedger.setText("LEAVE LEDGER");
         btnLeaveLedger.addActionListener(new java.awt.event.ActionListener() {
@@ -401,6 +420,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         });
 
         btnLeaveLedger1.setBackground(new java.awt.Color(27, 49, 74));
+        btnLeaveLedger1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLeaveLedger1.setForeground(new java.awt.Color(255, 255, 255));
         btnLeaveLedger1.setText("PAYSLIP");
         btnLeaveLedger1.addActionListener(new java.awt.event.ActionListener() {
@@ -410,6 +430,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         });
 
         btnAllEmployees.setBackground(new java.awt.Color(27, 49, 74));
+        btnAllEmployees.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnAllEmployees.setForeground(new java.awt.Color(255, 255, 255));
         btnAllEmployees.setText("VIEW ALL EMPLOYEES");
         btnAllEmployees.addActionListener(new java.awt.event.ActionListener() {
@@ -422,6 +443,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel5.setText("8:00 AM");
 
+        btnLogin.setBackground(new java.awt.Color(27, 49, 74));
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Time In");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -429,6 +453,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             }
         });
 
+        btnLogout.setBackground(new java.awt.Color(27, 49, 74));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setText("Time Out");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -522,20 +549,20 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addComponent(btnLeaveLedger1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAllEmployees, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48)
+                .addGap(27, 27, 27)
                 .addComponent(jLabel5)
                 .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(sideBarPanelLayout.createSequentialGroup()
-                        .addGap(52, 52, 52)
+                        .addGap(73, 73, 73)
                         .addComponent(jSeparator14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(sideBarPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(27, 27, 27)
                         .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(34, 34, 34)
+                .addGap(61, 61, 61)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(125, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
             .addGroup(sideBarPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(sideBarPanelLayout.createSequentialGroup()
                     .addGap(158, 158, 158)
@@ -550,26 +577,30 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         jPanel1.add(sideBarPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 240, 760));
 
+        tabbedPersonalDetails.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPersonalDetails.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
 
+        panelPersonalDetails1.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblEmpID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblEmpID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblEmpID.setText("Employee ID:");
 
-        lblFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblFName.setText("First Name:");
 
-        lblLName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblLName.setText("Last Name:");
 
-        lblBDay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblBDay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblBDay.setText("Birthday:");
 
-        lblAddress.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblAddress.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblAddress.setText("Address: ");
 
-        lblPhoneNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPhoneNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhoneNum.setText("Phone No.");
 
         txtID.setEditable(false);
@@ -600,14 +631,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblEmpID, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtID))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblFName)
-                        .addGap(25, 25, 25)
-                        .addComponent(txtFName))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addComponent(lblPhoneNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -616,10 +639,18 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                             .addComponent(lblAddress))
                         .addGap(26, 26, 26)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
                             .addComponent(txtLName)
                             .addComponent(txtBDay)
-                            .addComponent(txtPhoneNum))))
+                            .addComponent(txtPhoneNum)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFName)
+                            .addComponent(lblEmpID))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtID)
+                            .addComponent(txtFName))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -669,18 +700,21 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panelPersonalDetails.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblBasicSalary.setText("Basic Salary :");
 
-        lblRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRiceSubsidy.setText("Rice Subsidy: ");
 
-        lblPhoneAllowances.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPhoneAllowances.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhoneAllowances.setText("Phone Allowances: ");
 
-        lblClothingAllowanes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblClothingAllowanes.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblClothingAllowanes.setText("Clothing Allowances: ");
 
         txtBasicSalary.setEditable(false);
@@ -715,13 +749,13 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             }
         });
 
-        lblBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblBiMonthlyRate.setText("BiMonthly Rate:");
 
         txtBiMonthlyRate.setEditable(false);
         txtBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        lblHourlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblHourlyRate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblHourlyRate.setText("Hourly Rate:");
 
         txtHourlyRate.setEditable(false);
@@ -765,26 +799,26 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblBasicSalary)
-                    .addComponent(txtBasicSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtBasicSalary, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblBiMonthlyRate)
                     .addComponent(txtBiMonthlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblHourlyRate)
                     .addComponent(txtHourlyRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRiceSubsidy)
-                    .addComponent(txtRiceSubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRiceSubsidy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRiceSubsidy))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPhoneAllowances)
-                    .addComponent(txtPhoneAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtPhoneAllowance, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblClothingAllowanes)
                     .addComponent(txtClothingAllowance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -805,21 +839,24 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(panelPersonalDetailsLayout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
+        panelPersonalDetails2.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblPhilNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhilNum.setText("PhilHealth No.");
 
-        lblSSSNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSSSNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSSSNum.setText("SSS No.");
 
-        lblTINNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTINNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTINNum.setText("TIN No.");
 
-        lblPagIbigNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPagIbigNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPagIbigNum.setText("PagIbig No.");
 
         txtPhilNum.setEditable(false);
@@ -845,7 +882,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblTINNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(23, 23, 23)
+                        .addGap(31, 31, 31)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTINNum)
                             .addComponent(txtPagIbigNum)))
@@ -855,7 +892,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                             .addComponent(lblPhilNum))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPhilNum, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                            .addComponent(txtPhilNum, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                             .addComponent(txtSSSNum))))
                 .addContainerGap())
         );
@@ -898,15 +935,18 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addContainerGap(83, Short.MAX_VALUE))
         );
 
+        panelPersonalDetails3.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblPosition.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPosition.setText("Position: ");
 
-        lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblStatus.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblStatus.setText("Status:");
 
-        lblSupervisor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSupervisor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSupervisor.setText("Supervisor:");
 
         txtPosition.setEditable(false);
@@ -935,18 +975,14 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblSupervisor))
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
-                            .addComponent(txtSupervisor)))
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(lblPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtPosition)))
+                    .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSupervisor)
+                    .addComponent(lblPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPosition)
+                    .addComponent(txtStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                    .addComponent(txtSupervisor))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -974,7 +1010,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(panelPersonalDetails3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         panelPersonalDetails3Layout.setVerticalGroup(
             panelPersonalDetails3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -991,9 +1027,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedPersonalDetailsLayout.createSequentialGroup()
                 .addGap(63, 63, 63)
                 .addComponent(panelPersonalDetails1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(24, 24, 24)
                 .addComponent(panelPersonalDetails2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelPersonalDetails3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1002,17 +1038,32 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         tabbedPersonalDetailsLayout.setVerticalGroup(
             tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabbedPersonalDetailsLayout.createSequentialGroup()
-                .addGap(178, 178, 178)
+                .addGap(196, 196, 196)
                 .addGroup(tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelPersonalDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelPersonalDetails1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(tabbedPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(panelPersonalDetails3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(panelPersonalDetails2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(270, Short.MAX_VALUE))
+                .addContainerGap(252, Short.MAX_VALUE))
         );
 
         mainTabbed.addTab("tab8", tabbedPersonalDetails);
+
+        tabbedRequest.setBackground(new java.awt.Color(255, 255, 255));
+
+        panelMotorPH.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout panelMotorPHLayout = new javax.swing.GroupLayout(panelMotorPH);
+        panelMotorPH.setLayout(panelMotorPHLayout);
+        panelMotorPHLayout.setHorizontalGroup(
+            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1510, Short.MAX_VALUE)
+        );
+        panelMotorPHLayout.setVerticalGroup(
+            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 765, Short.MAX_VALUE)
+        );
 
         panelTypeRequest.setBackground(new java.awt.Color(255, 255, 255));
         panelTypeRequest.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "NEW REQUEST", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
@@ -1020,17 +1071,18 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblRequestType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRequestType.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRequestType.setText("Request Type :");
-        jPanel2.add(lblRequestType, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 100, -1));
+        jPanel2.add(lblRequestType, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 10, 120, -1));
 
+        comboTypeRequest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         comboTypeRequest.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Request", "Leave Application", "Overtime Application" }));
         comboTypeRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboTypeRequestActionPerformed(evt);
             }
         });
-        jPanel2.add(comboTypeRequest, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 10, 198, 31));
+        jPanel2.add(comboTypeRequest, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 10, 198, 31));
 
         tabbedInsideRequest.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
@@ -1040,7 +1092,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblAllRequest.setText("ALL REQUEST");
 
         jTableAllRequest.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTableAllRequest.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableAllRequest.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableAllRequest.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -1061,6 +1113,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jTableAllRequest.setRowHeight(25);
         jTableAllRequest.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(jTableAllRequest);
+        jTableAllRequest.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         jSeparator6.setBackground(new java.awt.Color(255, 204, 153));
 
@@ -1121,6 +1174,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblMyName1.setText("Inclusive Dates");
 
         txtDaysNumber.setEditable(false);
+        txtDaysNumber.setBackground(new java.awt.Color(255, 255, 255));
         txtDaysNumber.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber.addActionListener(new java.awt.event.ActionListener() {
@@ -1164,6 +1218,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblEmpID1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmpID1.setText("Employee ID:");
 
+        btnSubmit.setBackground(new java.awt.Color(27, 49, 74));
+        btnSubmit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit.setText("SUBMIT");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1325,6 +1382,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane3.setViewportView(txtReasonOvertime);
 
+        btnSubmit1.setBackground(new java.awt.Color(27, 49, 74));
+        btnSubmit1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSubmit1.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit1.setText("SUBMIT");
         btnSubmit1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1344,6 +1404,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         jLabel1.setText("*Please be informed that the overtime period is from 5:01pm to 9:00pm only.");
 
         txtDaysNumber1.setEditable(false);
+        txtDaysNumber1.setBackground(new java.awt.Color(255, 255, 255));
         txtDaysNumber1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber1.addActionListener(new java.awt.event.ActionListener() {
@@ -1352,12 +1413,25 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 31, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout panelOvertimeRequestLayout = new javax.swing.GroupLayout(panelOvertimeRequest);
         panelOvertimeRequest.setLayout(panelOvertimeRequestLayout);
         panelOvertimeRequestLayout.setHorizontalGroup(
             panelOvertimeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelOvertimeRequestLayout.createSequentialGroup()
-                .addContainerGap(196, Short.MAX_VALUE)
+                .addContainerGap(51, Short.MAX_VALUE)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
                 .addGroup(panelOvertimeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelOvertimeRequestLayout.createSequentialGroup()
                         .addGroup(panelOvertimeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1398,10 +1472,15 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(panelOvertimeRequestLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(lblLeaveBalances1)
-                .addGap(24, 24, 24)
-                .addGroup(panelOvertimeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmpID2)
-                    .addComponent(lblID1))
+                .addGroup(panelOvertimeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelOvertimeRequestLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(panelOvertimeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblEmpID2)
+                            .addComponent(lblID1)))
+                    .addGroup(panelOvertimeRequestLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(13, 13, 13)
                 .addGroup(panelOvertimeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblMyName2)
@@ -1442,7 +1521,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(panelTypeRequestLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTypeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 997, Short.MAX_VALUE)
+                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1464,6 +1543,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addGap(253, 253, 253)
                 .addComponent(panelTypeRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(238, Short.MAX_VALUE))
+            .addGroup(tabbedRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tabbedRequestLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(panelMotorPH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         tabbedRequestLayout.setVerticalGroup(
             tabbedRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1471,6 +1555,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addGap(39, 39, 39)
                 .addComponent(panelTypeRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
+            .addGroup(tabbedRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(tabbedRequestLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(panelMotorPH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         mainTabbed.addTab("Request Port", tabbedRequest);
@@ -1478,7 +1567,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         panelDTR.setBackground(new java.awt.Color(255, 255, 255));
         panelDTR.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "YOUR DAILY TIME RECORD", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
 
-        jTableAllDTR.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableAllDTR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableAllDTR.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -1511,6 +1600,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         jSeparator7.setBackground(new java.awt.Color(255, 204, 153));
 
+        btnSubmitToSepervisor.setBackground(new java.awt.Color(27, 49, 74));
+        btnSubmitToSepervisor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSubmitToSepervisor.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmitToSepervisor.setText("SUBMIT");
         btnSubmitToSepervisor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1533,6 +1625,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblID2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblID2.setText("10001");
 
+        btnClear.setBackground(new java.awt.Color(27, 49, 74));
+        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("Search");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1621,7 +1716,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(tabbedDTRLayout.createSequentialGroup()
                 .addGap(245, 245, 245)
                 .addComponent(panelDTR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addContainerGap(252, Short.MAX_VALUE))
         );
         tabbedDTRLayout.setVerticalGroup(
             tabbedDTRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1636,7 +1731,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         panelLeaveLedger.setBackground(new java.awt.Color(255, 255, 255));
         panelLeaveLedger.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "YOUR LEAVE LEDGER HISTORY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
 
-        jTableAllRequest3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableAllRequest3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableAllRequest3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -1711,16 +1806,16 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                 .addGroup(panelLeaveLedgerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblID3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMyName5, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(180, 180, 180)
+                .addGap(170, 170, 170)
                 .addGroup(panelLeaveLedgerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelLeaveLedgerLayout.createSequentialGroup()
-                        .addComponent(lblSL1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblSLBalance1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelLeaveLedgerLayout.createSequentialGroup()
                         .addComponent(lblVL1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(lblVLBalance1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelLeaveLedgerLayout.createSequentialGroup()
+                        .addComponent(lblSL1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lblVLBalance1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblSLBalance1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(215, 215, 215))
             .addGroup(panelLeaveLedgerLayout.createSequentialGroup()
                 .addGap(450, 450, 450)
@@ -1778,6 +1873,8 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         mainTabbed.addTab("tab4", tabbedLeaveLedger);
 
+        tabbedPayslip.setBackground(new java.awt.Color(255, 255, 255));
+
         panelPayslip.setBackground(new java.awt.Color(255, 255, 255));
         panelPayslip.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "YOUR PERSONAL PAYSLIP", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
 
@@ -1802,6 +1899,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         dateTo3.setBackground(new java.awt.Color(255, 255, 255));
         dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
+        btnReport.setBackground(new java.awt.Color(27, 49, 74));
+        btnReport.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReport.setForeground(new java.awt.Color(255, 255, 255));
         btnReport.setText("Generate");
         btnReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2049,7 +2149,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             .addGroup(tabbedPayslipLayout.createSequentialGroup()
                 .addGap(267, 267, 267)
                 .addComponent(panelPayslip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addContainerGap(302, Short.MAX_VALUE))
         );
         tabbedPayslipLayout.setVerticalGroup(
             tabbedPayslipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2073,7 +2173,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         panelAllRequest1.setBackground(new java.awt.Color(255, 255, 255));
 
         jTableEmployees.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTableEmployees.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableEmployees.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableEmployees.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -2098,6 +2198,9 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
         jSeparator16.setBackground(new java.awt.Color(255, 204, 153));
 
+        btnAdd.setBackground(new java.awt.Color(27, 49, 74));
+        btnAdd.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("Add New Employee");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2114,6 +2217,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblEmpID7.setText("Employee ID:");
 
         txtID2.setEditable(false);
+        txtID2.setBackground(new java.awt.Color(255, 255, 255));
         txtID2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         lblFName2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -2230,6 +2334,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblBiMonthlyRate1.setText("BiMonthly Rate:");
 
         txtBiMonthlyRate1.setEditable(false);
+        txtBiMonthlyRate1.setBackground(new java.awt.Color(255, 255, 255));
         txtBiMonthlyRate1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtBiMonthlyRate1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -2241,6 +2346,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
         lblHourlyRate1.setText("Hourly Rate:");
 
         txtHourlyRate1.setEditable(false);
+        txtHourlyRate1.setBackground(new java.awt.Color(255, 255, 255));
         txtHourlyRate1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtHourlyRate1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -2383,23 +2489,21 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
                                 .addComponent(lblClothingAllowanes1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtClothingAllowance1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55))
+                                .addComponent(txtClothingAllowance1))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
-                                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(panelAllRequest1Layout.createSequentialGroup()
-                                        .addComponent(lblPhoneAllowances1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtPhoneAllowance1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(panelAllRequest1Layout.createSequentialGroup()
-                                        .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblHourlyRate1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblRiceSubsidy1))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txtHourlyRate1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtRiceSubsidy1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(54, 54, 54)))
+                                .addComponent(lblHourlyRate1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(59, 59, 59)
+                                .addComponent(txtHourlyRate1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
+                                    .addComponent(lblRiceSubsidy1)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtRiceSubsidy1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
+                                    .addComponent(lblPhoneAllowances1)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtPhoneAllowance1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(23, 23, 23)
                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblPagIbigNum1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblTINNum1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2487,9 +2591,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                                             .addComponent(txtFName2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(59, 59, 59))
                                     .addGroup(panelAllRequest1Layout.createSequentialGroup()
-                                        .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lblRiceSubsidy1)
-                                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(txtBasicSalary1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2505,12 +2607,17 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                                     .addComponent(lblPhilNum1)
                                     .addComponent(txtHourlyRate1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAllRequest1Layout.createSequentialGroup()
-                                        .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(txtRiceSubsidy1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lblSSSNum1))
-                                        .addGap(18, 18, 18)
+                                        .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(panelAllRequest1Layout.createSequentialGroup()
+                                                .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                    .addComponent(lblSSSNum1)
+                                                    .addComponent(lblRiceSubsidy1))
+                                                .addGap(18, 18, 18))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAllRequest1Layout.createSequentialGroup()
+                                                .addComponent(txtRiceSubsidy1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                         .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(txtPhoneAllowance1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(lblTINNum1))
@@ -2590,26 +2697,11 @@ public class HumanResourceGUI extends javax.swing.JFrame {
             tabbedAllEmployeesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedAllEmployeesLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelTypeRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 753, Short.MAX_VALUE)
+                .addComponent(panelTypeRequest1, javax.swing.GroupLayout.DEFAULT_SIZE, 753, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         mainTabbed.addTab("tab7", tabbedAllEmployees);
-
-        panelMotorPH.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout panelMotorPHLayout = new javax.swing.GroupLayout(panelMotorPH);
-        panelMotorPH.setLayout(panelMotorPHLayout);
-        panelMotorPHLayout.setHorizontalGroup(
-            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1510, Short.MAX_VALUE)
-        );
-        panelMotorPHLayout.setVerticalGroup(
-            panelMotorPHLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 765, Short.MAX_VALUE)
-        );
-
-        mainTabbed.addTab("tab6", panelMotorPH);
 
         jPanel1.add(mainTabbed, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 60, 1510, 800));
 
@@ -2709,8 +2801,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                     "Time In Success", JOptionPane.INFORMATION_MESSAGE);
                 updateAttendanceButtonStates();
 
-                // Refresh DTR table if currently viewing DTR tab
-                if (mainTabbed.getSelectedIndex() == 3) { // DTR tab index
+                if (mainTabbed.getSelectedIndex() == 3) { 
                     refreshDTRTable();
                 }
             } else {
@@ -2739,7 +2830,7 @@ public class HumanResourceGUI extends javax.swing.JFrame {
                     "Time Out Success", JOptionPane.INFORMATION_MESSAGE);
                 updateAttendanceButtonStates();
 
-                if (mainTabbed.getSelectedIndex() == 3) { // DTR tab index
+                if (mainTabbed.getSelectedIndex() == 3) {
                     refreshDTRTable();
                 }
             } else {
@@ -3127,7 +3218,6 @@ public class HumanResourceGUI extends javax.swing.JFrame {
 
             System.out.println("Payslip data returned: " + tempData.size() + " rows");
 
-            // Process the results
             if(tempData.isEmpty()){
                 JOptionPane.showMessageDialog(null, "No Payroll Found!");
                 resetPayslipLabels();
@@ -3503,12 +3593,14 @@ public class HumanResourceGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

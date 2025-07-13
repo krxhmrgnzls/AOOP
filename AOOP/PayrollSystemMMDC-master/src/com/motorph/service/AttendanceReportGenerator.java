@@ -102,8 +102,7 @@ public class AttendanceReportGenerator {
         try {
             File reportDir = new File("reports/attendance/weekly");
             reportDir.mkdirs();
-            
-            // Calculate week end (6 days after start)
+
             Calendar cal = Calendar.getInstance();
             cal.setTime(weekStart);
             cal.add(Calendar.DAY_OF_MONTH, 6);

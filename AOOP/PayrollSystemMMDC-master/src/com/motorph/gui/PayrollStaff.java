@@ -567,8 +567,7 @@ public class PayrollStaff extends Employee implements Payroll {
 
         return startDate + " to " + endDate;
     }
-    
-    // *** VALIDATION METHODS ***
+
     public boolean isValidDateRange(Date fromDate, Date toDate) {
         if (fromDate == null || toDate == null) {
             return false;
@@ -774,7 +773,6 @@ public class PayrollStaff extends Employee implements Payroll {
             int skippedCount = 0;
             int errorCount = 0;
 
-            // Set the date range
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_MONTH, 1);
             fromDate = cal.getTime();
@@ -1043,7 +1041,6 @@ public class PayrollStaff extends Employee implements Payroll {
                 return data; 
             }
             
-            // Convert PayrollRecord objects to ArrayList format
             for (PayrollRecord payroll : payrolls) {
                 ArrayList<String> row = new ArrayList<>();
                 row.add(String.valueOf(payroll.getEmployeeId()));

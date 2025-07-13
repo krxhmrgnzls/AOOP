@@ -93,7 +93,6 @@ public class ReportGenerator {
 
                 System.out.println("Payslip PDF generated successfully: " + file.getAbsolutePath());
 
-                // Show success message and ask if user wants to open
                 int choice = JOptionPane.showConfirmDialog(null,
                     "Payslip saved successfully!\nLocation: " + file.getAbsolutePath() + 
                     "\n\nWould you like to open the file?",
@@ -133,8 +132,7 @@ public class ReportGenerator {
             String filename = "Monthly_Report_" + month + "_" + year + ".csv";
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
-            
-            // Header
+
             writer.println("MOTORPH MONTHLY PAYROLL REPORT");
             writer.println("Month: " + month + " " + year);
             writer.println("");
@@ -395,7 +393,6 @@ public class ReportGenerator {
             batchWriter.println("");
 
             for (PayrollRecord payroll : payrolls) {
-                // Generate individual payslip content
                 generatePayslipContent(batchWriter, payroll);
                 batchWriter.println("\n" + "=".repeat(50) + "\n");
             }
@@ -483,7 +480,6 @@ public class ReportGenerator {
             File file = new File(reportDir, filename);
             PrintWriter writer = new PrintWriter(file);
 
-            // Header
             writer.println("MOTORPH EMPLOYEE BENEFITS REPORT");
             writer.println("Period: " + now.getMonthValue() + "/" + now.getYear());
             writer.println("");
@@ -586,7 +582,6 @@ public class ReportGenerator {
     
     public File generateJasperPayslipPDF(int employeeId, String payrollPeriod) {
     try {
-        // Get employee and payroll data
         String sql = "SELECT e.employee_id, e.first_name, e.last_name, e.position, " +
                     "e.basic_salary, e.rice_subsidy, e.phone_allowance, e.clothing_allowance, " +
                     "p.payroll_period, p.gross_income, p.benefits, p.overtime, p.undertime, " +

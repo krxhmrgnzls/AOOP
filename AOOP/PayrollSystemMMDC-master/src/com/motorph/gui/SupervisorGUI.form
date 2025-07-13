@@ -91,6 +91,9 @@
               <SubComponents>
                 <Container class="javax.swing.JPanel" name="tabbedPersonalDetails">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                         <LineBorder>
@@ -141,6 +144,9 @@
                   <SubComponents>
                     <Container class="javax.swing.JPanel" name="panelPersonalDetails1">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                             <TitledBorder justification="1" title="Personal Details">
@@ -172,6 +178,11 @@
                       </Layout>
                       <SubComponents>
                         <Container class="javax.swing.JPanel" name="jPanel3">
+                          <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                          </Properties>
 
                           <Layout>
                             <DimensionLayout dim="0">
@@ -179,16 +190,6 @@
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="lblEmpID" min="-2" pref="88" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="txtID" pref="164" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="lblFName" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                                              <Component id="txtFName" max="32767" attributes="0"/>
-                                          </Group>
                                           <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
@@ -204,6 +205,22 @@
                                                   <Component id="txtLName" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="txtBDay" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="txtPhoneNum" alignment="0" max="32767" attributes="0"/>
+                                              </Group>
+                                          </Group>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                                  <Component id="lblFName" max="32767" attributes="0"/>
+                                                  <Component id="lblEmpID" max="32767" attributes="0"/>
+                                              </Group>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Group type="102" alignment="0" attributes="0">
+                                                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                                      <Component id="txtID" pref="164" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <Group type="102" attributes="0">
+                                                      <EmptySpace max="-2" attributes="0"/>
+                                                      <Component id="txtFName" max="32767" attributes="0"/>
+                                                  </Group>
                                               </Group>
                                           </Group>
                                       </Group>
@@ -253,7 +270,7 @@
                             <Component class="javax.swing.JLabel" name="lblEmpID">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Employee ID:"/>
                               </Properties>
@@ -261,7 +278,7 @@
                             <Component class="javax.swing.JLabel" name="lblFName">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="First Name:"/>
                               </Properties>
@@ -269,7 +286,7 @@
                             <Component class="javax.swing.JLabel" name="lblLName">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Last Name:"/>
                               </Properties>
@@ -277,7 +294,7 @@
                             <Component class="javax.swing.JLabel" name="lblBDay">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Birthday:"/>
                               </Properties>
@@ -285,7 +302,7 @@
                             <Component class="javax.swing.JLabel" name="lblAddress">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Address: "/>
                               </Properties>
@@ -293,7 +310,7 @@
                             <Component class="javax.swing.JLabel" name="lblPhoneNum">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Phone No."/>
                               </Properties>
@@ -360,6 +377,9 @@
                     </Container>
                     <Container class="javax.swing.JPanel" name="panelPersonalDetails">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                             <TitledBorder justification="1" title="Salaries and Allowances">
@@ -391,6 +411,11 @@
                       </Layout>
                       <SubComponents>
                         <Container class="javax.swing.JPanel" name="jPanel5">
+                          <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                          </Properties>
 
                           <Layout>
                             <DimensionLayout dim="0">
@@ -427,7 +452,7 @@
                                               </Group>
                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="txtPhoneAllowance" alignment="1" pref="94" max="32767" attributes="0"/>
+                                                  <Component id="txtPhoneAllowance" alignment="1" pref="99" max="32767" attributes="0"/>
                                                   <Component id="txtClothingAllowance" alignment="1" max="32767" attributes="0"/>
                                                   <Component id="txtRiceSubsidy" alignment="1" max="32767" attributes="0"/>
                                               </Group>
@@ -479,7 +504,7 @@
                             <Component class="javax.swing.JLabel" name="lblBasicSalary">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Basic Salary :"/>
                               </Properties>
@@ -487,7 +512,7 @@
                             <Component class="javax.swing.JLabel" name="lblRiceSubsidy">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Rice Subsidy: "/>
                               </Properties>
@@ -495,7 +520,7 @@
                             <Component class="javax.swing.JLabel" name="lblPhoneAllowances">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Phone Allowances: "/>
                               </Properties>
@@ -503,7 +528,7 @@
                             <Component class="javax.swing.JLabel" name="lblClothingAllowanes">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Clothing Allowances: "/>
                               </Properties>
@@ -555,7 +580,7 @@
                             <Component class="javax.swing.JLabel" name="lblBiMonthlyRate">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="BiMonthly Rate:"/>
                               </Properties>
@@ -571,7 +596,7 @@
                             <Component class="javax.swing.JLabel" name="lblHourlyRate">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Hourly Rate:"/>
                               </Properties>
@@ -590,6 +615,9 @@
                     </Container>
                     <Container class="javax.swing.JPanel" name="panelPersonalDetails2">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                             <TitledBorder justification="1" title="Government IDs">
@@ -621,6 +649,11 @@
                       </Layout>
                       <SubComponents>
                         <Container class="javax.swing.JPanel" name="jPanel4">
+                          <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                          </Properties>
 
                           <Layout>
                             <DimensionLayout dim="0">
@@ -630,7 +663,7 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                                  <Component id="lblPagIbigNum" alignment="0" pref="77" max="32767" attributes="0"/>
+                                                  <Component id="lblPagIbigNum" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="lblTINNum" alignment="0" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
@@ -687,7 +720,7 @@
                             <Component class="javax.swing.JLabel" name="lblPhilNum">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="PhilHealth No."/>
                               </Properties>
@@ -695,7 +728,7 @@
                             <Component class="javax.swing.JLabel" name="lblSSSNum">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="SSS No."/>
                               </Properties>
@@ -703,7 +736,7 @@
                             <Component class="javax.swing.JLabel" name="lblTINNum">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="TIN No."/>
                               </Properties>
@@ -711,7 +744,7 @@
                             <Component class="javax.swing.JLabel" name="lblPagIbigNum">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="PagIbig No."/>
                               </Properties>
@@ -754,6 +787,9 @@
                     </Container>
                     <Container class="javax.swing.JPanel" name="panelPersonalDetails3">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                             <TitledBorder justification="1" title="Employment Details">
@@ -785,6 +821,11 @@
                       </Layout>
                       <SubComponents>
                         <Container class="javax.swing.JPanel" name="jPanel6">
+                          <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
+                          </Properties>
 
                           <Layout>
                             <DimensionLayout dim="0">
@@ -833,7 +874,7 @@
                             <Component class="javax.swing.JLabel" name="lblPosition">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Position: "/>
                               </Properties>
@@ -841,7 +882,7 @@
                             <Component class="javax.swing.JLabel" name="lblStatus">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Status:"/>
                               </Properties>
@@ -849,7 +890,7 @@
                             <Component class="javax.swing.JLabel" name="lblSupervisor">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Supervisor:"/>
                               </Properties>
@@ -891,6 +932,11 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="tabbedRequest">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="Request Port">
@@ -975,18 +1021,21 @@
                             <Component class="javax.swing.JLabel" name="lblRequestType">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Request Type :"/>
                               </Properties>
                               <Constraints>
                                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                                  <AbsoluteConstraints x="370" y="10" width="100" height="-1"/>
+                                  <AbsoluteConstraints x="340" y="10" width="130" height="-1"/>
                                 </Constraint>
                               </Constraints>
                             </Component>
                             <Component class="javax.swing.JComboBox" name="comboTypeRequest">
                               <Properties>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                  <Font name="Segoe UI" size="12" style="1"/>
+                                </Property>
                                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                                   <StringArray count="3">
                                     <StringItem index="0" value="All Request"/>
@@ -1091,7 +1140,7 @@
                                           </Border>
                                         </Property>
                                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                          <Font name="Segoe UI" size="14" style="0"/>
+                                          <Font name="Segoe UI" size="14" style="1"/>
                                         </Property>
                                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                           <Table columnCount="7" rowCount="0">
@@ -1346,6 +1395,9 @@
                                 <Component class="javax.swing.JTextField" name="txtDaysNumber">
                                   <Properties>
                                     <Property name="editable" type="boolean" value="false"/>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                       <Font name="Segoe UI" size="14" style="0"/>
                                     </Property>
@@ -1462,6 +1514,15 @@
                                 </Component>
                                 <Component class="javax.swing.JButton" name="btnSubmit">
                                   <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="4a" green="31" red="1b" type="rgb"/>
+                                    </Property>
+                                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                      <Font name="Segoe UI" size="12" style="1"/>
+                                    </Property>
+                                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="text" type="java.lang.String" value="SUBMIT"/>
                                   </Properties>
                                   <Events>
@@ -1718,6 +1779,15 @@
                                 </Container>
                                 <Component class="javax.swing.JButton" name="btnSubmit1">
                                   <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="4a" green="31" red="1b" type="rgb"/>
+                                    </Property>
+                                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                      <Font name="Segoe UI" size="12" style="1"/>
+                                    </Property>
+                                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="text" type="java.lang.String" value="SUBMIT"/>
                                   </Properties>
                                   <Events>
@@ -1760,6 +1830,9 @@
                                 <Component class="javax.swing.JTextField" name="txtDaysNumber1">
                                   <Properties>
                                     <Property name="editable" type="boolean" value="false"/>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                       <Font name="Segoe UI" size="14" style="0"/>
                                     </Property>
@@ -1784,6 +1857,11 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="tabbedDTR">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="tab3">
@@ -1934,7 +2012,7 @@
                             <Component class="javax.swing.JTable" name="jTableAllDTR">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="5" rowCount="0">
@@ -2003,6 +2081,15 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="btnSubmitToSepervisor">
                           <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="4a" green="31" red="1b" type="rgb"/>
+                            </Property>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Segoe UI" size="12" style="1"/>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="SUBMIT"/>
                           </Properties>
                           <Events>
@@ -2053,6 +2140,15 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="btnClear">
                           <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="4a" green="31" red="1b" type="rgb"/>
+                            </Property>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Segoe UI" size="12" style="1"/>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Search"/>
                           </Properties>
                           <Events>
@@ -2064,6 +2160,11 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="tabbedLeaveLedger">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="tab4">
@@ -2206,7 +2307,7 @@
                             <Component class="javax.swing.JTable" name="jTableAllRequest3">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="7" rowCount="0">
@@ -2322,6 +2423,11 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="tabbedPayslip">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="tab5">
@@ -2336,7 +2442,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="267" max="-2" attributes="0"/>
                               <Component id="panelPayslip" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="306" max="32767" attributes="0"/>
+                              <EmptySpace pref="303" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2647,6 +2753,15 @@
                         </Component>
                         <Component class="javax.swing.JButton" name="btnReport">
                           <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="4a" green="31" red="1b" type="rgb"/>
+                            </Property>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="Segoe UI" size="12" style="1"/>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="Generate"/>
                           </Properties>
                           <Events>
@@ -2854,6 +2969,11 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="tabbedEmployeeRequest">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="tab7">
@@ -2935,7 +3055,7 @@
                             <Component class="javax.swing.JLabel" name="lblRequestType1">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Request Type :"/>
                               </Properties>
@@ -2947,6 +3067,9 @@
                             </Component>
                             <Component class="javax.swing.JComboBox" name="comboTypeRequest1">
                               <Properties>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                  <Font name="Segoe UI" size="12" style="1"/>
+                                </Property>
                                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                                   <StringArray count="3">
                                     <StringItem index="0" value="All Request"/>
@@ -3031,7 +3154,7 @@
                                           <Component id="lblAllRequest1" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                                           <Component id="jScrollPane5" min="-2" pref="359" max="-2" attributes="0"/>
-                                          <EmptySpace pref="25" max="32767" attributes="0"/>
+                                          <EmptySpace pref="28" max="32767" attributes="0"/>
                                           <Component id="jSeparator16" min="-2" pref="3" max="-2" attributes="0"/>
                                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="3" attributes="0">
@@ -3067,7 +3190,7 @@
                                           </Border>
                                         </Property>
                                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                          <Font name="Segoe UI" size="14" style="0"/>
+                                          <Font name="Segoe UI" size="14" style="1"/>
                                         </Property>
                                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                           <Table columnCount="9" rowCount="0">
@@ -3149,6 +3272,15 @@
                                 </Component>
                                 <Component class="javax.swing.JButton" name="btnUpdate1">
                                   <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="4a" green="31" red="1b" type="rgb"/>
+                                    </Property>
+                                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                      <Font name="Segoe UI" size="12" style="1"/>
+                                    </Property>
+                                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="text" type="java.lang.String" value="APPROVED"/>
                                   </Properties>
                                   <Events>
@@ -3157,6 +3289,15 @@
                                 </Component>
                                 <Component class="javax.swing.JButton" name="btnCancel3">
                                   <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="4a" green="31" red="1b" type="rgb"/>
+                                    </Property>
+                                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                      <Font name="Segoe UI" size="12" style="1"/>
+                                    </Property>
+                                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="text" type="java.lang.String" value="DISAPPROVED"/>
                                   </Properties>
                                   <Events>
@@ -3172,6 +3313,11 @@
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="tabbedEmployeeDTR">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                  </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="tab8">
@@ -3253,7 +3399,7 @@
                             <Component class="javax.swing.JLabel" name="lblRequestType2">
                               <Properties>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                  <Font name="Segoe UI" size="14" style="0"/>
+                                  <Font name="Segoe UI" size="14" style="1"/>
                                 </Property>
                                 <Property name="text" type="java.lang.String" value="Employee Name:"/>
                               </Properties>
@@ -3265,6 +3411,10 @@
                             </Component>
                             <Component class="javax.swing.JComboBox" name="comboEmployeeName">
                               <Properties>
+                                <Property name="editable" type="boolean" value="true"/>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                  <Font name="Segoe UI" size="12" style="1"/>
+                                </Property>
                                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                                   <StringArray count="0"/>
                                 </Property>
@@ -3285,6 +3435,9 @@
                         </Container>
                         <Container class="javax.swing.JTabbedPane" name="tabbedInsideRequest2">
                           <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                                 <EmptyBorder/>
@@ -3374,7 +3527,7 @@
                                           </Border>
                                         </Property>
                                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                                          <Font name="Segoe UI" size="14" style="0"/>
+                                          <Font name="Segoe UI" size="14" style="1"/>
                                         </Property>
                                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                           <Table columnCount="6" rowCount="0">
@@ -3437,6 +3590,15 @@
                                 </Component>
                                 <Component class="javax.swing.JButton" name="btnForwardToPayroll">
                                   <Properties>
+                                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="4a" green="31" red="1b" type="rgb"/>
+                                    </Property>
+                                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                                      <Font name="Segoe UI" size="12" style="1"/>
+                                    </Property>
+                                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                    </Property>
                                     <Property name="text" type="java.lang.String" value="FORWARD TO PAYROLL STAFF"/>
                                   </Properties>
                                   <Events>
@@ -3674,6 +3836,9 @@
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="4a" green="31" red="1b" type="rgb"/>
                     </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
+                    </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
@@ -3687,6 +3852,9 @@
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="4a" green="31" red="1b" type="rgb"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -3702,6 +3870,9 @@
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="4a" green="31" red="1b" type="rgb"/>
                     </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
+                    </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
@@ -3715,6 +3886,9 @@
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="4a" green="31" red="1b" type="rgb"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -3730,6 +3904,9 @@
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="4a" green="31" red="1b" type="rgb"/>
                     </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
+                    </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
@@ -3744,6 +3921,9 @@
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="4a" green="31" red="1b" type="rgb"/>
                     </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
+                    </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
@@ -3757,6 +3937,9 @@
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="4a" green="31" red="1b" type="rgb"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -3777,6 +3960,15 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnLogin">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="4a" green="31" red="1b" type="rgb"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Time In"/>
                   </Properties>
                   <Events>
@@ -3785,6 +3977,15 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="btnLogout">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="4a" green="31" red="1b" type="rgb"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="12" style="1"/>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value="Time Out"/>
                   </Properties>
                   <Events>

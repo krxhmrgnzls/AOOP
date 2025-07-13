@@ -232,7 +232,7 @@ public class Supervisor extends Employee {
     private void clearTable(javax.swing.JTable table) {
       setTableData(new ArrayList<>());
       displayDataTable(table);
-      System.out.println("🧹 Table cleared");
+      System.out.println("Table cleared");
   }
 
     public ArrayList<ArrayList<String>> getAllRequestData(String requestType) {
@@ -332,16 +332,16 @@ public class Supervisor extends Employee {
 
                     int realId = rs.getInt("id");
 
-                    row.add(String.valueOf(displayId));                       // DISPLAY ID (1, 2, 3, 4...)
-                    row.add(rs.getString("name"));                            // Employee Name
+                    row.add(String.valueOf(displayId));                     
+                    row.add(rs.getString("name"));                 
                     row.add(rs.getDate("date_filed").toString());             // Date Filed
-                    row.add(rs.getString("type_request"));                    // Type of Request
+                    row.add(rs.getString("type_request"));                    
                     row.add(rs.getDate(5).toString());                        // Period From
-                    row.add(rs.getDate(6).toString());                        // Period To
-                    row.add(String.valueOf(rs.getDouble("number_of_days")));  // Number of Days
-                    row.add(rs.getString("reason"));                          // Reason
-                    row.add(rs.getString("status"));                          // Status
-                    row.add(String.valueOf(realId));                          // HIDDEN REAL ID (for operations)
+                    row.add(rs.getDate(6).toString());                        
+                    row.add(String.valueOf(rs.getDouble("number_of_days"))); 
+                    row.add(rs.getString("reason"));                         
+                    row.add(rs.getString("status"));                     
+                    row.add(String.valueOf(realId));                          
 
                     requests.add(row);
                     displayId++; 
@@ -786,14 +786,14 @@ public class Supervisor extends Employee {
 
         while (rs.next()) {
             ArrayList<String> row = new ArrayList<>();
-            row.add(String.valueOf(rs.getInt("attendance_id")));         // 0: Attendance ID (hidden)
-            row.add(rs.getString("employee_name"));                      // 1: Employee Name
-            row.add(rs.getDate("log_date").toString());                  // 2: Date
-            row.add(rs.getTime("login_time") != null ? rs.getTime("login_time").toString() : ""); // 3: Login
-            row.add(rs.getTime("logout_time") != null ? rs.getTime("logout_time").toString() : ""); // 4: Logout
-            row.add(rs.getBoolean("submitted_to_supervisor") ? "Yes" : "No"); // 5: To Supervisor
-            row.add(rs.getBoolean("submitted_to_payroll") ? "Yes" : "No");     // 6: To Payroll
-            row.add(rs.getString("remarks") != null ? rs.getString("remarks") : ""); // 7: Remarks
+            row.add(String.valueOf(rs.getInt("attendance_id")));         
+            row.add(rs.getString("employee_name"));                      
+            row.add(rs.getDate("log_date").toString());                  
+            row.add(rs.getTime("login_time") != null ? rs.getTime("login_time").toString() : ""); 
+            row.add(rs.getTime("logout_time") != null ? rs.getTime("logout_time").toString() : ""); 
+            row.add(rs.getBoolean("submitted_to_supervisor") ? "Yes" : "No");
+            row.add(rs.getBoolean("submitted_to_payroll") ? "Yes" : "No");     
+            row.add(rs.getString("remarks") != null ? rs.getString("remarks") : ""); 
             dtrData.add(row);
         }
 
@@ -991,7 +991,6 @@ public class Supervisor extends Employee {
     try {
         System.out.println("=== Creating default leave balance for employee: " + this.employeeID + " ===");
         
-        // First check if balance already exists
         String checkSql = "SELECT employee_id FROM leave_balances WHERE employee_id = ?";
         try (PreparedStatement checkStmt = connection.prepareStatement(checkSql)) {
             checkStmt.setInt(1, this.employeeID);
@@ -1002,8 +1001,7 @@ public class Supervisor extends Employee {
                 return;
             }
         }
-        
-        // Create new leave balance record with default values (24 days each)
+
         String insertSql = "INSERT INTO leave_balances (employee_id, vacation_leave, sick_leave) VALUES (?, 24.00, 24.00)";
         try (PreparedStatement insertStmt = connection.prepareStatement(insertSql)) {
             insertStmt.setInt(1, this.employeeID);

@@ -99,7 +99,7 @@ public class PayrollDAO {
         
         if (connection == null) {
             System.err.println("ERROR: Database connection is null in PayrollDAO.getPayrollByDateRange");
-            return payrolls; // Return empty list instead of throwing exception
+            return payrolls; 
         }
         
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -237,9 +237,9 @@ public class PayrollDAO {
             
             double grossIncome = basicSalary + benefits + overtime;
 
-            double sss = grossIncome * 0.045;  // 4.5%
-            double philhealth = grossIncome * 0.03;  // 3%
-            double pagibig = Math.min(grossIncome * 0.02, 100);  // 2% max 100
+            double sss = grossIncome * 0.045;  
+            double philhealth = grossIncome * 0.03; 
+            double pagibig = Math.min(grossIncome * 0.02, 100);  
             double taxableIncome = grossIncome - sss - philhealth - pagibig;
             double tax = calculateTax(taxableIncome);
             

@@ -797,8 +797,7 @@ public class Employee {
     }
     
     public int getCalculatedDays() { return calculatedDays; }
-    
-    // ===== DEBUG METHODS =====
+
     public boolean validateEmployeeAndConnection() {
         try {
             if (this.employeeID <= 0) {

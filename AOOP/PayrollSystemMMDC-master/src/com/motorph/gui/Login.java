@@ -27,7 +27,7 @@ public class Login {
     
     public boolean authenticateDB(int employeeId, String password) {
         String sql = "SELECT lc.*, e.first_name, e.last_name FROM login_credentials lc " +
-                    "JOIN employees e ON lc.employee_id = e.employee_id " +
+                    "JOIN employee_profile_view e ON lc.employee_id = e.employee_id " +
                     "WHERE lc.employee_id = ? AND lc.password = ?";
         
         try {
@@ -59,11 +59,11 @@ public class Login {
             
             if (rs.next()) {
                 ArrayList<String> details = new ArrayList<>();
-                details.add(String.valueOf(rs.getInt("employee_id")));  // ID
-                details.add(rs.getString("full_name"));    // First Name (now combined)
+                details.add(String.valueOf(rs.getInt("employee_id")));  
+                details.add(rs.getString("full_name"));    
                 details.add("");
-                details.add(rs.getString("role"));// Last Name (empty since we have full name)
-                details.add(rs.getString("full_name"));    // Full Name                    // Full Name
+                details.add(rs.getString("role"));
+                details.add(rs.getString("full_name"));    
                 
                 userDetails.add(details);
                 
@@ -77,7 +77,6 @@ public class Login {
         return userDetails;
     }
     
-    // Getters and Setters
     public int getEmployeeID() { return employeeID; }
     public void setEmployeeID(int employeeID) { this.employeeID = employeeID; }
     

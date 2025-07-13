@@ -59,13 +59,13 @@ public class OvertimeDAO {
                 Timestamp fromTime = rs.getTimestamp("from_time");
                 Timestamp toTime = rs.getTimestamp("to_time");
                 
-                row.add(displayFormat.format(dateFiled)); // DATE FILED
-                row.add("Overtime"); // TYPE OF REQUEST  
+                row.add(displayFormat.format(dateFiled)); 
+                row.add("Overtime"); 
                 row.add(datetimeFormat.format(fromTime)); // PERIOD FROM
                 row.add(datetimeFormat.format(toTime)); // PERIOD TO
-                row.add(String.valueOf(rs.getDouble("number_of_days"))); // NUMBER OF DAYS
-                row.add(rs.getString("reason")); // REASON
-                row.add(rs.getString("status")); // STATUS
+                row.add(String.valueOf(rs.getDouble("number_of_days")));
+                row.add(rs.getString("reason")); 
+                row.add(rs.getString("status")); 
                 
                 overtimeRequests.add(row);
                 System.out.println("DEBUG: Added overtime request: " + row);

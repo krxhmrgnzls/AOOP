@@ -4,7 +4,6 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 public class AccountDetails {
-    // Employee personal information
     private int databaseID;
     private int employeeID;  
     private String firstName;
@@ -12,19 +11,16 @@ public class AccountDetails {
     private Date birthday;
     private String address;
     private String phoneNumber;
-    
-    // Government IDs
+
     private String sssNumber;
     private String philHealthNumber;
     private String tinNumber;
     private String pagibigNumber;
-    
-    // Employment details
+
     private String status;
     private String position;
     private String supervisor;
-    
-    // Salary and allowances
+
     private double basicSalary;
     private double riceSubsidy;
     private double phoneAllowance;

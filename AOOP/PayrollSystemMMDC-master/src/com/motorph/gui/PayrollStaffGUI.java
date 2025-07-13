@@ -20,7 +20,6 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
     private AttendanceService attendanceService;
 
     public PayrollStaffGUI(ArrayList<ArrayList<String>> userDetails) {
-      // Set user details FIRST
     this.id = userDetails.get(0).get(0);
     this.name = userDetails.get(0).get(1);
     this.role = userDetails.get(0).get(3);
@@ -315,6 +314,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblIDSidebar.setText("10003");
 
         btnPersonalDetails.setBackground(new java.awt.Color(27, 49, 74));
+        btnPersonalDetails.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnPersonalDetails.setForeground(new java.awt.Color(255, 255, 255));
         btnPersonalDetails.setText("PERSONAL DETAILS");
         btnPersonalDetails.addActionListener(new java.awt.event.ActionListener() {
@@ -324,6 +324,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         btnRequestPort.setBackground(new java.awt.Color(27, 49, 74));
+        btnRequestPort.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnRequestPort.setForeground(new java.awt.Color(255, 255, 255));
         btnRequestPort.setText("EMPLOYEE REQUEST");
         btnRequestPort.addActionListener(new java.awt.event.ActionListener() {
@@ -333,6 +334,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         btnDTR.setBackground(new java.awt.Color(27, 49, 74));
+        btnDTR.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnDTR.setForeground(new java.awt.Color(255, 255, 255));
         btnDTR.setText("DTR");
         btnDTR.addActionListener(new java.awt.event.ActionListener() {
@@ -342,6 +344,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         btnLeaveLedger.setBackground(new java.awt.Color(27, 49, 74));
+        btnLeaveLedger.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLeaveLedger.setForeground(new java.awt.Color(255, 255, 255));
         btnLeaveLedger.setText("LEAVE LEDGER");
         btnLeaveLedger.addActionListener(new java.awt.event.ActionListener() {
@@ -351,6 +354,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         btnLeaveLedger1.setBackground(new java.awt.Color(27, 49, 74));
+        btnLeaveLedger1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLeaveLedger1.setForeground(new java.awt.Color(255, 255, 255));
         btnLeaveLedger1.setText("PAYSLIP");
         btnLeaveLedger1.addActionListener(new java.awt.event.ActionListener() {
@@ -360,6 +364,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         btncomputePayroll.setBackground(new java.awt.Color(27, 49, 74));
+        btncomputePayroll.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btncomputePayroll.setForeground(new java.awt.Color(255, 255, 255));
         btncomputePayroll.setText("COMPUTE PAYROLL");
         btncomputePayroll.addActionListener(new java.awt.event.ActionListener() {
@@ -369,6 +374,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         });
 
         btnemployeeDTR.setBackground(new java.awt.Color(27, 49, 74));
+        btnemployeeDTR.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnemployeeDTR.setForeground(new java.awt.Color(255, 255, 255));
         btnemployeeDTR.setText("EMPLOYEE DTR");
         btnemployeeDTR.addActionListener(new java.awt.event.ActionListener() {
@@ -380,6 +386,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel5.setText("8:00 AM");
 
+        btnLogin.setBackground(new java.awt.Color(27, 49, 74));
+        btnLogin.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLogin.setForeground(new java.awt.Color(255, 255, 255));
         btnLogin.setText("Time In");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -387,6 +396,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             }
         });
 
+        btnLogout.setBackground(new java.awt.Color(27, 49, 74));
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLogout.setForeground(new java.awt.Color(255, 255, 255));
         btnLogout.setText("Time Out");
         btnLogout.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -507,26 +519,30 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         panelMotorPH.setBackground(new java.awt.Color(255, 255, 255));
 
+        tabbedPersonalDetails.setBackground(new java.awt.Color(255, 255, 255));
         tabbedPersonalDetails.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 153, 0)));
 
+        panelPersonalDetails1.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Personal Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblEmpID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblEmpID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblEmpID.setText("Employee ID:");
 
-        lblFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblFName.setText("First Name:");
 
-        lblLName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLName.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblLName.setText("Last Name:");
 
-        lblBDay.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblBDay.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblBDay.setText("Birthday:");
 
-        lblAddress.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblAddress.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblAddress.setText("Address: ");
 
-        lblPhoneNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPhoneNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhoneNum.setText("Phone No.");
 
         txtID.setEditable(false);
@@ -557,8 +573,8 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(lblEmpID, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblEmpID)
+                        .addGap(4, 4, 4)
                         .addComponent(txtID, javax.swing.GroupLayout.DEFAULT_SIZE, 164, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(lblFName)
@@ -626,18 +642,21 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panelPersonalDetails.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Salaries and Allowances", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblBasicSalary.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblBasicSalary.setText("Basic Salary :");
 
-        lblRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRiceSubsidy.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRiceSubsidy.setText("Rice Subsidy: ");
 
-        lblPhoneAllowances.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPhoneAllowances.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhoneAllowances.setText("Phone Allowances: ");
 
-        lblClothingAllowanes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblClothingAllowanes.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblClothingAllowanes.setText("Clothing Allowances: ");
 
         txtBasicSalary.setEditable(false);
@@ -672,13 +691,13 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             }
         });
 
-        lblBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblBiMonthlyRate.setText("BiMonthly Rate:");
 
         txtBiMonthlyRate.setEditable(false);
         txtBiMonthlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        lblHourlyRate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblHourlyRate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblHourlyRate.setText("Hourly Rate:");
 
         txtHourlyRate.setEditable(false);
@@ -755,7 +774,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(panelPersonalDetailsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelPersonalDetailsLayout.setVerticalGroup(
             panelPersonalDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -765,18 +784,21 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panelPersonalDetails2.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Government IDs", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblPhilNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblPhilNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPhilNum.setText("PhilHealth No.");
 
-        lblSSSNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSSSNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSSSNum.setText("SSS No.");
 
-        lblTINNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTINNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTINNum.setText("TIN No.");
 
-        lblPagIbigNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblPagIbigNum.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPagIbigNum.setText("PagIbig No.");
 
         txtPhilNum.setEditable(false);
@@ -800,7 +822,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                            .addComponent(lblPagIbigNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(lblTINNum, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(23, 23, 23)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -855,15 +877,18 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        panelPersonalDetails3.setBackground(new java.awt.Color(255, 255, 255));
         panelPersonalDetails3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Employment Details", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
-        lblPosition.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        lblPosition.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblPosition.setText("Position: ");
 
-        lblStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblStatus.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblStatus.setText("Status:");
 
-        lblSupervisor.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSupervisor.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblSupervisor.setText("Supervisor:");
 
         txtPosition.setEditable(false);
@@ -983,16 +1008,19 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         mainTabbed.addTab("tab6", panelMotorPH);
 
+        tabbedRequest.setBackground(new java.awt.Color(255, 255, 255));
+
         panelTypeRequest.setBackground(new java.awt.Color(255, 255, 255));
         panelTypeRequest.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "NEW REQUEST", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblRequestType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRequestType.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRequestType.setText("Request Type :");
-        jPanel2.add(lblRequestType, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 100, -1));
+        jPanel2.add(lblRequestType, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, 120, -1));
 
+        comboTypeRequest.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         comboTypeRequest.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Request", "Leave Application", "Overtime Application" }));
         comboTypeRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1009,7 +1037,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblAllRequest.setText("ALL REQUEST");
 
         jTableAllRequest.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTableAllRequest.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableAllRequest.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableAllRequest.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -1090,7 +1118,8 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblMyName1.setText("Inclusive Dates");
 
         txtDaysNumber.setEditable(false);
-        txtDaysNumber.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDaysNumber.setBackground(new java.awt.Color(255, 255, 255));
+        txtDaysNumber.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtDaysNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1133,6 +1162,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblEmpID1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblEmpID1.setText("Employee ID:");
 
+        btnSubmit.setBackground(new java.awt.Color(27, 49, 74));
+        btnSubmit.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSubmit.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit.setText("SUBMIT");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1289,6 +1321,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         txtReasonOvertime.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Reason", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
         jScrollPane3.setViewportView(txtReasonOvertime);
 
+        btnSubmit1.setBackground(new java.awt.Color(27, 49, 74));
+        btnSubmit1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSubmit1.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmit1.setText("SUBMIT");
         btnSubmit1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1308,7 +1343,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         jLabel1.setText("*Please be informed that the overtime period is from 5:01pm to 9:00pm only.");
 
         txtDaysNumber1.setEditable(false);
-        txtDaysNumber1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDaysNumber1.setBackground(new java.awt.Color(255, 255, 255));
+        txtDaysNumber1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtDaysNumber1.setForeground(new java.awt.Color(255, 255, 255));
         txtDaysNumber1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Number of Working Days Applied For", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 102))); // NOI18N
         txtDaysNumber1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1406,7 +1443,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(panelTypeRequestLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelTypeRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.DEFAULT_SIZE, 997, Short.MAX_VALUE)
+                    .addComponent(tabbedInsideRequest, javax.swing.GroupLayout.PREFERRED_SIZE, 997, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -1427,22 +1464,24 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(tabbedRequestLayout.createSequentialGroup()
                 .addGap(253, 253, 253)
                 .addComponent(panelTypeRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addContainerGap(247, Short.MAX_VALUE))
         );
         tabbedRequestLayout.setVerticalGroup(
             tabbedRequestLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabbedRequestLayout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addComponent(panelTypeRequest, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         mainTabbed.addTab("Request Port", tabbedRequest);
 
+        tabbedDTR.setBackground(new java.awt.Color(255, 255, 255));
+
         panelDTR.setBackground(new java.awt.Color(255, 255, 255));
         panelDTR.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "YOUR DAILY TIME RECORD", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
 
-        jTableAllDTR.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableAllDTR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableAllDTR.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -1475,6 +1514,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         jSeparator7.setBackground(new java.awt.Color(255, 204, 153));
 
+        btnSubmitToSepervisor.setBackground(new java.awt.Color(27, 49, 74));
+        btnSubmitToSepervisor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnSubmitToSepervisor.setForeground(new java.awt.Color(255, 255, 255));
         btnSubmitToSepervisor.setText("SUBMIT");
         btnSubmitToSepervisor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1497,6 +1539,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblID2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblID2.setText("10001");
 
+        btnClear.setBackground(new java.awt.Color(27, 49, 74));
+        btnClear.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("Search");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1585,22 +1630,24 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(tabbedDTRLayout.createSequentialGroup()
                 .addGap(245, 245, 245)
                 .addComponent(panelDTR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addContainerGap(282, Short.MAX_VALUE))
         );
         tabbedDTRLayout.setVerticalGroup(
             tabbedDTRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedDTRLayout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(47, Short.MAX_VALUE)
                 .addComponent(panelDTR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
 
         mainTabbed.addTab("tab3", tabbedDTR);
 
+        tabbedLeaveLedger.setBackground(new java.awt.Color(255, 255, 255));
+
         panelLeaveLedger.setBackground(new java.awt.Color(255, 255, 255));
         panelLeaveLedger.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "YOUR LEAVE LEDGER HISTORY", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
 
-        jTableAllRequest3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableAllRequest3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableAllRequest3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -1730,17 +1777,19 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(tabbedLeaveLedgerLayout.createSequentialGroup()
                 .addGap(222, 222, 222)
                 .addComponent(panelLeaveLedger, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addContainerGap(240, Short.MAX_VALUE))
         );
         tabbedLeaveLedgerLayout.setVerticalGroup(
             tabbedLeaveLedgerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedLeaveLedgerLayout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
+                .addContainerGap(61, Short.MAX_VALUE)
                 .addComponent(panelLeaveLedger, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33))
         );
 
         mainTabbed.addTab("tab4", tabbedLeaveLedger);
+
+        tabbedPayslip.setBackground(new java.awt.Color(255, 255, 255));
 
         panelPayslip.setBackground(new java.awt.Color(255, 255, 255));
         panelPayslip.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "YOUR PERSONAL PAYSLIP", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
@@ -1766,6 +1815,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         dateTo3.setBackground(new java.awt.Color(255, 255, 255));
         dateTo3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "To", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 153, 51))); // NOI18N
 
+        btnReport.setBackground(new java.awt.Color(27, 49, 74));
+        btnReport.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReport.setForeground(new java.awt.Color(255, 255, 255));
         btnReport.setText("Generate");
         btnReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1923,7 +1975,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                                     .addGroup(panelPayslipLayout.createSequentialGroup()
                                                         .addGap(91, 91, 91)
                                                         .addComponent(lblNetPay, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGap(24, 24, 24))
+                                                .addGap(18, 18, 18))
                                             .addGroup(panelPayslipLayout.createSequentialGroup()
                                                 .addGap(62, 62, 62)
                                                 .addComponent(jSeparator19, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2013,17 +2065,19 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(tabbedPayslipLayout.createSequentialGroup()
                 .addGap(267, 267, 267)
                 .addComponent(panelPayslip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addContainerGap(311, Short.MAX_VALUE))
         );
         tabbedPayslipLayout.setVerticalGroup(
             tabbedPayslipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabbedPayslipLayout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addComponent(panelPayslip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(158, Short.MAX_VALUE))
+                .addContainerGap(208, Short.MAX_VALUE))
         );
 
         mainTabbed.addTab("tab5", tabbedPayslip);
+
+        tabbedPayroll.setBackground(new java.awt.Color(255, 255, 255));
 
         panelTypeRequest1.setBackground(new java.awt.Color(255, 255, 255));
         panelTypeRequest1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PAYROLL", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
@@ -2040,7 +2094,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblPayrollPeriod.setText("Payroll from March 1-15, 2025");
 
         jTablePayroll.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTablePayroll.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTablePayroll.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTablePayroll.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -2065,6 +2119,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         jSeparator16.setBackground(new java.awt.Color(255, 204, 153));
 
+        btnReleased.setBackground(new java.awt.Color(27, 49, 74));
+        btnReleased.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnReleased.setForeground(new java.awt.Color(255, 255, 255));
         btnReleased.setText("Released");
         btnReleased.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2074,12 +2131,15 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
 
         lblAllRequest3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
-        lblFrom.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFrom.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblFrom.setText("From :");
 
-        lblTo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblTo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblTo.setText("To :");
 
+        btnGeneratePayrollReport.setBackground(new java.awt.Color(27, 49, 74));
+        btnGeneratePayrollReport.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnGeneratePayrollReport.setForeground(new java.awt.Color(255, 255, 255));
         btnGeneratePayrollReport.setText("Generate Report");
         btnGeneratePayrollReport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2087,6 +2147,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             }
         });
 
+        searchDate.setBackground(new java.awt.Color(27, 49, 74));
+        searchDate.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        searchDate.setForeground(new java.awt.Color(255, 255, 255));
         searchDate.setText("Search");
         searchDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2111,7 +2174,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addComponent(lblTo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(12, 12, 12)
                                 .addComponent(searchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblAllRequest3)
@@ -2127,7 +2190,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addGap(24, 24, 24)
                                 .addComponent(btnReleased, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnGeneratePayrollReport, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnGeneratePayrollReport, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -2145,9 +2208,9 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
                                 .addGroup(panelAllRequest1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jDateTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(lblFrom))))
-                        .addGap(11, 11, 11)
+                        .addGap(15, 15, 15)
                         .addComponent(lblPayrollPeriod))
-                    .addComponent(searchDate))
+                    .addComponent(searchDate, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -2187,17 +2250,19 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(tabbedPayrollLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(panelTypeRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         tabbedPayrollLayout.setVerticalGroup(
             tabbedPayrollLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabbedPayrollLayout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap(47, Short.MAX_VALUE)
                 .addComponent(panelTypeRequest1, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52))
         );
 
         mainTabbed.addTab("tab7", tabbedPayroll);
+
+        tabbedEmployeeDTR.setBackground(new java.awt.Color(255, 255, 255));
 
         panelTypeRequest2.setBackground(new java.awt.Color(255, 255, 255));
         panelTypeRequest2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "EMPLOYEE DTR", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Segoe UI", 0, 18), new java.awt.Color(255, 102, 0))); // NOI18N
@@ -2205,10 +2270,11 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         jPanel11.setBackground(new java.awt.Color(255, 255, 255));
         jPanel11.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblRequestType2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblRequestType2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lblRequestType2.setText("Employee Name:");
-        jPanel11.add(lblRequestType2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, 108, -1));
+        jPanel11.add(lblRequestType2, new org.netbeans.lib.awtextra.AbsoluteConstraints(348, 20, 120, -1));
 
+        comboEmployeeName.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         comboEmployeeName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboEmployeeNameActionPerformed(evt);
@@ -2224,7 +2290,7 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
         lblAllRequest2.setText("ALL REQUEST");
 
         jTableDTR.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jTableDTR.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTableDTR.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jTableDTR.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -2305,12 +2371,12 @@ public class PayrollStaffGUI extends javax.swing.JFrame {
             .addGroup(tabbedEmployeeDTRLayout.createSequentialGroup()
                 .addGap(175, 175, 175)
                 .addComponent(panelTypeRequest2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         tabbedEmployeeDTRLayout.setVerticalGroup(
             tabbedEmployeeDTRLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(tabbedEmployeeDTRLayout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
+                .addContainerGap(53, Short.MAX_VALUE)
                 .addComponent(panelTypeRequest2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );

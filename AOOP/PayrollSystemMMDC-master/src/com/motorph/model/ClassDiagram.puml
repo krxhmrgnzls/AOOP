@@ -1,0 +1,310 @@
+@startuml
+!define ENTITY_COLOR #E1F5FE
+!define DAO_COLOR #F3E5F5
+!define GUI_COLOR #E8F5E8
+!define SERVICE_COLOR #FFF3E0
+!define UTIL_COLOR #FFEBEE
+
+' Model Classes
+class PayrollRecord <<Entity>> ENTITY_COLOR {
+    - payrollId: int
+    - employeeId: int
+    - employeeName: String
+    - payrollPeriod: String
+    - position: String
+    - grossIncome: double
+    - benefits: double
+    - overtime: double
+    - undertime: double
+    - sss: double
+    - philhealth: double
+    - pagibig: double
+    - tax: double
+    - netPay: double
+    - status: String
+    + PayrollRecord()
+    + PayrollRecord(int, String, String, double, double, double, double, double, double, double, double, double, String)
+    + getPayrollId(): int
+    + setPayrollId(int): void
+    + getEmployeeId(): int
+    + setEmployeeId(int): void
+    + getEmployeeName(): String
+    + setEmployeeName(String): void
+    + getPayrollPeriod(): String
+    + setPayrollPeriod(String): void
+    + getPosition(): String
+    + setPosition(String): void
+    + getGrossIncome(): double
+    + setGrossIncome(double): void
+    + getBenefits(): double
+    + setBenefits(double): void
+    + getOvertime(): double
+    + setOvertime(double): void
+    + getUndertime(): double
+    + setUndertime(double): void
+    + getSss(): double
+    + setSss(double): void
+    + getPhilhealth(): double
+    + setPhilhealth(double): void
+    + getPagibig(): double
+    + setPagibig(double): void
+    + getTax(): double
+    + setTax(double): void
+    + getNetPay(): double
+    + setNetPay(double): void
+    + getStatus(): String
+    + setStatus(String): void
+}
+
+class AccountDetails <<Entity>> ENTITY_COLOR {
+    - databaseID: int
+    - employeeID: int
+    - firstName: String
+    - lastName: String
+    - birthday: Date
+    - address: String
+    - phoneNumber: String
+    - sssNumber: String
+    - philHealthNumber: String
+    - tinNumber: String
+    - pagibigNumber: String
+    - status: String
+    - position: String
+    - supervisor: String
+    - basicSalary: double
+    - riceSubsidy: double
+    - phoneAllowance: double
+    - clothingAllowance: double
+    - semiBasicSalary: double
+    - hourlyRate: double
+    + AccountDetails()
+    + AccountDetails(int)
+    + getDatabaseID(): int
+    + setDatabaseID(int): void
+    + getEmployeeID(): int
+    + setEmployeeID(int): void
+    + getFirstName(): String
+    + setFirstName(String): void
+    + getLastName(): String
+    + setLastName(String): void
+    + getBirthday(): Date
+    + setBirthday(Date): void
+    + getBirthdayString(): String
+    + getAddress(): String
+    + setAddress(String): void
+    + getPhoneNumber(): String
+    + setPhoneNumber(String): void
+    + getSssNumber(): String
+    + setSssNumber(String): void
+    + getPhilHealthNumber(): String
+    + setPhilHealthNumber(String): void
+    + getTinNumber(): String
+    + setTinNumber(String): void
+    + getPagibigNumber(): String
+    + setPagibigNumber(String): void
+    + getStatus(): String
+    + setStatus(String): void
+    + getPosition(): String
+    + setPosition(String): void
+    + getSupervisor(): String
+    + setSupervisor(String): void
+    + getBasicSalary(): double
+    + setBasicSalary(double): void
+    + getRiceSubsidy(): double
+    + setRiceSubsidy(double): void
+    + getPhoneAllowance(): double
+    + setPhoneAllowance(double): void
+    + getClothingAllowance(): double
+    + setClothingAllowance(double): void
+    + getSemiBasicSalary(): double
+    + setSemiBasicSalary(double): void
+    + getHourlyRate(): double
+    + setHourlyRate(double): void
+}
+
+class AttendanceRecord <<Entity>> ENTITY_COLOR {
+    - attendanceId: int
+    - employeeId: int
+    - logDate: Date
+    - loginTime: Time
+    - logoutTime: Time
+    - submittedToSupervisor: boolean
+    - submittedToPayroll: boolean
+    - remarks: String
+    + AttendanceRecord()
+    + getAttendanceId(): int
+    + setAttendanceId(int): void
+    + getEmployeeId(): int
+    + setEmployeeId(int): void
+    + getLogDate(): Date
+    + setLogDate(Date): void
+    + getLoginTime(): Time
+    + setLoginTime(Time): void
+    + getLogoutTime(): Time
+    + setLogoutTime(Time): void
+    + isSubmittedToSupervisor(): boolean
+    + setSubmittedToSupervisor(boolean): void
+    + isSubmittedToPayroll(): boolean
+    + setSubmittedToPayroll(boolean): void
+    + getRemarks(): String
+    + setRemarks(String): void
+}
+
+' DAO Classes
+class PayrollDAO <<DAO>> DAO_COLOR {
+    - connection: Connection
+    + PayrollDAO()
+    + createPayrollRecord(PayrollRecord): boolean
+    + getPayrollRecordsByEmployee(int): List<PayrollRecord>
+    + updatePayrollRecord(PayrollRecord): boolean
+    + deletePayrollRecord(int): boolean
+    + getAllPayrollRecords(): List<PayrollRecord>
+    + getPayrollRecordsByPeriod(String): List<PayrollRecord>
+}
+
+class EmployeeDAO <<DAO>> DAO_COLOR {
+    - connection: Connection
+    + EmployeeDAO()
+    + getEmployeeById(int): AccountDetails
+    + getAllEmployees(): List<AccountDetails>
+    + updateEmployee(AccountDetails): boolean
+    + createEmployee(AccountDetails): boolean
+    + deleteEmployee(int): boolean
+    + getEmployeeByCredentials(String, String): AccountDetails
+}
+
+class AttendanceDAO <<DAO>> DAO_COLOR {
+    - connection: Connection
+    + AttendanceDAO()
+    + createAttendanceRecord(AttendanceRecord): boolean
+    + getAttendanceByEmployee(int): List<AttendanceRecord>
+    + updateAttendanceRecord(AttendanceRecord): boolean
+    + deleteAttendanceRecord(int): boolean
+    + getAttendanceByPeriod(Date, Date): List<AttendanceRecord>
+}
+
+' GUI Classes
+class Login <<GUI>> GUI_COLOR {
+    + Login()
+    + authenticate(String, String): boolean
+    + showLoginForm(): void
+    + validateCredentials(String, String): AccountDetails
+}
+
+class Employee <<GUI>> GUI_COLOR {
+    - employeeId: String
+    + Employee()
+    + Employee(String)
+    + getEmployeeId(): String
+    + setEmployeeId(String): void
+    + viewPersonalDetails(): void
+    + updatePersonalInfo(): void
+    + viewPayslip(): void
+}
+
+class PayrollStaff <<GUI>> GUI_COLOR {
+    - payrollDAO: PayrollDAO
+    - employeeDAO: EmployeeDAO
+    - attendanceDAO: AttendanceDAO
+    - accountDetails: AccountDetails
+    - tableData: ArrayList<ArrayList<String>>
+    - newData: ArrayList<ArrayList<String>>
+    - tableSize: int
+    - dbConnection: DatabaseConnection
+    - connection: Connection
+    - numberOfDaysLeave: int
+    - perHour: double
+    - perMonth: double
+    - riceSubsidy: double
+    - phoneAllowance: double
+    - clothingAllowance: double
+    + PayrollStaff()
+    + PayrollStaff(String)
+    - initializeDAOs(): void
+    - initializeConnection(): void
+    + getAccountDetails(): AccountDetails
+    + viewPersonalDetails(String): void
+    + generatePayroll(): void
+    + processPayroll(): void
+    + calculateSalary(): double
+    + calculateDeductions(): double
+    + calculateNetPay(): double
+}
+
+' Service Classes
+class AttendanceService <<Service>> SERVICE_COLOR {
+    - attendanceDAO: AttendanceDAO
+    + AttendanceService()
+    + calculateTotalHours(List<AttendanceRecord>): double
+    + calculateOvertime(List<AttendanceRecord>): double
+    + calculateUndertime(List<AttendanceRecord>): double
+    + processAttendance(int): AttendanceResult
+}
+
+class AttendanceResult <<Service>> SERVICE_COLOR {
+    - totalHours: double
+    - overtime: double
+    - undertime: double
+    - leaveCount: int
+    + AttendanceResult()
+    + getTotalHours(): double
+    + setTotalHours(double): void
+    + getOvertime(): double
+    + setOvertime(double): void
+    + getUndertime(): double
+    + setUndertime(double): void
+    + getLeaveCount(): int
+    + setLeaveCount(int): void
+}
+
+' Utility Classes
+class DatabaseConnection <<Util>> UTIL_COLOR {
+    - instance: DatabaseConnection
+    - connection: Connection
+    - DatabaseConnection()
+    + getInstance(): DatabaseConnection
+    + getConnection(): Connection
+    + testConnection(): boolean
+    + closeConnection(): void
+}
+
+interface Payroll <<Interface>> UTIL_COLOR {
+    + generatePayroll(): void
+    + processPayroll(): void
+    + calculateSalary(): double
+    + calculateDeductions(): double
+    + calculateNetPay(): double
+}
+
+' Relationships
+PayrollStaff --|> Employee : extends
+PayrollStaff ..|> Payroll : implements
+PayrollStaff --> PayrollDAO : uses
+PayrollStaff --> EmployeeDAO : uses
+PayrollStaff --> AttendanceDAO : uses
+PayrollStaff --> AccountDetails : has
+PayrollStaff --> DatabaseConnection : uses
+
+Employee --> AccountDetails : has
+Employee --> EmployeeDAO : uses
+
+PayrollDAO --> PayrollRecord : manages
+PayrollDAO --> DatabaseConnection : uses
+EmployeeDAO --> AccountDetails : manages
+EmployeeDAO --> DatabaseConnection : uses
+AttendanceDAO --> AttendanceRecord : manages
+AttendanceDAO --> DatabaseConnection : uses
+
+AttendanceService --> AttendanceDAO : uses
+AttendanceService --> AttendanceResult : creates
+AttendanceService --> AttendanceRecord : processes
+
+Login --> EmployeeDAO : uses
+Login --> AccountDetails : validates
+
+PayrollStaff "1" --> "*" PayrollRecord : creates
+EmployeeDAO "1" --> "*" AccountDetails : retrieves
+AttendanceDAO "1" --> "*" AttendanceRecord : retrieves
+PayrollDAO "1" --> "*" PayrollRecord : retrieves
+
+@enduml

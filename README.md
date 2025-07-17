@@ -25,6 +25,7 @@ MotorPH is committed to modernizing its payroll system to support business expan
 
   ### User Roles
     👤 Employee - Access personal payroll information and manage attendance
+    👤 Employee - Access personal payroll information and manage attendance
     👨‍💼 Supervisor - Manage team attendance and approve leave requests
     👩‍💼 HR - Oversee employee management and leave administration
     💰 Payroll Staff - Process payroll calculations and generate reports

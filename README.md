@@ -1,17 +1,19 @@
+![Image](https://github.com/user-attachments/assets/ec43d712-07cd-478a-bbf0-fd7b38dd4b17)
+
 # MotorPH Payroll System
 A Java-based automated payroll management system designed to streamline MotorPH's payroll processes, enhance accuracy, and ensure compliance with labor regulations. The system features role-based access control, automated salary calculations, attendance tracking, and comprehensive reporting capabilities.
 
   ## Table of Contents
-  - Introduction
-  - User's Guide
-    - Employee Login
-    - Supervisor Login
-    - HR Login
-    - Payroll Staff Login
-  - Technical Information
-  - Testing
-  - Authors
-
+  - [Introduction](#introduction)
+  - [Getting Started](#getting-started)
+  - [User's Guide](#users-guide)
+    - [Employee Login](#employee-login)
+    - [Supervisor Login](#supervisor-login)
+    - [HR Login](#hr-login)
+    - [Payroll Staff Login](#payroll-staff-login)
+  - [Technical Information](#technical-information)
+  - [Testing](#testing)
+  - [Authors](#authors)
 
 ## Introduction
 MotorPH is committed to modernizing its payroll system to support business expansion and improve operational efficiency. This automated payroll system transitions from manual processes to a streamlined, digital approach that minimizes errors, reduces administrative workload, and ensures timely salary disbursements.
@@ -31,7 +33,7 @@ MotorPH is committed to modernizing its payroll system to support business expan
 
 
 ## Getting Started
-  ### Sytem Requirements
+  ### System Requirements
   - **Proccessor:** Any modern processor capable of running Java applications
   - **Memory:** At least 4GB RAM recommended
   - **Storage:** Sufficient space for project files and database
@@ -51,7 +53,7 @@ MotorPH is committed to modernizing its payroll system to support business expan
   - Install Netbeans IDE
 
   **2. Clone the Repository:**
-  - git clone https://github.com/your-repo/motorph-payroll-system.git
+  - git clone https://github.com/krxhmrgnzls/AOOP
   - cd motorph-payroll-system
 
   **3. Database Setup:**
@@ -80,11 +82,10 @@ MotorPH is committed to modernizing its payroll system to support business expan
   - **JUnit 5** - Unit testing framework
   - **JasperReports** - PDF report generation
 
-# User's Guide
+## User's Guide
 This guide provides step-by-step instructions for using the MotorPH Payroll System. Each user role has specific functionalities designed to meet their operational needs.
 
 ### Default Login Credentials
-### Table
 | **Role**      | **Employee ID** | **Password** | **Access Level**         |
 |---------------|-----------------|--------------|--------------------------|   
 | Employee      | 10003           | 10003        | Basic employee functions |
@@ -92,14 +93,14 @@ This guide provides step-by-step instructions for using the MotorPH Payroll Syst
 | HR            | 10001           | 10001        | Employee administration  |
 | Payroll Staff | 10002           | 10002        | Payroll processing       |
 
-### 🎯Employee Login
+### 👤Employee Login
 insert screenshot
 
   **Accessing the System:**
   1. Enter your Employee ID and password
   2. Click "Login" to access your dashboard
 
-  ### **Key Feature:**
+  **Key Feature:**
   **📋 Personal Information Management:**
   - View and update personal detailes
   - Access contact information and employment details
@@ -120,99 +121,96 @@ insert screenshot
   - **Exports Payslips:** Download payslips as PDF files
   - **Payroll History:** Review past payroll records
 
-### 🎯Supervisor Login
+### 👨‍💼Supervisor Login
 insert screenshot
 
-  **Team Management Dashboard:**
+  **📊 Team Management Dashboard:**
   - View team member information and attendance
   - Access team payroll summaries
   - Monitor team performance metrics
 
-   **Attendance Supervision:**
+   **📚Attendance Supervision:**
    - **Review Team DTR:** Monitor daily time records for supervised employees
    - **Attendance Reports:** Generate team attendance summaries
    - **Overtime Tracking:** Review and validate overtime hours
 
-   **Leave Management:**
+   **🏖️Leave Management:**
    - **Approve/Reject Requests:** Process leave applications from team members
    - **Leave Balance Monitoring:** Track team leave utilization
    - **Leave Calendar:** View team leave schedules
 
-### 🎯Human Resource Login
+### 👩‍💼HR Login
 insert screenshot
 
-  **Employee Management:**
+  **📋Employee Management:**
   - **Add Employees:** Create new employee records with complete information
   - **Edit Records:** Update employee details, positions, and salary information
   - **Delete Employees:** Remove employees from the system (with confirmation)
  
- **Attendance Administration:**
+ **📚Attendance Administration:**
  - **Company-wide Attendance:** View all employee attendance records
  - **Filter by Date:** Search attendance by specific periods
  - **Attendance Reports:**  Generate comprehensive attendance summaries
       
- **Leave Administration:**
+ **🏖️Leave Administration:**
  - **Leave Requests:** Review and process all leave applications
  - **Leave Balances:** Manage and update employee leave entitlements
 
-### 🎯Payroll Staff Login
+### 💰Payroll Staff Login
 insert screenshot
 
-  **Payroll Processing:**
+  **💳Payroll Processing:**
   - **Calculate Payroll:** Process bi-monthly or monthly payroll calculations
   - **Salary Computation:** Automated calculation of gross pay, deductions, and net pay
   - **Tax Calculations:**  Apply appropriate tax brackets and government deductions
 
-  **Benefits Administration:**
+  **📈Benefits Administration:**
   -  **Rice Subsidy:** Apply rice allowance to eligible employees
   -  **Phone Allowance:** Process communication allowances
   - **Clothing Allowance:** Calculate uniform allowances
       
-  **Report Generation:**
+  **🗄️Report Generation:**
   - **Individual Payslips:** Generate detailed payslips for each employee
   - **Payroll Summary:** Create comprehensive payroll reports
   - **Tax Reports:** Generate tax withholding reportsCalculate uniform allowances
   - **Export Functions:** Save reports in various formats (PDF)
 
 ### Technical Information
-  **System Architecture**
-    The system follows a layered architecture pattern:
-
-  **Key Components**
-  **Core Classes:**
+**Key Components**
+**Core Classes:**
 - PayrollStaff.java - Payroll calculations and processing
 - Employee.java - Employee data management
 - Supervisor.java - Team management functions
 - AttendanceService.java - Attendance tracking logic
 - ReportGenerator.java - Report creation and export
-  **Database Access:**
+**Database Access:**
 - EmployeeDAO.java - Employee data operations
 - PayrollDAO.java - Payroll data management
 - AttendanceDAO.java - Attendance record handling
 - DatabaseConnection.java - Database connectivity management
-  **Models:**
+**Models:**
 - PayrollRecord.java - Payroll data structure
 - AttendanceRecord.java - Attendance data model
 - AccountDetails.java - Employee information model
       
-  **Database Schema**
-     **Primary Tables:**
+**Database Schema**
+**Primary Tables:**
 - employees - Employee master data
 - payroll - Payroll transaction records
 - attendance - Daily attendance logs
 - login_credentials - User authentication data
-      **Views:**
+**Views:**
 - employee_profile_view - Consolidated employee information
 - payroll_summary_view - Payroll reporting data
-      
-  **Features Implementation**
-    **Payroll Calculations:**
+
+**Features Implementation**
+**Payroll Calculations:**
 - Automated gross pay computation
 - Government deduction calculations (SSS, PhilHealth, Pag-IBIG)
 - Tax computation based on Philippine tax brackets
 - Benefits and allowances processing
 - Net pay calculation
-    **Security Features:**
+**Security Features:**
 - Role-based access control
 - Secure password authentication
 - Session management
@@ -221,21 +219,38 @@ insert screenshot
 ### Testing
 The system includes comprehensive unit tests using JUnit 5 framework.
 
-  **Running Tests**
-  Run all tests
-  mvn test
-  
-  Run specific test class
-  java -cp "classpath" org.junit.platform.console.ConsoleLauncher --class-path target/classes -- scan-classpath
+**Running Tests**
 
-  **Test Coverage**
+Run all test
+- mvn test
+
+Run specific test class
+- java -cp "classpath" org.junit.platform.console.ConsoleLauncher --class-path target/classes -- scan-classpath
+
+**Test Coverage**
 - **Database Connectivity:** Connection validation and table existence
 - **Authentication:** Login validation and role verification
 - **Payroll Calculations:** Salary computation accuracy
 - **Attendance Processing:** Time tracking and validation
 - **Report Generation:** PDF creation and data export
 
-### Authors (Group 4)
+### Authors
+
+![Image](https://github.com/user-attachments/assets/1bb1cbbd-3fe2-41a5-924e-bf98703151bd)
+
+**Krixhia Marie Gonzales (Project Lead/Quality Assurance)**
+
+![Image](https://github.com/user-attachments/assets/776e9cd3-ed55-4458-acf3-508264aa676d)
+
+**Tristan Marc A. Cunanan (Back-end Developer)**
+
+![Image](https://github.com/user-attachments/assets/b0ad9ba9-53b5-4c72-bcb5-242d29947779)
+
+**Shane Mishael Abrasaldo (Database Administrator)**
+
+![Image](https://github.com/user-attachments/assets/d955e2b0-da9d-43f6-b34e-439df93347f8)
+
+**Maria Chesam Leonor (Front-end Developer)**
 
 
 

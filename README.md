@@ -94,7 +94,10 @@ This guide provides step-by-step instructions for using the MotorPH Payroll Syst
 | Payroll Staff | 10002           | 10002        | Payroll processing       |
 
 ### 👤Employee Login
-insert screenshot
+
+<img width="1472" height="872" alt="Image" src="https://github.com/user-attachments/assets/79eed511-5496-465e-a01a-2e7e467b5d02" />
+
+<img width="1755" height="872" alt="Image" src="https://github.com/user-attachments/assets/a0f06f75-e3b6-4300-9fad-7745ff393fb3" />
 
   **Accessing the System:**
   1. Enter your Employee ID and password
@@ -123,7 +126,8 @@ insert screenshot
   - **Payroll History:** Review past payroll records
 
 ### 👨‍💼Supervisor Login
-insert screenshot
+
+<img width="1677" height="873" alt="Image" src="https://github.com/user-attachments/assets/1532ac38-3f87-4739-90fc-0eaebc08844b" />
 
   **📊 Team Management Dashboard:**
   - View team member information and attendance
@@ -141,7 +145,8 @@ insert screenshot
    - **Leave Calendar:** View team leave schedules
 
 ### 👩‍💼HR Login
-insert screenshot
+
+<img width="1742" height="916" alt="Image" src="https://github.com/user-attachments/assets/49914403-05ef-4f3b-9780-c00ecd1a5326" />
 
   **📋Employee Management:**
   - **Add Employees:** Create new employee records with complete information
@@ -158,7 +163,8 @@ insert screenshot
  - **Leave Balances:** Manage and update employee leave entitlements
 
 ### 💰Payroll Staff Login
-insert screenshot
+
+<img width="1751" height="877" alt="Image" src="https://github.com/user-attachments/assets/404dbb77-4c47-4ba6-997d-f45faa40c57b" />
 
   **💳Payroll Processing:**
   - **Calculate Payroll:** Process bi-monthly or monthly payroll calculations

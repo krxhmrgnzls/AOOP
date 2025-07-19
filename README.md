@@ -93,17 +93,160 @@ This guide provides step-by-step instructions for using the MotorPH Payroll Syst
 | Payroll Staff | 10002           | 10002        | Payroll processing       |
 
 ### 🎯Employee Login
+insert screenshot
+
   **Accessing the System:**
-  1. Entertiyr Employee ID and password
+  1. Enter your Employee ID and password
   2. Click "Login" to access your dashboard
 
   ### **Key Feature:**
-  **Personal Information Management:**
-    - View and update personal details
-    - Access contact information and employment details
-    - View salary structure and benefits information 
+  **📋 Personal Information Management:**
+  - View and update personal detailes
+  - Access contact information and employment details
+  - View salary structure and benefits information
+
+  **⏰ Time and Attendance:**
+  - **Time In/Out:** Record daily attendance with timestamp
+  - **Attendance History:** View past attendance records with filtering options
+  - **Monthly Reports:** Export attendance data by month/year
+  
+  **🏖️ Leave Management:**
+  - **Leave Balance:** View available vacation and sick leave days
+  - **Submit Requests:** Apply for leave with date selection
+  - **Request History:** Track status of submitted leave applications
+
+  **💳 Payroll Information:**
+  - **View Payslip:** Access detailed salary breakdowns
+  - **Exports Payslips:** Download payslips as PDF files
+  - **Payroll History:** Review past payroll records
+
+### 🎯Supervisor Login
+insert screenshot
+
+  **Team Management Dashboard:**
+  - View team member information and attendance
+  - Access team payroll summaries
+  - Monitor team performance metrics
+
+   **Attendance Supervision:**
+   - **Review Team DTR:** Monitor daily time records for supervised employees
+   - **Attendance Reports:** Generate team attendance summaries
+   - **Overtime Tracking:** Review and validate overtime hours
+
+   **Leave Management:**
+   - **Approve/Reject Requests:** Process leave applications from team members
+   - **Leave Balance Monitoring:** Track team leave utilization
+   - **Leave Calendar:** View team leave schedules
+
+### 🎯Human Resource Login
+insert screenshot
+
+  **Employee Management:**
+  - **Add Employees:** Create new employee records with complete information
+  - **Edit Records:** Update employee details, positions, and salary information
+  - **Delete Employees:** Remove employees from the system (with confirmation)
+ 
+ **Attendance Administration:**
+ - **Company-wide Attendance:** View all employee attendance records
+ - **Filter by Date:** Search attendance by specific periods
+ - **Attendance Reports:**  Generate comprehensive attendance summaries
+      
+ **Leave Administration:**
+ - **Leave Requests:** Review and process all leave applications
+ - **Leave Balances:** Manage and update employee leave entitlements
+
+### 🎯Payroll Staff Login
+insert screenshot
+
+  **Payroll Processing:**
+  - **Calculate Payroll:** Process bi-monthly or monthly payroll calculations
+  - **Salary Computation:** Automated calculation of gross pay, deductions, and net pay
+  - **Tax Calculations:**  Apply appropriate tax brackets and government deductions
+
+  **Benefits Administration:**
+  -  **Rice Subsidy:** Apply rice allowance to eligible employees
+  -  **Phone Allowance:** Process communication allowances
+  - **Clothing Allowance:** Calculate uniform allowances
+      
+  **Report Generation:**
+  - **Individual Payslips:** Generate detailed payslips for each employee
+  - **Payroll Summary:** Create comprehensive payroll reports
+  - **Tax Reports:** Generate tax withholding reportsCalculate uniform allowances
+  - **Export Functions:** Save reports in various formats (PDF)
+
+### Technical Information
+  **System Architecture**
+    The system follows a layered architecture pattern:
+
+  **Key Components**
+  **Core Classes:**
+- PayrollStaff.java - Payroll calculations and processing
+- Employee.java - Employee data management
+- Supervisor.java - Team management functions
+- AttendanceService.java - Attendance tracking logic
+- ReportGenerator.java - Report creation and export
+  **Database Access:**
+- EmployeeDAO.java - Employee data operations
+- PayrollDAO.java - Payroll data management
+- AttendanceDAO.java - Attendance record handling
+- DatabaseConnection.java - Database connectivity management
+  **Models:**
+- PayrollRecord.java - Payroll data structure
+- AttendanceRecord.java - Attendance data model
+- AccountDetails.java - Employee information model
+      
+  **Database Schema**
+     **Primary Tables:**
+- employees - Employee master data
+- payroll - Payroll transaction records
+- attendance - Daily attendance logs
+- login_credentials - User authentication data
+      **Views:**
+- employee_profile_view - Consolidated employee information
+- payroll_summary_view - Payroll reporting data
+      
+  **Features Implementation**
+    **Payroll Calculations:**
+- Automated gross pay computation
+- Government deduction calculations (SSS, PhilHealth, Pag-IBIG)
+- Tax computation based on Philippine tax brackets
+- Benefits and allowances processing
+- Net pay calculation
+    **Security Features:**
+- Role-based access control
+- Secure password authentication
+- Session management
+- Data validation and sanitization
+
+### Testing
+The system includes comprehensive unit tests using JUnit 5 framework.
+
+  **Running Tests**
+  Run all tests
+  mvn test
+  
+  Run specific test class
+  java -cp "classpath" org.junit.platform.console.ConsoleLauncher --class-path target/classes -- scan-classpath
+
+  **Test Coverage**
+- **Database Connectivity:** Connection validation and table existence
+- **Authentication:** Login validation and role verification
+- **Payroll Calculations:** Salary computation accuracy
+- **Attendance Processing:** Time tracking and validation
+- **Report Generation:** PDF creation and data export
+
+### Authors (Group 4)
+
+
+
     
 
 
 
 
+
+
+
+
+
+  

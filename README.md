@@ -101,6 +101,7 @@ insert screenshot
   2. Click "Login" to access your dashboard
 
   **Key Feature:**
+  
   **📋 Personal Information Management:**
   - View and update personal detailes
   - Access contact information and employment details
@@ -177,39 +178,46 @@ insert screenshot
 
 ### Technical Information
 **Key Components**
+
 **Core Classes:**
 - PayrollStaff.java - Payroll calculations and processing
 - Employee.java - Employee data management
 - Supervisor.java - Team management functions
 - AttendanceService.java - Attendance tracking logic
 - ReportGenerator.java - Report creation and export
+  
 **Database Access:**
 - EmployeeDAO.java - Employee data operations
 - PayrollDAO.java - Payroll data management
 - AttendanceDAO.java - Attendance record handling
 - DatabaseConnection.java - Database connectivity management
+  
 **Models:**
 - PayrollRecord.java - Payroll data structure
 - AttendanceRecord.java - Attendance data model
 - AccountDetails.java - Employee information model
       
 **Database Schema**
+
 **Primary Tables:**
 - employees - Employee master data
 - payroll - Payroll transaction records
 - attendance - Daily attendance logs
 - login_credentials - User authentication data
+  
 **Views:**
 - employee_profile_view - Consolidated employee information
 - payroll_summary_view - Payroll reporting data
 
 **Features Implementation**
+
 **Payroll Calculations:**
 - Automated gross pay computation
 - Government deduction calculations (SSS, PhilHealth, Pag-IBIG)
 - Tax computation based on Philippine tax brackets
 - Benefits and allowances processing
 - Net pay calculation
+- 
 **Security Features:**
 - Role-based access control
 - Secure password authentication
@@ -228,6 +236,7 @@ Run specific test class
 - java -cp "classpath" org.junit.platform.console.ConsoleLauncher --class-path target/classes -- scan-classpath
 
 **Test Coverage**
+
 - **Database Connectivity:** Connection validation and table existence
 - **Authentication:** Login validation and role verification
 - **Payroll Calculations:** Salary computation accuracy
